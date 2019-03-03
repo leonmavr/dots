@@ -1,0 +1,63 @@
+# i3status config file
+# see `main i3status
+
+general {
+	colors = true
+	interval = 1 
+	color_good = "#1aed44"
+	color_degraded = "#808080"
+	color_bad = "#840f0f"
+}
+
+################################
+# Requirements:
+################################
+# noto-fonts-emoji
+
+order += "volume master"
+order += "battery all"
+order += "cpu_usage"
+order += "ethernet _first_"
+order += "disk /"
+order += "tztime local"
+
+tztime local {
+	format = "📅 %h %d %Y, %H:%M "
+}
+
+disk "/" {
+	format = "💾 %avail"
+}
+
+ethernet _first_ {
+	# params: %ip
+	format_up = "🖧  "
+	format_down = "🖧  "
+}
+
+cpu_usage {
+	format = "🧠 %usage"
+}
+
+battery all {
+	# params: %status, %percentage, %remaining
+	# bug: POWER_SUPPLY_STATUS is always "Uknown", %remaining is empty 
+	status_chr = "🔋"
+	status_bat = "🔋"
+	status_full = "🔋"
+	status_unk = "🔋"
+
+	format = "%status %percentage"
+	low_threshold = 8
+	threshold_type = percentage
+	integer_battery_capacity = true
+	hide_seconds = true
+}
+
+volume master {
+	format = "🔊 %volume"
+	format_muted = "🔇"
+	device = "default"
+	mixer = "Master"
+	mixer_idx = 0
+}
