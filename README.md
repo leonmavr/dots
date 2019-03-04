@@ -1,9 +1,7 @@
 # dotfiles
-
+Here are my dotfiles for Arch Linux setups.
 ## arch-light
 ### Description
 A lightweight Arch Linux based system that I want to be able to use as my workspace for coding.
-### Screenshots
-<p align="center">
-  <img src=".sshots/arch-light/empty.png" alt="empty workspace" width=800>
-</p>
+
+TODO: add conky config
