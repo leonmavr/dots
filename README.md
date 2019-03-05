@@ -6,7 +6,7 @@ A lightweight Arch Linux based system that I want to be able to use as my worksp
 ### Screenshots
 Conky:
 <p align="center">
-  <img src=https://raw.githubusercontent.com/0xLeo/dotfiles/master/screenshots/arch-light/conky-05_03_19.PNG title="conky 05/03/19" height=500px>
+  <img src=https://raw.githubusercontent.com/0xLeo/dotfiles/master/screenshots/arch-light/conky-05_03_19-02.PNG title="conky 05/03/19" height=500px>
 </p>
   
 TODO: update colour scheme, right now it's kind of ugly
