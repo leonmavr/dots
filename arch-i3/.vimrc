@@ -163,10 +163,9 @@ set expandtab
 "-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 " Key mappings
 "-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-" Run file with Python by pressing F9
-nnoremap <buffer> <F9> :exec '!python' shellescape(@%, 1)<cr>
-inoremap <F2> <Esc>:set paste<cr:set paste<cr>
-inoremap <F3> <Esc>:set nopaste<cr>
+"autocmd Filetype py inoremap <buffer> <F5> <Esc>:w!<cr>:exec '!python' shellescape(@%, 1)<cr>
+"inoremap <F2> <Esc>:set paste<cr:set paste<cr>
+"inoremap <F3> <Esc>:set nopaste<cr>
 "normal mode; run Python by F9
 nnoremap <buffer> <F9> :exec '!python' shellescape(@%, 1)<cr>
 " <zz> to save
@@ -188,6 +187,7 @@ imap jj <Esc>
 noremap <silent> <C-S>          :update<CR>
 vnoremap <silent> <C-S>         <C-C>:update<CR>
 inoremap <silent> <C-S>         <C-O>:update<CR>:inoremap <c-s> <Esc>:Update<CR>
+" needs stty -ixon in bash profile/ bash rc
 noremap <c-s> :update<CR>
 noremap<c-p> :CtrlP<CR>
 
@@ -203,3 +203,8 @@ function! s:insert_gates()
   normal! kk
 endfunction
 autocmd BufNewFile *.{h,hpp} call <SID>insert_gates()
+"-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+" Filetype specific
+"-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+"Draw /* */ around visually selected phrase
+autocmd Filetype c,cpp,h,hpp vnoremap <BS> meomsv`ea */<Esc>`si/* <Esc>`e4l"
