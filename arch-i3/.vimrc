@@ -1,57 +1,76 @@
-"" Notes :
+"-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+" __   _____ __  __ ___  ___ 
+" \ \ / /_ _|  \/  | _ \/ __|
+"  \ V / | || |\/| |   / (__ 
+"   \_/ |___|_|  |_|_|_\\___|
+"
+"-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+" Notes :
 " If you're editing this file, you can enter :so % to source it
+
+"-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+" General Controls
+"-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+let s:enable_plugins = 1
+let s:auto_close_brackets = 0
 
 "-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 " Plugins
 "-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-" Pathogen
-execute pathogen#infect()
-" Syntastic
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
-let g:pymode_lint = 1
-let g:pyemode_lint_on_write = 0
-let g:syntastic_loc_list_height=5
-" Nerdtree - start automatically
-autocmd StdinReadPre * let s:std_in=1
-autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
-let g:NERDTreeWinSize=30 " width
-let g:Tlist_WinWidth=30 " width
-" CtrlP - fuzzy file search
-set runtimepath^=~/.vim/bundle/ctrlp.vim
-" CtrlP plugin
-let g:ctrlp_map = '<c-p>'
-let g:ctrlp_cmd = 'CtrlP'
-let g:ctrlp_working_path_mode = 'ra'
-let g:ctrlp_root_markers = ['pom.xml', '.p4ignore']
-let g:ctrlp_switch_buffer = 'et'
-set wildignore+=*/tmp/*,*.so,*.swp,*.zip
-let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn)$'
-let g:ctrlp_user_command = 'find %s -type f' 
-let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files -co --exclude-standard']
-"jedi
-"init jedi plugin
-let g:jedi#auto_initialization = 0
-let g:jedi#auto_vim_configuration = 0
-""tabs when going to a definition
-let g:jedi#use_tabs_not_buffers = 1
-"jedi for splits
-let g:jedi#use_splits_not_buffers = "left"
-" tagbar (class browser) activation - needs ctags installed
-nmap <F10> :TagbarToggle<CR>
-"""""" airline
-let g:airline#extensions#tabline#enabled = 1
-let g:airline#extensions#tabline#left_sep = ' '
-let g:airline#extensions#tabline#left_alt_sep = '|'
-let g:airline#extensions#tabline#formatter = 'default'
-set laststatus=2 " at the bottom
+if s:enable_plugins != 0
+    " Pathogen
+    execute pathogen#infect()
+    " Syntastic
+    set statusline+=%#warningmsg#
+    set statusline+=%{SyntasticStatuslineFlag()}
+    set statusline+=%*
+    let g:syntastic_always_populate_loc_list = 1
+    let g:syntastic_auto_loc_list = 1
+    let g:syntastic_check_on_open = 1
+    let g:syntastic_check_on_wq = 0
+    let g:pymode_lint = 1
+    let g:pyemode_lint_on_write = 0
+    let g:syntastic_loc_list_height=5
+    " Nerdtree - start automatically
+    autocmd StdinReadPre * let s:std_in=1
+    autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+    let g:NERDTreeWinSize=30 " width
+    let g:Tlist_WinWidth=30 " width
+    " CtrlP - fuzzy file search
+    set runtimepath^=~/.vim/bundle/ctrlp.vim
+    " CtrlP plugin
+    let g:ctrlp_map = '<c-p>'
+    let g:ctrlp_cmd = 'CtrlP'
+    let g:ctrlp_working_path_mode = 'ra'
+    let g:ctrlp_root_markers = ['pom.xml', '.p4ignore']
+    let g:ctrlp_switch_buffer = 'et'
+    set wildignore+=*/tmp/*,*.so,*.swp,*.zip
+    let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn)$'
+    let g:ctrlp_user_command = 'find %s -type f' 
+    let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files -co --exclude-standard']
+    " CtrlP shortcuts
+    noremap <silent> <C-S>          :update<CR>
+    vnoremap <silent> <C-S>         <C-C>:update<CR>
+    inoremap <silent> <C-S>         <C-O>:update<CR>:inoremap <c-s> <Esc>:Update<CR>
+    "jedi
+    "init jedi plugin
+    let g:jedi#auto_initialization = 0
+    let g:jedi#auto_vim_configuration = 0
+    ""tabs when going to a definition
+    let g:jedi#use_tabs_not_buffers = 1
+    "jedi for splits
+    let g:jedi#use_splits_not_buffers = "left"
+    " tagbar (class browser) activation - needs ctags installed
+    nmap <F10> :TagbarToggle<CR>
+    """""" airline
+    let g:airline#extensions#tabline#enabled = 1
+    let g:airline#extensions#tabline#left_sep = ' '
+    let g:airline#extensions#tabline#left_alt_sep = '|'
+    let g:airline#extensions#tabline#formatter = 'default'
+    set laststatus=2 " at the bottom
+endif
 "-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-" Basic features
+" Basic behaviour
 "-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 " Highlight syntax
 syntax on
@@ -71,13 +90,15 @@ if has("autocmd")
 	au BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$")
 	\| exe "normal! g'\"" | endif
 endif
+" Automatically switch to the directory of the opened file
+autocmd BufEnter * silent! lcd %:p:h
 
 
 "-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 " Text insertion & test misc
 "-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-" Use <F11> to toggle between 'paste' and 'nopaste' mode
-set pastetoggle=<F10>
+" Use <F9> to toggle between 'paste' and 'nopaste' mode
+set pastetoggle=<F9>
 " Better command-line completion
 set wildmenu
 " Char encoding, mainly so NERDtree can show arrow symbols
@@ -161,36 +182,57 @@ set expandtab
 
 
 "-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-" Key mappings
+" Key mappings and shortcuts
 "-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-"autocmd Filetype py inoremap <buffer> <F5> <Esc>:w!<cr>:exec '!python' shellescape(@%, 1)<cr>
+let mapleader=" "
+" Delete without copying
+nnoremap <leader>d "_d<cr>
+" Exit all w/o saving
+inoremap <leader>q <Esc>:qa!<cr>
+nnoremap <leader>q :qa!<cr>
 " <zz> to save
 " <qq> to quit without saving
 nnoremap zz :w!<cr>
 inoremap zz <Esc>:w!<cr>
 nnoremap qq :wq!<cr>
 inoremap qq <Esc>:wq!<cr>
-" Matching opening and closing special chars
+" Auto-close bracket by typing it twice or by <bracket><Space> 
 inoremap {<CR> {<CR>}<C-o>O
-inoremap {<space> {<space>}<C-o>O
-inoremap {{ {<space>}<C-o>O
-inoremap (<space> ()<Esc>i
-inoremap (( ()<Esc>i
-inoremap "<space> ""<Esc>i
-inoremap "" ""<Esc>i
+inoremap {<space> {}<Left>
+inoremap {{ {}<Left>
+inoremap (<space> ()<Left>
+inoremap (( ()<Left>
+inoremap << <><Left>
+inoremap <<space> <><Left>
+inoremap [[ []<Left>
+inoremap [<space> []<Left>
+inoremap "<space> ""<Left>
+"inoremap "" ""<Left>
+if s:auto_close_brackets!=0
+    " see here: https://stackoverflow.com/a/34992101
+    inoremap " ""<left>
+    inoremap ' ''<left>
+    inoremap ( ()<left>
+    inoremap [ []<left>
+    inoremap { {}<left>
+    inoremap {<CR> {<CR>}<ESC>O
+    inoremap {;<CR> {<CR>};<ESC>O
+endif
+
 imap jj <Esc>
-" CtrlP shortcuts
-noremap <silent> <C-S>          :update<CR>
-vnoremap <silent> <C-S>         <C-C>:update<CR>
-inoremap <silent> <C-S>         <C-O>:update<CR>:inoremap <c-s> <Esc>:Update<CR>
-" needs stty -ixon in bash profile/ bash rc
+imap hhh <Esc>
+imap kkk <Esc>
+imap lll <Esc>
+" needs stty -ixon in bash profile/ bash rc or unpause with Ctrl+Q
 noremap <c-s> :update<CR>
+" CtrlP plugin scan directory
 noremap<c-p> :CtrlP<CR>
 
 "-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-" Language specific
+" Filetype (language) specific
 "-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-" C - add header guard constant
+"" C, C++
+" add header guard constant
 function! s:insert_gates()
   let gatename = substitute(toupper(expand("%:t")), "\\.", "_", "g")
   execute "normal! i#ifndef " . gatename
@@ -199,13 +241,18 @@ function! s:insert_gates()
   normal! kk
 endfunction
 autocmd BufNewFile *.{h,hpp} call <SID>insert_gates()
-"-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-" Filetype specific
-"-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-"" C, C++
-"Draw /* */ around visually selected phrase
+"
+" Visual mode select and then comment (/**/) with Backspace
 autocmd Filetype c,cpp,h,hpp vnoremap <BS> meomsv`ea */<Esc>`si/* <Esc>`e4l"
+autocmd Filetype c,cpp,h,hpp imap <F5> <Esc>:w<CR>:!clear;gcc -std=c99 -lm;./a.out<CR>
+autocmd Filetype c,cpp,h,hpp nmap <F5> <Esc>:w<CR>:!clear;gcc -std=c99 -lm;./a.out<CR>
+
 "" Python
+" Visual mode select and then comment with Backspace
+autocmd Filetype python vnoremap <BS> meomsv`ea """<Esc>`si""" <Esc>`e4l
 " Save and run with F5
 autocmd Filetype python imap <F5> <Esc>:w<CR>:!clear;python %<CR>
 autocmd Filetype python nmap <F5> <Esc>:w<CR>:!clear;python %<CR>
+
+"" Tex
+"TODO: make bold, italic, insert figure, insert equation, list...
