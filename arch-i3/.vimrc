@@ -164,10 +164,6 @@ set expandtab
 " Key mappings
 "-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 "autocmd Filetype py inoremap <buffer> <F5> <Esc>:w!<cr>:exec '!python' shellescape(@%, 1)<cr>
-"inoremap <F2> <Esc>:set paste<cr:set paste<cr>
-"inoremap <F3> <Esc>:set nopaste<cr>
-"normal mode; run Python by F9
-nnoremap <buffer> <F9> :exec '!python' shellescape(@%, 1)<cr>
 " <zz> to save
 " <qq> to quit without saving
 nnoremap zz :w!<cr>
@@ -206,5 +202,10 @@ autocmd BufNewFile *.{h,hpp} call <SID>insert_gates()
 "-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 " Filetype specific
 "-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+"" C, C++
 "Draw /* */ around visually selected phrase
 autocmd Filetype c,cpp,h,hpp vnoremap <BS> meomsv`ea */<Esc>`si/* <Esc>`e4l"
+"" Python
+" Save and run with F5
+autocmd Filetype python imap <F5> <Esc>:w<CR>:!clear;python %<CR>
+autocmd Filetype python nmap <F5> <Esc>:w<CR>:!clear;python %<CR>
