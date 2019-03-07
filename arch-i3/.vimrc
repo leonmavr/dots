@@ -278,8 +278,8 @@ autocmd BufNewFile *.{h,hpp} call <SID>insert_gates()
 " Visual mode select and then comment (/**/) with Backspace
 autocmd Filetype c,cpp,h,hpp vnoremap <BS> meomsv`ea */<Esc>`si/* <Esc>`e4l"
 autocmd Filetype c,cpp,h,hpp inoremap #i #include <><Esc>i
-autocmd Filetype c imap <F5> <Esc>:w<CR>:!clear;gcc -std=c99 -lm;./a.out<CR>
-autocmd Filetype c nmap <F5> <Esc>:w<CR>:!clear;gcc -std=c99 -lm;./a.out<CR>
+autocmd Filetype c imap <F5> <Esc>:w<CR>:!clear;gcc % -std=c99 -lm;./a.out<CR>
+autocmd Filetype c nmap <F5> <Esc>:w<CR>:!clear;gcc % -std=c99 -lm;./a.out<CR>
 
 "" Python
 " Visual mode select and then comment with Backspace
