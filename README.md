@@ -8,5 +8,9 @@ Conky:
 <p align="center">
   <img src=https://raw.githubusercontent.com/0xLeo/dotfiles/master/screenshots/arch-light/conky-05_03_19-02.PNG title="conky 05/03/19" height=500px>
 </p>
+
+<p align="center">
+  <img src=https://raw.githubusercontent.com/0xLeo/dotfiles/master/screenshots/arch-light/vim-08_03_19.PNG title="vim 08/03/19" height=500px>
+</p>
   
 TODO: update colour scheme, right now it's kind of ugly
