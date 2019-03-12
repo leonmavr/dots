@@ -69,6 +69,10 @@ if s:enable_plugins != 0
     let g:airline#extensions#tabline#left_alt_sep = '|'
     let g:airline#extensions#tabline#formatter = 'default'
     set laststatus=2 " at the bottom
+	"" YouCompleteMe
+	" setup similar to
+	" http://unixnme.blogspot.com/2017/03/how-to-install-youcompleteme-vim-plugin.html
+	let g:ycm_global_ycm_extra_conf = '~/.vim/bundle/YouCompleteMe/.ycm_extra_conf.py'
 endif
 
 "-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
@@ -94,7 +98,10 @@ if has("autocmd")
 endif
 " Automatically switch to the directory of the opened file
 autocmd BufEnter * silent! lcd %:p:h
-
+" Show matching bracket
+set showmatch
+" remove buffer when closing tab
+set nohidden
 
 "-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 " (S) Text insertion & test misc
@@ -153,6 +160,7 @@ if  s:use_custom_themes!=0
         set guioptions-=T 
         set guioptions-=r " scrollbar 
         colorscheme twilight 
+        set guifont=Source\ Code\ Pro\ 14
     else
         colorscheme twilight256 
         hi StatusLine ctermbg=2 ctermfg=8 " overwr status line
@@ -210,7 +218,12 @@ inoremap <<space> <><Left>
 inoremap [[ []<Left>
 inoremap [<space> []<Left>
 inoremap "<space> ""<Left>
+inoremap '<space> ''<Left>
+" Easy new line
+nnoremap <Leader>O O<Esc>k
+nnoremap <Leader>o o<Esc>
 "inoremap "" ""<Left>
+inoremap , ,<space>
 if s:auto_close_brackets!=0
     " see here: https://stackoverflow.com/a/34992101
     inoremap " ""<left>
@@ -225,7 +238,6 @@ endif
 imap jj <Esc>
 imap hhh <Esc>
 imap kkk <Esc>
-imap lll <Esc>
 " Leader+h to auto-highlight word under cursor
 nnoremap <leader>h :if AutoHighlightToggle()<Bar>set hls<Bar>endif<CR>
 function! AutoHighlightToggle()
@@ -249,6 +261,11 @@ endfunction
 
 " Jump to next pane (I don't use to many) 
 map <C-l> <C-W>w
+imap <C-l> <C-W>w
+map <Right> <C-W>w
+" Jump to next (gT)/ previous (gt) tab
+" noremap <Up> gT
+" noremap <Down> gt
 " Save with Ctrl+S,
 " needs stty -ixon in bash profile/ bash rc or unpause with Ctrl+Q
 noremap <silent> <C-S>          :update<CR>
@@ -277,10 +294,10 @@ autocmd BufNewFile *.{h,hpp} call <SID>insert_gates()
 
 " Visual mode select and then comment (/**/) with Backspace
 autocmd Filetype c,cpp,h,hpp vnoremap <BS> meomsv`ea */<Esc>`si/* <Esc>`e4l"
-autocmd Filetype c,cpp,h,hpp inoremap #i #include <><Esc>i
+autocmd Filetype c,cpp,h,hpp inoremap <Leader>ii #include <><Esc>i
 autocmd Filetype c imap <F5> <Esc>:w<CR>:!clear;gcc % -std=c99 -lm;./a.out<CR>
 autocmd Filetype c nmap <F5> <Esc>:w<CR>:!clear;gcc % -std=c99 -lm;./a.out<CR>
-
+autocmd Filetype c inoremap "" ""<Left>
 "" Python
 " Visual mode select and then comment with Backspace
 autocmd Filetype python vnoremap <BS> meomsv`ea """<Esc>`si""" <Esc>`e4l
@@ -288,7 +305,12 @@ autocmd Filetype python vnoremap <BS> meomsv`ea """<Esc>`si""" <Esc>`e4l
 autocmd Filetype python imap <F5> <Esc>:w<CR>:!clear;python %<CR>
 autocmd Filetype python nmap <F5> <Esc>:w<CR>:!clear;python %<CR>
 " After tab has been inserted, replace it with 4 spaces for portab/ity
-set expandtab
+autocmd Filetype python set expandtab
+" zM, zR, za
+autocmd Filetype python set foldmethod=indent
+" <Leader>b = breakpoint
+autocmd Filetype python nnoremap <Leader>b oimport pdb; pdb.set_trace()<Esc>j
+" TODO: <Leader>B = delete all breakpoints
 
 "" Tex
 "TODO: make bold, italic, insert figure, insert equation, list...
