@@ -1,12 +1,14 @@
 "-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-" __   _____ __  __ ___  ___ 
+" __   _____ __  __ ___  ___
 " \ \ / /_ _|  \/  | _ \/ __|
-"  \ V / | || |\/| |   / (__ 
+"  \ V / | || |\/| |   / (__
 "   \_/ |___|_|  |_|_|_\\___|
 "
 "-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 " Notes :
-" If you're editing this file, you can enter :so % to source it
+" 1. If you're editing this file, you can enter :so % to source it
+" 2. It is not guarantedd that all commands/ mappings will work on
+"    Windows
 
 "-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 " (S) General Controls
@@ -38,7 +40,7 @@ if s:enable_plugins != 0
     autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
     let g:NERDTreeWinSize=30 " width
     let g:Tlist_WinWidth=30 " width
-    nnoremap <F8> :NERDTreeToggle<CR> 
+    nnoremap <F8> :NERDTreeToggle<CR>
     "" CtrlP plugin
     " CtrlP - fuzzy file search
     set runtimepath^=~/.vim/bundle/ctrlp.vim
@@ -49,7 +51,7 @@ if s:enable_plugins != 0
     let g:ctrlp_switch_buffer = 'et'
     set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*.gz
     let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn)$'
-    let g:ctrlp_user_command = 'find %s -type f' 
+    let g:ctrlp_user_command = 'find %s -type f'
     let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files -co --exclude-standard']
     " CtrlP plugin scan directory - do this to initialise it
     noremap<c-p> :CtrlP<CR>
@@ -70,8 +72,6 @@ if s:enable_plugins != 0
     let g:airline#extensions#tabline#formatter = 'default'
     set laststatus=2 " at the bottom
 	"" YouCompleteMe
-	" setup similar to
-	" http://unixnme.blogspot.com/2017/03/how-to-install-youcompleteme-vim-plugin.html
 	let g:ycm_global_ycm_extra_conf = '~/.vim/bundle/YouCompleteMe/.ycm_extra_conf.py'
 endif
 
@@ -83,7 +83,7 @@ syntax on
 " Don't create backup files to avoid potential annoying Q's on opening
 set noswapfile
 " Don't let OS overwrite VIM settings, re-source .vimrc safely
-set nocompatible 
+set nocompatible
 " Attempt auto-indent based on filetype
 filetype indent plugin on
 " Easy switching and editing multiple files
@@ -156,13 +156,13 @@ if  s:use_custom_themes!=0
     " Set different colorscheme for gui and console
     if has('gui_running')
         " Disable menu bar (m) and tool bar (T)
-        set guioptions -=m 
-        set guioptions-=T 
-        set guioptions-=r " scrollbar 
-        colorscheme twilight 
+        set guioptions -=m
+        set guioptions-=T
+        set guioptions-=r " scrollbar
+        colorscheme twilight
         set guifont=Source\ Code\ Pro\ 14
     else
-        colorscheme twilight256 
+        colorscheme twilight256
         hi StatusLine ctermbg=2 ctermfg=8 " overwr status line
     endif
 endif
@@ -175,7 +175,7 @@ set smartcase
 
 
 "-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-" (S) Syntax and indentation
+" (S) Indentation
 "-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 " Allow backspacing over autoindent, line breaks and start of insert action
 set backspace=indent,eol,start
@@ -196,9 +196,6 @@ set tabstop=4
 let mapleader=" "
 " Delete without copying
 nnoremap <leader>d "_dd
-" Exit all w/o saving
-inoremap <leader>q <Esc>:qa!<cr>
-nnoremap <leader>q :qa!<cr>
 " new line w/o leaving normal mode
 nnoremap <leader>o o<Esc>
 "" Other mappings
@@ -208,7 +205,10 @@ nnoremap zz :w!<cr>
 inoremap zz <Esc>:w!<cr>
 nnoremap qq :wq!<cr>
 inoremap qq <Esc>:wq!<cr>
-" Auto-close bracket by typing it twice or by <bracket><Space> 
+" quit all w/o saving
+nnoremap <C-q> :qa!<cr>
+inoremap <C-q> <Esc>:qa!<cr>
+" Auto-close bracket by typing it twice or by <bracket><Space>
 inoremap {<CR> {<CR>}<C-o>O
 inoremap {<space> {}<Left>
 inoremap {{ {}<Left>
@@ -238,6 +238,9 @@ endif
 imap jj <Esc>
 imap hhh <Esc>
 imap kkk <Esc>
+" normal mode - new line down and up
+noremap <cr> o<Esc>
+noremap <Bs> O<Esc>
 " Leader+h to auto-highlight word under cursor
 nnoremap <leader>h :if AutoHighlightToggle()<Bar>set hls<Bar>endif<CR>
 function! AutoHighlightToggle()
@@ -259,7 +262,7 @@ function! AutoHighlightToggle()
   endif
 endfunction
 
-" Jump to next pane (I don't use to many) 
+" Jump to next pane (I don't use too many)
 map <C-l> <C-W>w
 imap <C-l> <C-W>w
 map <Right> <C-W>w
@@ -270,13 +273,14 @@ map <Right> <C-W>w
 " needs stty -ixon in bash profile/ bash rc or unpause with Ctrl+Q
 noremap <silent> <C-S>          :update<CR>
 vnoremap <silent> <C-S>         <C-C>:update<CR>
-inoremap <silent> <C-S>         <C-O>:update<CR>:inoremap <c-s> <Esc>:Update<CR>
+inoremap <silent> <C-S>         <C-O>:update<CR><Esc>:Update<CR>
+
 
 "-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 " (S) Custom commands
 "-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 " Remove trailing whitespaces
-" command NoTS :%s/\s\+$//
+command! NoTS :%s/\s\+$//
 
 "-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 " (S) Filetype (language) specific
@@ -311,6 +315,8 @@ autocmd Filetype python set foldmethod=indent
 " <Leader>b = breakpoint
 autocmd Filetype python nnoremap <Leader>b oimport pdb; pdb.set_trace()<Esc>j
 " TODO: <Leader>B = delete all breakpoints
-
+"" vimrc  o n l y
+"auto-source upon saving
+autocmd! bufwritepost .vimrc source %
 "" Tex
 "TODO: make bold, italic, insert figure, insert equation, list...
