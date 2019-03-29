@@ -73,17 +73,26 @@ if s:enable_plugins != 0
     set laststatus=2 " at the bottom
 	"" YouCompleteMe
 	let g:ycm_global_ycm_extra_conf = '~/.vim/bundle/YouCompleteMe/.ycm_extra_conf.py'
+	"" UntiSnips
+	"Trigger configuration. Do not use <tab> if you use
+	"https://github.com/Valloric/YouCompleteMe.
+	let g:UltiSnipsExpandTrigger="<c-e>"
+	let g:UltiSnipsJumpForwardTrigger="<c-b>"
+	let g:UltiSnipsJumpBackwardTrigger="<c-z>"
 endif
+
+set runtimepath+=~/.vim/bundle/vim-snipmate/after
 
 "-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 " (S) Basic behaviour
 "-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 " Highlight syntax
 syntax on
+filetype plugin indent on
 " Don't create backup files to avoid potential annoying Q's on opening
 set noswapfile
 " Don't let OS overwrite VIM settings, re-source .vimrc safely
-set nocompatible
+"set nocompatible
 " Attempt auto-indent based on filetype
 filetype indent plugin on
 " Easy switching and editing multiple files
@@ -149,6 +158,14 @@ hi User2 guifg=#dd3333 guibg=#222222
 hi User3 guifg=#ff66ff guibg=#222222
 hi User4 guifg=#a0ee40 guibg=#222222
 hi User5 guifg=#eeee40 guibg=#222222
+" Scroll vertically wrapped line
+nmap j gj
+nmap k gk
+"Don't update screen during macro and script execution.
+set lazyredraw
+" Automatically re-read files if unmodified inside Vim.
+set autoread
+
 "-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 " (S) Colors, themes, fonts
 "-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
@@ -312,6 +329,8 @@ autocmd Filetype python nmap <F5> <Esc>:w<CR>:!clear;python %<CR>
 autocmd Filetype python set expandtab
 " zM, zR, za
 autocmd Filetype python set foldmethod=indent
+"Disable folding by default
+set nofoldenable
 " <Leader>b = breakpoint
 autocmd Filetype python nnoremap <Leader>b oimport pdb; pdb.set_trace()<Esc>j
 " TODO: <Leader>B = delete all breakpoints
