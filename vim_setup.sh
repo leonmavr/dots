@@ -4,7 +4,6 @@ read -p "Are you ready to proceed? (y/n) " start
 case $start in
 	[Nn]* ) exit;;
 esac
-exit
 # need ctags, clang, cmake python-dev, python3-dev, wget
 echo "Setting up directories..."
 rm -f ~/.virmc
