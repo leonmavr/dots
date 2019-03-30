@@ -44,4 +44,4 @@ echo "Installing Twilight theme..."
 wget "https://www.vim.org/scripts/download_script.php?src_id=10496" -O ~/.vim/colors/twilight.vim
 wget "https://www.vim.org/scripts/download_script.php?src_id=14937" -O ~/.vim/colors/twilight256.vim
 echo "Adding vimrc..."
-wget "https://raw.githubusercontent.com/0xLeo/dotfiles/master/arch-i3/.vimrc" -O ~/.vimrc
+wget "https://raw.githubusercontent.com/0xLeo/dotfiles/master/.vimrc" -O ~/.vimrc
