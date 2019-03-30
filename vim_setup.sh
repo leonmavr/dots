@@ -22,7 +22,6 @@ vim +Helptags ~/.vim/bundle/nerdtree/doc/ +qall
 echo "Installing CtrlP..."
 cd ~/.vim
 git clone https://github.com/kien/ctrlp.vim.git bundle/ctrlp.vim
-echo "set runtimepath^=~/.vim/bundle/ctrlp.vim" >> ~/.vimrc
 vim +helptags ~/.vim/bundle/ctrlp.vim/doc +qall
 echo "Configuring ctags..."
 echo "set tags=tags" >> ~/.vimrc
