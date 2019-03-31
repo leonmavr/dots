@@ -1,4 +1,4 @@
-usage_str="Have you praised our lord ctags?\nThis setup requires ctags, clang 7, cmake python-dev, python3-dev, wget, otherwise it will not work.\nIt will also delete your current .vimrc so it's better to keep a backup.\n"
+usage_str="Have you praised our lord ctags?\nThis setup requires ctags, clang, cmake python-dev, python3-dev, wget, otherwise it will not work.\nIt will also delete your current .vimrc so it's better to keep a backup.\n"
 printf "$usage_str"
 read -p "Are you ready to proceed? (y/n) " start 
 case $start in
@@ -35,7 +35,7 @@ echo "Installing YouCompleteMe..."
 git clone https://github.com/Valloric/YouCompleteMe ~/.vim/bundle/YouCompleteMe
 cd ~/.vim/bundle/YouCompleteMe
 git submodule update --init --recursive
-./install.py --clang-completer --system-libclang
+./install.py --clang-completer
 printf "def FlagsForFile( filename, **kws ):\n  return {\n    'flags': [ '-x', 'c++', '-Wall', '-Wextra', '-Werror' ],\n  }" >> ~/.vim/bundle/YouCompleteMe/.ycm_extra_conf.py
 echo "Installing UltiSnips with vimsnippets..."
 git clone https://github.com/SirVer/ultisnips ~/.vim/bundle/ultisnips
