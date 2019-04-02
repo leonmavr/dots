@@ -4,4 +4,4 @@ The top level contains files that can be used in any setup and the subdirectorie
 
 ## Usage
 To use them, simply copy them in your system, assuming that this repository is the home directory.  
-Vim conigs can be installed by their own installler script.
+Vim plugins and configs can be installed by their own installler script.
