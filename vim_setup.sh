@@ -34,7 +34,7 @@ vim +helptags ~/.vim/bundle/ctrlp.vim/doc +qall
 #echo "Installing YouCompleteMe..."
 #git clone https://github.com/Valloric/YouCompleteMe ~/.vim/bundle/YouCompleteMe
 #cd ~/.vim/bundle/YouCompleteMe
-git submodule update --init --recursive
+#git submodule update --init --recursive
 # --clang-completer didn't work for me, needs --system-libclang and fairly recent clang installed
 #./install.py --clang-completer --system-libclang
 #printf "def FlagsForFile( filename, **kws ):\n  return {\n    'flags': [ '-x', 'c++', '-Wall', '-Wextra', '-Werror' ],\n  }\n" >> ~/.vim/bundle/YouCompleteMe/.ycm_extra_conf.py
