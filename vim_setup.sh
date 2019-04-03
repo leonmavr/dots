@@ -1,8 +1,8 @@
-usage_str="Requirements for this setup: ctags (exuberant-tags), clang, cmake python-dev, python3-dev, wget, otherwise it will not work.\nIt will also delete your current .vimrc so it's better to keep a backup.\n"
+usage_str="Requirements for this setup:\n *exuberant-ctags\n* clang\n* libclang-dev\n* cmake\n* python-dev\n* python3-dev\n* wget\notherwise it will not work.\nIt will also delete your current .vimrc so it's better to keep a backup.\n"
 printf "$usage_str"
-read -p "Are you ready to proceed? (y/n) " start 
+read -p "Are you ready to proceed? (y/n) " start
 case $start in
-	[Nn]* ) exit;;
+[Nn]* ) exit;;
 esac
 # need ctags, clang, cmake python-dev, python3-dev, wget, vim compile with python support
 echo "Setting up directories..."
@@ -37,17 +37,30 @@ vim +helptags ~/.vim/bundle/ctrlp.vim/doc +qall
 #git submodule update --init --recursive
 # --clang-completer didn't work for me, needs --system-libclang and fairly recent clang installed
 #./install.py --clang-completer --system-libclang
-#printf "def FlagsForFile( filename, **kws ):\n  return {\n    'flags': [ '-x', 'c++', '-Wall', '-Wextra', '-Werror' ],\n  }\n" >> ~/.vim/bundle/YouCompleteMe/.ycm_extra_conf.py
+#printf "def FlagsForFile( filename, **kws ):\n return {\n 'flags': [ '-x', 'c++', '-Wall', '-Wextra', '-Werror' ],\n }\n" >> ~/.vim/bundle/YouCompleteMe/.ycm_extra_conf.py
+cd ~/.vim/bundle
 echo "Installing UltiSnips..."
 git clone https://github.com/SirVer/ultisnips ~/.vim/bundle/ultisnips
+vim +Helptags +qall
 echo "Installing SnipMate"
 git clone https://github.com/tomtom/tlib_vim.git
 git clone https://github.com/MarcWeber/vim-addon-mw-utils.git
 git clone https://github.com/garbas/vim-snipmate.git
 git clone https://github.com/honza/vim-snippets.git
+vim +Helptags +qall
+echo "Installing clangc-complete"
+git clone https://github.com/Rip-Rip/clang_complete
+vim +Helptags +qall
+hwplat=`uname -i`
+cd /usr/lib/${hwplat}-linux-gnu
+sudo ln -s libclang-*-so.* libclang.so
+cd ~/.vim/bundle/clang_complete
+make install
+cd
 echo "Installing Twilight theme..."
 wget "https://www.vim.org/scripts/download_script.php?src_id=10496" -O ~/.vim/colors/twilight.vim
 wget "https://www.vim.org/scripts/download_script.php?src_id=14937" -O ~/.vim/colors/twilight256.vim
 echo "Adding vimrc..."
 wget "https://raw.githubusercontent.com/0xLeo/dotfiles/master/.vimrc" -O ~/.vimrc
-echo "Setup complete. You need to change the clang line in your vimrc and configure clang in your machine as shown here https://fjrg76.wordpress.com/2016/08/16/setting-up-clang_complete-plugin-into-linuxvim/"
+sed -i "s/i386-linux-gnu/${hwplat}-linux-gnu/g" .vimrc
+echo "Setup complete."
