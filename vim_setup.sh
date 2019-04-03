@@ -51,7 +51,7 @@ vim +Helptags +qall
 echo "Installing clangc-complete"
 git clone https://github.com/Rip-Rip/clang_complete
 vim +Helptags +qall
-hwplat=`uname -i`
+hwplat=`uname -i | sed "s/i686/i386/g"`
 cd /usr/lib/${hwplat}-linux-gnu
 sudo ln -s libclang-*-so.* libclang.so
 cd ~/.vim/bundle/clang_complete
