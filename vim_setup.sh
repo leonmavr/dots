@@ -51,4 +51,4 @@ wget "https://www.vim.org/scripts/download_script.php?src_id=10496" -O ~/.vim/co
 wget "https://www.vim.org/scripts/download_script.php?src_id=14937" -O ~/.vim/colors/twilight256.vim
 echo "Adding vimrc..."
 wget "https://raw.githubusercontent.com/0xLeo/dotfiles/master/.vimrc" -O ~/.vimrc
-echo ""Setup complete. You need to change the clang line in your vimrc and configure clang in your machine as shown here https://fjrg76.wordpress.com/2016/08/16/setting-up-clang_complete-plugin-into-linuxvim/"
+echo "Setup complete. You need to change the clang line in your vimrc and configure clang in your machine as shown here https://fjrg76.wordpress.com/2016/08/16/setting-up-clang_complete-plugin-into-linuxvim/"
