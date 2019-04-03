@@ -38,9 +38,8 @@ git submodule update --init --recursive
 # --clang-completer didn't work for me, needs --system-libclang and fairly recent clang installed
 #./install.py --clang-completer --system-libclang
 #printf "def FlagsForFile( filename, **kws ):\n  return {\n    'flags': [ '-x', 'c++', '-Wall', '-Wextra', '-Werror' ],\n  }\n" >> ~/.vim/bundle/YouCompleteMe/.ycm_extra_conf.py
-echo "Installing UltiSnips with vimsnippets..."
+echo "Installing UltiSnips..."
 git clone https://github.com/SirVer/ultisnips ~/.vim/bundle/ultisnips
-git clone https://github.com/honza/vim-snippets ~/.vim/bundle/vim-snippets
 echo "Installing SnipMate"
 git clone https://github.com/tomtom/tlib_vim.git
 git clone https://github.com/MarcWeber/vim-addon-mw-utils.git
