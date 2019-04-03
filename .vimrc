@@ -57,15 +57,15 @@ if s:enable_plugins != 0
     noremap<c-p> :CtrlP<CR>
     "" jedi - reads tags and autocompletes with doc
     "init jedi plugin
-    let g:jedi#auto_initialization = 0
+    let g:jedi#auto_initialization = 1
     let g:jedi#auto_vim_configuration = 0
     "tabs when going to a definition
     let g:jedi#use_tabs_not_buffers = 1
     "jedi for splits
     let g:jedi#use_splits_not_buffers = "left"
-	"" ctags
-	" ctags usage: https://robhoward.id.au/blog/2012/03/ctags-with-vim/
-	set tags=tags
+    "" ctags
+    " ctags usage: https://robhoward.id.au/blog/2012/03/ctags-with-vim/
+    set tags=tags
     "" tagbar (class browser) activation
     nmap <F9> :TagbarToggle<CR>
     "" airline
@@ -74,15 +74,21 @@ if s:enable_plugins != 0
     let g:airline#extensions#tabline#left_alt_sep = '|'
     let g:airline#extensions#tabline#formatter = 'default'
     set laststatus=2 " at the bottom
-	"" YouCompleteMe
-	let g:ycm_global_ycm_extra_conf = '~/.vim/bundle/YouCompleteMe/.ycm_extra_conf.py'
-	"" UntiSnips
-	"Trigger configuration. Do not use <tab> if you use
-	"https://github.com/Valloric/YouCompleteMe.
-	let g:UltiSnipsExpandTrigger="<c-e>"
-	let g:UltiSnipsJumpForwardTrigger="<c-b>"
-	let g:UltiSnipsJumpBackwardTrigger="<c-z>"
-	set runtimepath+=~/.vim/bundle/vim-snipmate/after
+    "" UntiSnips
+    "Trigger configuration. Do not use <tab> if you use
+    "https://github.com/Valloric/YouCompleteMe.
+    let g:UltiSnipsExpandTrigger="<c-e>"
+    let g:UltiSnipsJumpForwardTrigger="<c-b>"
+    let g:UltiSnipsJumpBackwardTrigger="<c-z>"
+    "" clang-complete
+    " IMPORTANT: modify clang path
+    let g:clang_library_path = '/usr/lib/i386-linux-gnu'
+    let g:clang_c_options = '-std=gnu11'
+    let g:clang_cpp_options = '-std=c++11 -stdlib=libc++'
+    let g:clang_complete = 1 "automatically selects the first entry in the popup menu
+    let g:clang_snippets = 1 "do some snippets magic on code placehorlders like funcion argument, template parameters, etc.
+    let g:clang_close_preview = 1
+    "" Snipmate - see installation at https://github.com/garbas/vim-snipmate
 endif
 
 
@@ -148,15 +154,15 @@ set cmdheight=2
 set cursorline
 " Status line options
 if s:use_custom_themes==0
-	set statusline=2						"always show
-	set statusline +=%1*\ %n\ %*            "buffer number
-	set statusline +=%5*%{&ff}%*            "file format
-	set statusline +=%3*%y%*                "file type
-	set statusline +=%4*\ %<%F%*            "full path
-	set statusline +=%2*%m%*                "modified flag
-	set statusline +=%1*%=%5l%*             "current line
-	set statusline +=%2*/%L%*               "total lines
-	set statusline +=%1*%4v\ %*             "virtual column number
+    set statusline=2                        "always show
+    set statusline +=%1*\ %n\ %*            "buffer number
+    set statusline +=%5*%{&ff}%*            "file format
+    set statusline +=%3*%y%*                "file type
+    set statusline +=%4*\ %<%F%*            "full path
+    set statusline +=%2*%m%*                "modified flag
+    set statusline +=%1*%=%5l%*             "current line
+    set statusline +=%2*/%L%*               "total lines
+    set statusline +=%1*%4v\ %*             "virtual column number
 endif
 " Scroll vertically wrapped line
 nmap j gj
@@ -291,6 +297,7 @@ inoremap <silent> <C-S>         <C-O>:update<CR><Esc>:Update<CR>
 "-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 " Remove trailing whitespaces
 command! NoTS :%s/\s\+$//
+command! TabsToSpaces :%s/\t/    /g
 
 "-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 " (S) Filetype (language) specific
