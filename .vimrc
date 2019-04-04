@@ -120,6 +120,8 @@ autocmd BufEnter * silent! lcd %:p:h
 set showmatch
 " remove buffer when closing tab
 set nohidden
+" For 256 colour terminals
+set t_Co=256
 
 "-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 " (S) Text insertion & test misc
@@ -298,6 +300,7 @@ inoremap <silent> <C-S>         <C-O>:update<CR><Esc>:Update<CR>
 " Remove trailing whitespaces
 command! NoTS :%s/\s\+$//
 command! TabsToSpaces :%s/\t/    /g
+command! WinToNix :%s/<Ctrl-V><Ctrl-M>/\r/g
 
 "-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 " (S) Filetype (language) specific
