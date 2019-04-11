@@ -82,6 +82,7 @@ if s:enable_plugins != 0
     let g:UltiSnipsJumpBackwardTrigger="<c-z>"
     "" clang-complete
     " IMPORTANT: modify clang path
+    " If clang is not ground, try setting the path to something like /usr/lib/llvm-*/lib/
     let g:clang_library_path = '/usr/lib/i386-linux-gnu'
     let g:clang_c_options = '-std=gnu11'
     let g:clang_cpp_options = '-std=c++11 -stdlib=libc++'
