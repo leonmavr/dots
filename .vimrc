@@ -260,6 +260,8 @@ endif
 imap jj <Esc>
 imap hhh <Esc>
 imap kkk <Esc>
+" something overwrote `a` - re-map it to insert at end of line
+nmap a $i<Right> 
 " Leader+h to auto-highlight word under cursor
 nnoremap <leader>h :if AutoHighlightToggle()<Bar>set hls<Bar>endif<CR>
 function! AutoHighlightToggle()
