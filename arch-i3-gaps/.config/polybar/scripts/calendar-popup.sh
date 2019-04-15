@@ -6,6 +6,8 @@ WIDTHHEIGHT=`xrandr | grep \* | awk '{print $1}'`
 SCR_HEIGHT=${WIDTHHEIGHT#*x}
 SCR_WIDTH=${WIDTHHEIGHT%x*}
 
+# TODO: cal width and height not set correctly, minimum is >200
+# Find minimum, set it correctly, so that I don't have to subtract
 CAL_WIDTH=200
 CAL_HEIGHT=200
 
