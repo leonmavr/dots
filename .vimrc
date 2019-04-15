@@ -348,3 +348,6 @@ autocmd Filetype python inoremap , ,<space>
 autocmd! bufwritepost .vimrc source %
 "" Tex
 "TODO: make bold, italic, insert figure, insert equation, list...
+"" Exceptions
+autocmd FileType * if &ft != 'py'| imap "" ""<Left>
+autocmd FileType * if &ft != 'py'| imap '' ''<Left>
