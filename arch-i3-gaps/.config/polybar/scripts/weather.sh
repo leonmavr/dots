@@ -66,7 +66,7 @@ get_location(){
 
 process_data() {
 	temp=`cat $DATA_FILE | jq '.main.temp'`
-	temp2cels=`echo $temp-270 | bc`
+	temp2cels=`echo $temp-273.15 | bc`
 	temp2int=`printf "%.0f" $temp2cels` 
 	descr=`cat $DATA_FILE | jq '.weather[0].main' | sed 's/"//g'`
 	location=`cat $DATA_FILE | jq '.name' | sed 's/"//g'`
