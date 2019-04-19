@@ -18,9 +18,9 @@ get_icon(){
 		icon=
 	elif [[ $1 == *[c\|C]loud* ]]; then
 		icon=" "
-	elif [[ $1 == *[r\|R]*ain ]]; then
+	elif [[ $1 == *[r\|R]ain* ]]; then
 		icon=
-	elif [[ $1 == *[d\|D]*rizzle ]]; then
+	elif [[ $1 == *[d\|D]rizzle* ]]; then
 		icon=
 	elif [[ $1 == *[f\|F]og* ]]; then 
 		icon=
