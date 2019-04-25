@@ -82,8 +82,7 @@ if s:enable_plugins != 0
     let g:UltiSnipsJumpBackwardTrigger="<c-z>"
     "" clang-complete
     " IMPORTANT: modify clang path
-    " If clang is not ground, try setting the path to something like /usr/lib/llvm-*/lib/
-    let g:clang_library_path = '/usr/lib/i386-linux-gnu'
+    let g:clang_library_path = '/usr/lib'
     let g:clang_c_options = '-std=gnu11'
     let g:clang_cpp_options = '-std=c++11 -stdlib=libc++'
     let g:clang_complete = 1 "automatically selects the first entry in the popup menu
@@ -138,15 +137,31 @@ set encoding=utf-8
 "-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 " (S) Window options & scrolling
 "-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-" Default size
+"" Default size
 set lines=45 columns=100
-" Show line numbers on the left
+"" Show line numbers on the left
 set number relativenumber " hybrid line no; show line num, others relative
 " More on that:
 " set nonumber norelativenumber  " turn hybrid line numbers off
 " set !number !relativenumber    " toggle hybrid line numbers
 " large scrolloff to keep cursor in middle
 set scrolloff=999
+"" smooth scrolling - see
+" https://www.reddit.com/r/vim/comments/bh6u5q/smooth_scroll_in_vim/
+nnoremap <silent> <c-u> :call <sid>smoothScroll(1)<cr>
+nnoremap <silent> <c-d> :call <sid>smoothScroll(0)<cr>
+
+fun! s:smoothScroll(up)
+  execute "normal " . (a:up ? "\<c-y>" : "\<c-e>")
+  redraw
+  for l:count in range(3, &scroll, 2)
+    sleep 7m
+    execute "normal " . (a:up ? "\<c-y>" : "\<c-e>")
+    redraw
+  endfor
+  " bring the cursor in the middle of screen 
+  execute "normal M"
+endf
 " Display the cursor position on the last line of the screen
 set ruler
 " Always display the status line, even if only one window is displayed
@@ -260,8 +275,8 @@ endif
 imap jj <Esc>
 imap hhh <Esc>
 imap kkk <Esc>
-" something overwrote `a` - re-map it to insert at end of line
-nmap a $i<Right> 
+" something overwrote a
+nmap a $i<Right>
 " Leader+h to auto-highlight word under cursor
 nnoremap <leader>h :if AutoHighlightToggle()<Bar>set hls<Bar>endif<CR>
 function! AutoHighlightToggle()
@@ -283,6 +298,7 @@ function! AutoHighlightToggle()
   endif
 endfunction
 
+"" Panes and tabs
 " Jump to next pane (I don't use too many)
 map <C-l> <C-W>w
 imap <C-l> <C-W>w
@@ -348,6 +364,7 @@ autocmd Filetype python inoremap , ,<space>
 autocmd! bufwritepost .vimrc source %
 "" Tex
 "TODO: make bold, italic, insert figure, insert equation, list...
-"" Exceptions
+autocmd FileType tex inoremap $$ $$<Left>
+""Exceptions
 autocmd FileType * if &ft != 'py'| imap "" ""<Left>
 autocmd FileType * if &ft != 'py'| imap '' ''<Left>
