@@ -22,3 +22,5 @@ For my i3-gaps setup, the following are/want to be added
 - [ ] Ranger file manager options - add key bindings and work with sxiv
 - [x] Photo viewer (sxiv) - also add hotkeys
 - [ ] Music player (mpd) options and control music from status line
+- [ ] cava music visualiser
+- [ ] configure mutt for gmail
