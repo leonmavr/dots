@@ -100,7 +100,7 @@ if s:enable_plugins != 0
         Goyo 90%
     endfunction
     autocmd! User GoyoEnter nested call <SID>goyo_enter()
-    " pressing F7 toggles distactations
+    " pressing F7 toggles distractions
     nmap <F7> :Goyo<CR>
     imap <F7> <Esc>:Goyo<CR>i
 endif
