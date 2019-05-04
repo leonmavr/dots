@@ -1,3 +1,6 @@
+#!/bin/bash
+
+### Praparation
 usage_str="Requirements for this setup:\n *exuberant-ctags\n* clang\n* libclang-dev\n* cmake\n* python-dev\n* python3-dev\n* wget\notherwise it will not work.\nIt will also delete your current .vimrc so it's better to keep a backup.\n"
 printf "$usage_str"
 read -p "Are you ready to proceed? (y/n) " start
@@ -8,6 +11,8 @@ esac
 echo "Setting up directories..."
 rm -f ~/.virmc
 mkdir -p ~/.vim ~/.vim/bundle ~/.vim/colors ~/.vim/autoload
+
+### Plugins
 echo "Installing Pathogen..."
 wget https://tpo.pe/pathogen.vim -O ~/.vim/autoload/pathogen.vim
 echo "Installing Syntastic..."
@@ -31,13 +36,6 @@ git clone https://github.com/majutsushi/tagbar ~/.vim/bundle/tagbar
 echo "Installing airline..."
 git clone https://github.com/vim-airline/vim-airline ~/.vim/bundle/vim-airline
 vim +helptags ~/.vim/bundle/ctrlp.vim/doc +qall
-#echo "Installing YouCompleteMe..."
-#git clone https://github.com/Valloric/YouCompleteMe ~/.vim/bundle/YouCompleteMe
-#cd ~/.vim/bundle/YouCompleteMe
-#git submodule update --init --recursive
-# --clang-completer didn't work for me, needs --system-libclang and fairly recent clang installed
-#./install.py --clang-completer --system-libclang
-#printf "def FlagsForFile( filename, **kws ):\n return {\n 'flags': [ '-x', 'c++', '-Wall', '-Wextra', '-Werror' ],\n }\n" >> ~/.vim/bundle/YouCompleteMe/.ycm_extra_conf.py
 cd ~/.vim/bundle
 echo "Installing UltiSnips..."
 git clone https://github.com/SirVer/ultisnips ~/.vim/bundle/ultisnips
@@ -56,6 +54,18 @@ cd /usr/lib/${hwplat}-linux-gnu
 sudo ln -s libclang-*-so.* libclang.so
 cd ~/.vim/bundle/clang_complete
 make install
+echo "Installing Goyo..."
+git clone https://github.com/junegunn/goyo.vim ~/.vim/bundle
+vim +Helptags +qall
+echo "Installing Airline themes..."
+git clone https://github.com/vim-airline/vim-airline-themes ~/.vim/bundle/vim-airline-themes
+vim +Helptags +qall
+cd /tmp
+git clone https://github.com/powerline/fonts
+cd fonts
+./install.sh
+
+### Themes and appearance
 cd
 echo "Installing Twilight theme..."
 wget "https://www.vim.org/scripts/download_script.php?src_id=10496" -O ~/.vim/colors/twilight.vim
@@ -63,4 +73,5 @@ wget "https://www.vim.org/scripts/download_script.php?src_id=14937" -O ~/.vim/co
 echo "Adding vimrc..."
 wget "https://raw.githubusercontent.com/0xLeo/dotfiles/master/.vimrc" -O ~/.vimrc
 sed -i "s/i386-linux-gnu/${hwplat}-linux-gnu/g" .vimrc
+
 echo "Setup complete."

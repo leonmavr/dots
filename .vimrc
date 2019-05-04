@@ -74,6 +74,10 @@ if s:enable_plugins != 0
     let g:airline#extensions#tabline#left_alt_sep = '|'
     let g:airline#extensions#tabline#formatter = 'default'
     set laststatus=2 " at the bottom
+	" the following line needs powerline fonts installed
+	let g:airline_powerline_fonts = 1
+	"" Airline themes
+	let g:airline_powerline_fonts = 1
     "" UntiSnips
     "Trigger configuration. Do not use <tab> if you use
     "https://github.com/Valloric/YouCompleteMe.
@@ -82,7 +86,6 @@ if s:enable_plugins != 0
     let g:UltiSnipsJumpBackwardTrigger="<c-z>"
     "" clang-complete
     " IMPORTANT: modify clang path
-    " If clang is not found, try setting the path to something like /usr/lib/llvm-*/lib/
     let g:clang_library_path = '/usr/lib'
     let g:clang_c_options = '-std=gnu11'
     let g:clang_cpp_options = '-std=c++11 -stdlib=libc++'
@@ -90,7 +93,16 @@ if s:enable_plugins != 0
     let g:clang_snippets = 1 "do some snippets magic on code placehorlders like funcion argument, template parameters, etc.
     let g:clang_close_preview = 1
     "" Snipmate - see installation at https://github.com/garbas/vim-snipmate
+	"" Goyo - a plugin to remove distractions
+	function! s:goyo_enter()
+		set scrolloff=999
+		Goyo 90%
+	endfunction
+	autocmd! User GoyoEnter nested call <SID>goyo_enter()
+    nmap <F7> :Goyo<CR>
+    imap <F7> <Esc>:Goyo<CR>i
 endif
+
 
 
 "-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
@@ -257,7 +269,6 @@ inoremap {<space> {}<Left>
 inoremap {{ {}<Left>
 inoremap (<space> ()<Left>
 inoremap (( ()<Left>
-inoremap <<space> <><Left>
 inoremap [[ []<Left>
 inoremap [<space> []<Left>
 inoremap "<space> ""<Left>
