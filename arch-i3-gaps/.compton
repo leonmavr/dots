@@ -15,7 +15,14 @@ inactive-opacity-override = false;
 ### Global rules
 opacity-rule = [
   "100:class_g = 'Polybar' && !_NET_WM_STATE:32a",
+  "100:class_g = 'Conky' && !_NET_WM_STATE:32a",
   "96:class_g = 'Termite' && !_NET_WM_STATE:32a",
   "96:class_g = 'URxvt' && !_NET_WM_STATE@:32a",
   "0:_NET_WM_STATE@:32a *= '_NET_WM_STATE_HIDDEN'"
 ];
+
+### Exceptions
+shadow-exclude = [
+  "! name~=''",
+  "class_g = 'Conky'"
+]
