@@ -55,7 +55,7 @@ sudo ln -s libclang-*-so.* libclang.so
 cd ~/.vim/bundle/clang_complete
 make install
 echo "Installing Goyo..."
-git clone https://github.com/junegunn/goyo.vim ~/.vim/bundle
+git clone https://github.com/junegunn/goyo.vim ~/.vim/bundle/goyo.vim
 vim +Helptags +qall
 echo "Installing Airline themes..."
 git clone https://github.com/vim-airline/vim-airline-themes ~/.vim/bundle/vim-airline-themes
