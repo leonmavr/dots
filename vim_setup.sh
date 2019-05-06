@@ -1,7 +1,7 @@
 #!/bin/bash
 
 ### Preparation
-usage_str="Requirements for this setup:\n *exuberant-ctags\n* clang\n* libclang-dev\n* cmake\n* python-dev\n* python3-dev\n* wget\notherwise it will not work.\nIt will also delete your current .vimrc so it's better to keep a backup.\n"
+usage_str="Requirements for this setup:\n * exuberant-ctags (ctags)\n* clang\n* libclang-dev\n* cmake\n* python-dev\n* python3-dev\n* wget\notherwise it will not work.\nIt will also delete your current .vimrc so it's better to keep a backup.\n"
 printf "$usage_str"
 read -p "Are you ready to proceed? (y/n) " start
 case $start in
