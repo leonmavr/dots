@@ -15,7 +15,7 @@ For my i3-gaps setup, the following are/want to be added
 - [x] Appearance - terminal fonts, system fonts, etc.
 - [ ] conky (system info display) on wallpaper - partially done
 - [x] window composition manager options (comption)
-- [ ] Better .bashrc
+- [x] Better .bashrc
 - [ ] Better terminal options
 - [ ] Status bar (polybar) - mostly done
 - [ ] Launcher (dmenu/ rofi)
