@@ -25,3 +25,4 @@ For my i3-gaps setup, the following are/want to be added
 - [ ] Music player (mpd) options and control music from status line
 - [ ] cava music visualiser
 - [ ] configure mutt for gmail
+- [ ] redshift (night light) options
