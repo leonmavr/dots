@@ -10,6 +10,7 @@ Vim plugins and configs can be installed by their own installler script.
 
 For my i3-gaps setup, the following are/want to be added
 
+- [x] Set i3 config (key bindings etc.)
 - [x] Good vim configuration with syntax checking, auto-complete etc.
 - [x] Window options - gap distance, key bindings etc.
 - [x] Appearance - terminal fonts, system fonts, etc.
