@@ -251,4 +251,4 @@ alias .....='cd ../../../..'
 # yad --calendar
 
 # to query openweathermaps API - get a key from their website
-OPENWEATHERAPIKEY=b8f2d720c34a57fd69ad75e7efd4ed35
+OPENWEATHERAPIKEY=XXXXXXXXXXXXXXXXXXXXXX
