@@ -5,6 +5,8 @@
 # Press <C-x>, then one of the following
 # to perform a custom action
 ######################################
+mkdir -p ~/.trash/
+
 while read file
 do
         case "$1" in
