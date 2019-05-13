@@ -19,6 +19,7 @@ export POLYCONFIG=~/.config/polybar/config
 export SXIVKEYS=~/.config/sxiv/exec/key-handler
 export CONKYQUOTES=~/.config/conky/quotes.json
 export SYNCLIENTCONF=/usr/lib/X11/xorg.conf.d/10-synaptics.conf
+export I3LOCKCONFIG=~/.config/i3lock-color/lock.sh 
 
 
 ################################################
