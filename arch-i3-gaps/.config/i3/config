@@ -46,7 +46,6 @@ bindsym $mod+q kill
 # installed.
 bindsym $mod+d exec --no-startup-id i3-dmenu-desktop
 
-
 ########## Startup ##########
 exec --no-startup-id feh --bg-scale ~/Pictures/wallpapers/Cities_Late_night_city_025578_.jpg
 #exec_always --no-startup-id killall compton
@@ -161,13 +160,11 @@ workspace_auto_back_and_forth yes
 
 ########## Applications ##########
 # TODO: I need to think about it
-# Mod+l = lock screen
 
 ########## Reload/ restart/ exit ##########
 # reload the configuration file
 bindsym $mod+Shift+c reload
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
-# TODO: restart i3, compton and conky and polybar
 bindsym $mod+Shift+r restart
 # exit i3 (logs you out of your X session)
 bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -B 'Yes, exit i3' 'i3-msg exit'"
@@ -253,5 +250,8 @@ bindsym XF86AudioPrev exec playerctl previous
 bindsym XF86WebCam exec scrot /tmp/screenshot.png; exec xclip -selection clipboard -t image/png -i /tmp/screenshot.png
 # Take screenshot of an area and save to clipboard
 bindsym $Mod+XF86WebCam exec import /tmp/screenshot.png; exec xclip -selection clipboard -t image/png -i /tmp/screenshot.png
+# TODO: system lock
+bindsym XF86ScreenSaver exec ~/.config/i3lock-color/lock.sh
+
 ###############
 for_window [class="Yad"] floating enable"
