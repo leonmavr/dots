@@ -26,3 +26,4 @@ For my i3-gaps setup, the following are/want to be added
 - [ ] cava music visualiser
 - [ ] configure mutt for gmail
 - [ ] redshift (night light) options
+- [x] lock screen
