@@ -17,21 +17,21 @@ get_icon(){
 	if [[ $1 == *[C\|c]lear* ]]; then
 		icon=
 	elif [[ $1 == *[c\|C]loud* ]]; then
-		icon=" "
+		icon=""
 	elif [[ $1 == *[r\|R]ain* ]]; then
 		icon=
 	elif [[ $1 == *[d\|D]rizzle* ]]; then
 		icon=
 	elif [[ $1 == *[f\|F]og* ]]; then 
-		icon=
+		icon=≡
 	elif [[ $1 == *[m\|M]ist* ]]; then 
-		icon=
+		icon=≡
 	elif [[ $1 == *[s\|S]now* ]]; then
 		icon=
 	elif [[ $1 == *[s\|S]torm* ]]; then
-		icon=🗲
+		icon=Thunderstorm🗲
 	elif [[ $1 == *[s\|S]and* ]]; then
-		icon=SAND
+		icon=Sandstorm
 	else
 		icon=?
 	fi
@@ -72,7 +72,7 @@ process_data() {
 	location=`cat $DATA_FILE | jq '.name' | sed 's/"//g'`
 	# stores result in icon var
 	get_icon $descr
-	msg="$location, $temp2int°C, $descr$icon"
+	msg="$location $temp2int°C $icon"
 	echo $msg
 	#yad --text "$msg" --no-buttons --undercorated --close-on-unfocus --posx 710 --posy 27 --width=300 
 }
