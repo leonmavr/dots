@@ -44,20 +44,22 @@ padding-right = 2
 module-margin-left = 1
 module-margin-right = 2
 
-font-0 = Liberation Sans:pixelsize=11;2:weight=bold;1
+font-0 = Roboto Condensed:pixelsize=12;1:weight=bold;1
+#font-0 = Liberation Sans:pixelsize=11;2:weight=bold;1
 font-1 = unifont:fontformat=truetype:size=8:antialias=true;0
 font-2 = Siji:pixelsize=10;1
 font-3 = FontAwesome:pixelsize=13;0
 
-modules-left = i3
+modules-left = i3 pulseaudio backlight
 modules-center = popup-calendar date weather 
 #modules-right = mpd filesystem xbacklight alsa pulseaudio xkeyboard memory cpu wlan eth battery temperature date powermenu
-modules-right = eth0 wlan-full wlan memory cpu xkeyboard battery powermenu 
+modules-right = wlan-full wlan memory cpu xkeyboard battery powermenu 
 tray-position = right
 
 ;wm-restack = bspwm
-;wm-restack = i3
-;override-redirect = true
+wm-restack = i3
+;border-top-size = 3
+;override-redirect = false 
 ;scroll-up = bspwm-desknext
 ;scroll-down = bspwm-deskprev
 ;scroll-up = i3wm-wsnext
@@ -79,12 +81,12 @@ format-underline = #0a6cf5
 label = %date% %time%
 
 [module/popup-calendar]
-label = 
-label-foreground = ${colors.foreground-alt}  
 type = custom/script
-exec = ~/.config/polybar/scripts/dummy.sh 
+format-prefix =  
+format-prefix-foreground = ${colors.foreground-alt}
+exec = ~/.config/polybar/scripts/calendar-popup.sh
 interval = 60 
-click-left = ~/.config/polybar/scripts/calendar-popup.sh
+click-left = ~/.config/polybar/scripts/calendar-popup.sh --popup
 
 [module/weather]
 #format-prefix= 
@@ -92,8 +94,8 @@ click-left = ~/.config/polybar/scripts/calendar-popup.sh
 #label=MET: 
 #label-foreground = ${colors.foreground}  
 type = custom/script
-exec = ~/.config/polybar/scripts/weather.sh  
-#click-left = ~/.config/polybar/scripts/weather.sh  
+exec = ~/.config/polybar/scripts/weather.sh lindau de 
+#click-left = ~/.config/polybar/scripts/weather.sh lindau de 
 exec-if = ping openweathermap.org -c 1
 interval = 600
 ;label-font = 4
@@ -187,6 +189,23 @@ icon-next = 
 label-song-maxlen = 25
 label-song-ellipsis = true
 
+
+; Credits for backlight to
+; ZakHack for https://www.reddit.com/r/archlinux/comments/6wxzxl/using_light_for_polybar_backlight_module/dmc0q9u?utm_source=share&utm_medium=web2x
+[module/backlight]
+type = custom/script
+interval = 2.0
+exec = ~/.config/polybar/scripts/backlight.sh
+
+scroll-up = exec light -A 5
+scroll-down = exec light -U 5
+
+format-prefix = " "
+
+label = %output%%
+format-prefix-foreground = ${colors.foreground-alt}
+format-padding = 1
+
 [module/xbacklight]
 type = internal/xbacklight
 
@@ -256,6 +275,7 @@ interval=100
 type = custom/script
 click-left=yad --text hi --no-buttons --undercorated --close-on-unfocus --posx 710 --posy 27
 #click-left = ~/.config/polybar/scripts/calendar-popup.sh
+# double-click left= sudo dhcpcd wlp3s0; wifi-radar
 
 
 [module/eth]
@@ -278,14 +298,16 @@ format-disconnected =
 [module/pulseaudio]
 type = internal/pulseaudio
 
-format-volume = <label-volume> <bar-volume>
-label-volume = VOL %percentage%%
+;format-volume = <label-volume> <bar-volume>
+format-volume = <label-volume>
+label-volume = %percentage%%
+format-prefix-foreground = ${colors.foreground-alt}
 label-volume-foreground = ${root.foreground}
 
-label-muted = 🔇 muted
+label-muted = "  "
 label-muted-foreground = #666
 
-bar-volume-width = 10
+bar-volume-width = 8
 bar-volume-foreground-0 = #55aa55
 bar-volume-foreground-1 = #55aa55
 bar-volume-foreground-2 = #55aa55
@@ -293,14 +315,15 @@ bar-volume-foreground-3 = #55aa55
 bar-volume-foreground-4 = #55aa55
 bar-volume-foreground-5 = #f5a70a
 bar-volume-foreground-6 = #ff5555
-bar-volume-gradient = false
-bar-volume-indicator = |
-bar-volume-indicator-font = 2
-bar-volume-fill = ─
-bar-volume-fill-font = 2
-bar-volume-empty = ─
-bar-volume-empty-font = 2
+bar-volume-gradient = true
+bar-volume-indicator = "|" 
+bar-volume-indicator-font = 1
+bar-volume-fill = | 
+bar-volume-fill-font = 1
+bar-volume-empty = |
+bar-volume-empty-font = 1
 bar-volume-empty-foreground = ${colors.foreground-alt}
+
 
 [module/alsa]
 type = internal/alsa
@@ -311,7 +334,7 @@ label-volume-foreground = ${root.foreground}
 
 format-muted-prefix = " "
 format-muted-foreground = ${colors.foreground-alt}
-label-muted = sound muted
+label-muted = 🔇sound muted
 
 bar-volume-width = 10
 bar-volume-foreground-0 = #55aa55
@@ -324,11 +347,15 @@ bar-volume-foreground-6 = #ff5555
 bar-volume-gradient = false
 bar-volume-indicator = |
 bar-volume-indicator-font = 2
-bar-volume-fill = ─
+bar-volume-fill = ..
 bar-volume-fill-font = 2
-bar-volume-empty = ─
+bar-volume-empty = ..
 bar-volume-empty-font = 2
 bar-volume-empty-foreground = ${colors.foreground-alt}
+
+; NOT SURE IF THEY WORK!
+scroll-up = amixer set Master 5%+
+scroll-down = amixer set Master 5%-
 
 [module/xkeyboard]
 type = internal/xkeyboard
@@ -407,7 +434,7 @@ expand-right = true
 format-spacing = 1
 label-open = 
 label-open-foreground = ${colors.secondary}
-label-close =❯❯
+label-close =
 label-close-foreground = ${colors.secondary}
 label-separator = |
 label-separator-foreground = ${colors.foreground-alt}
