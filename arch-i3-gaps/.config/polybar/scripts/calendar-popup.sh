@@ -1,33 +1,48 @@
-#!/bin/bash
+#!/bin/sh
 
-############ Preparation ############
-WIDTHHEIGHT=`xrandr | grep \* | awk '{print $1}'`
-# split on x - see https://stackoverflow.com/a/10638555
-SCR_HEIGHT=${WIDTHHEIGHT#*x}
-SCR_WIDTH=${WIDTHHEIGHT%x*}
+BAR_HEIGHT=22  # polybar height
+BORDER_SIZE=1  # border size from your wm settings
+YAD_WIDTH=222  # 222 is minimum possible value
+YAD_HEIGHT=188 # 188 is minimum possible value
+DATE="$(date +"%a %d %H:%M")"
 
-# TODO: cal width and height not set correctly, minimum is >200
-# Find minimum, set it correctly, so that I don't have to subtract
-CAL_WIDTH=200
-CAL_HEIGHT=200
-
-POSY=`cat $POLYCONFIG | grep height | grep -o -P '\d'*`
-if [ -z $POSY ]; then
-	POSY=`cat ~/.config/polybar/config | grep height | grep -o -P '\d'*` 
-fi
-POSX=`echo $SCR_WIDTH/2-$CAL_WIDTH/2-30 | bc`
-
-
-############ Handle input ############
 case "$1" in
-	--center) 
-		yad --calendar --no-buttons --posx=$POSX --posy=$POSY\
-		--undecorated --fixed --close-on-unfocus 2> /dev/null
-		;;
-	--right)
-		;;
-	*)
-		yad --calendar --no-buttons --posx=$POSX --posy=$POSY\
-		--undecorated --fixed --close-on-unfocus 2> /dev/null
-		;;
+--popup)
+
+    :'
+    As you seen above min yad size is 222x188 but this is not the full truth,
+    in fact min size be 226x192, because the yad increase given values by 4, so in the
+    formulas below you can see 2 (when yad width was divided on 2) or 4 (when width has not been divided).
+    '
+
+    if [ "$(xdotool getwindowfocus getwindowname)" = "yad-calendar" ]; then
+        exit 0
+    fi
+
+    eval "$(xdotool getmouselocation --shell)"
+    eval "$(xdotool getdisplaygeometry --shell)"
+
+    # X
+    if [ "$((X + YAD_WIDTH / 2 + 2 + BORDER_SIZE))" -gt "$WIDTH" ]; then #Right side
+        : $((pos_x = WIDTH - YAD_WIDTH - BORDER_SIZE - 4))
+    elif [ "$((X - YAD_WIDTH / 2 - 2 - BORDER_SIZE))" -lt 1 ]; then #Left side
+        : $((pos_x = BORDER_SIZE))
+    else #Center
+        : $((pos_x = X - YAD_WIDTH / 2 - 2))
+    fi
+
+    # Y
+    if [ "$Y" -gt "$((HEIGHT / 2))" ]; then #Bottom
+        : $((pos_y = HEIGHT - YAD_HEIGHT - 4 - BAR_HEIGHT - BORDER_SIZE))
+    else #Top
+        : $((pos_y = BAR_HEIGHT + BORDER_SIZE))
+    fi
+
+    yad --calendar --undecorated --fixed --close-on-unfocus --no-buttons \
+        --width=$YAD_WIDTH --height=$YAD_HEIGHT --posx=$pos_x --posy=$pos_y \
+        --title="yad-calendar" >/dev/null &
+    ;;
+*)
+	echo " " 
+    ;;
 esac
