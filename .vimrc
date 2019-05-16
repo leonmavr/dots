@@ -255,6 +255,8 @@ nnoremap <leader>d "_dd
 " new line w/o leaving normal mode
 nnoremap <leader>o o<Esc>
 nnoremap <leader>O O<Esc>j
+" to sys clipboard
+map <leader>p "*p<CR>
 "" Other mappings
 " <zz> to save
 " <qq> to quit after saving
