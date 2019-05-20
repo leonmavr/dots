@@ -1,19 +1,22 @@
 background no
-update_interval 1
-cpu_avg_samples 2
-net_avg_samples 2
+update_interval 2
+cpu_avg_samples 1
+net_avg_samples 1
 double_buffer yes
 no_buffers yes
 text_buffer_size 2048
 own_window yes
-own_window_type override
 own_window_transparent yes
 own_window_hints undecorated,sticky,skip_taskbar,skip_pager,below
+own_window_type override
 border_inner_margin 0
 border_outer_margin 0
+border_width 0
 minimum_size 500 300
 alignment tr
 draw_shades no
+draw_borders no
+draw_graph_borders no 
 use_xft yes
 xftfont monospace:size=10
 xftalpha 0.5
@@ -22,11 +25,27 @@ lua_load ~/.lua/scripts/rings.lua
 lua_draw_hook_pre rings
 
 TEXT
-${voffset 82}${font neuropol}CPU${goto 160}${font}Usage${alignr 106}${cpu}%
-${goto 160}Temperature${alignr 106}${acpitemp}°C
-${voffset 129}${font neuropol}MEMORY${goto 160}${font}Memory${alignr 106}${memperc}%
-${goto 160}Swap${alignr 106}${swapperc}%
-${voffset 129}${font neuropol}FILESYSTEMS${goto 160}${font}${execi 1 df | grep ^/dev | sed -n 1p | awk '{ print $6 }'}${alignr 106}${execi 1 df -h | grep ^/dev | sed -n 1p | awk '{ print $3 " / " $2 }'}
+${voffset 85}${font neuropol}CPU${goto 120}${font}Temp, usage 1,2,3,4%${goto 355}${cpu cpu3}${goto 325}${cpu cpu1}
+${goto 300}${acpitemp}°C${goto 375}${cpu cpu4}${goto 345}${cpu cpu2}
+${goto 220}${cpugraph 40, 170 8bb8e0 e6f1f4}
+${voffset -70}
+${top name 1}${top cpu 1}%
+${top name 2}${top cpu 2}%
+${top name 3}${top cpu 3}%
+${top name 4}${top cpu 4}%
+${top name 5}${top cpu 5}%
+${top name 6}${top cpu 6}%
+${voffset 13}${font neuropol}MEMORY${goto 120}${font}RAM, Swap${goto 325}${memperc}%${goto 355}${swapperc}%
+${goto 220}${memgraph 40, 170 8bb8e0 e6f1f4}
+${voffset -60}
+${top_mem name 1}${top_mem mem 1}%
+${top_mem name 2}${top_mem mem 2}%
+${top_mem name 3}${top_mem mem 3}%
+${voffset 40}${font neuropol}FILESYSTEMS${goto 160}${font}/, /home, mount% ${execi 60 df | grep ^/dev/sda1| awk '{print substr($5, 1, length($5) - 1) }'} ${execi 60 df | grep ^/dev/sda3| awk '{print substr($5, 1, length($5) - 1) }'} ${execi 30 df /mnt/usb/ | grep /media | awk '{print substr($5, 1, length($5) - 1)}'}
+
+/:
+/home:
+/mnt/usb:
 ${goto 160}${execi 1 df | grep ^/dev | sed -n 3p | awk '{ print $6 }'}${alignr 106}${execi 1 df -h | grep ^/dev | sed -n 3p | awk '{ print $3 " / " $2 }'}
 ${goto 160}${execi 1 df | grep ^/dev | sed -n 4p | awk '{ print $6 }'}${alignr 106}${execi 1 df -h | grep ^/dev | sed -n 4p | awk '{ print $3 " / " $2 }'}
 ${goto 160}${execi 1 df | grep ^/dev | sed -n 5p | awk '{ print $6 }'}${alignr 106}${execi 1 df -h | grep ^/dev | sed -n 5p | awk '{ print $3 " / " $2 }'}
