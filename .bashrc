@@ -19,14 +19,17 @@ export POLYCONFIG=~/.config/polybar/config
 export SXIVKEYS=~/.config/sxiv/exec/key-handler
 export CONKYQUOTES=~/.config/conky/quotes.json
 export SYNCLIENTCONF=/usr/lib/X11/xorg.conf.d/10-synaptics.conf
-export I3LOCKCONFIG=~/.config/i3lock-color/lock.sh 
+export I3LOCKCONFIG=~/.config/i3lock-color/lock.sh
+# needs `remind` package
+export REMINDERS=~/.config/remind/reminders.rem
 
 
 ################################################
 # Default apps
 ################################################
 export TERM=termite
-export EDITOR=/usr/bin/vim
+
+
 export PAGER=/usr/bin/more
 
 
@@ -82,7 +85,7 @@ export DISPLAY=:0
 # toggle betwen a short(1 char) and a full PS1 - 50 just empirical
 function ps1(){
 	if [ ${#PS1} -gt 50 ]; then
-		export PS1="\[$(tput bold)\]\[\033[38;5;209m\]⟶  \[$(tput sgr0)\]"
+		export PS1="\[$(tput bold)\]\[\033[38;5;209m\] \[$(tput sgr0)\]"
 	else
 		export PS1="\[$(tput bold)\]\[\033[38;5;216m\]\u@\h\[$(tput sgr0)\]\[$(tput sgr0)\]\[\033[38;5;209m\]:\W\\$\[$(tput sgr0)\]\[\033[38;5;15m\] \[$(tput sgr0)\]"
 	fi
@@ -244,6 +247,13 @@ alias ...='cd ../../'
 alias ....='cd ../../../'
 alias .....='cd ../../../..'
 
+if [ ! -z /usr/bin/remind ]; then
+	alias remind-get-month='remind -c1 ~/.config/remind/reminders.rem'
+	alias remind-get='remind ~/.config/remind/reminders.rem'
+	alias remind-edit='edit ~/.config/remind/reminders.rem'
+fi
+
+
 ## correct time
 # timedatectl set-ntp true
 ## send notification
@@ -252,4 +262,4 @@ alias .....='cd ../../../..'
 # yad --calendar
 
 # to query openweathermaps API - get a key from their website
-OPENWEATHERAPIKEY=XXXXXXXXXXXXXXXXXXXXXX
+OPENWEATHERAPIKEY=XXXXXXXX
