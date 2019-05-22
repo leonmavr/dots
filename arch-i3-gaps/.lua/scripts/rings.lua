@@ -1,3 +1,6 @@
+-- Based on DThought's program
+-- Found here: https://github.com/DThought/conky-rings/blob/master/rings.lua
+
 conf = {
   bg_colour = 0xffffff,
   bg_alpha = 0.2,
