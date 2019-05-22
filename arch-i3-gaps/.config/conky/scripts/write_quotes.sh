@@ -17,4 +17,4 @@ out_to_conky=`cat ../quotes.json | jq ".quotes[$rand_ind].message" | tr -d '"'`
 echo `cat ../quotes.json | jq ".quotes[$rand_ind].message"`
 
 # good so far
- sed -i "/scroll/c\${scroll 25 5 $out_to_conky}" ~/.config/conky/conky.conf
+ sed -i "/scroll/c\${goto 45}\${voffset -26}QoD:\${scroll 47 12 $out_to_conky}" ~/.config/conky/conkylua

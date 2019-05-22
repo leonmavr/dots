@@ -27,6 +27,13 @@ elements = {
     width = 2
   },
   {
+    x0 = 320,
+    y0 = 85,
+    x1 = 320,
+    y1 = 100,
+    width = 2
+  },
+  {
     x0 = 220,
     y0 = 122,
     x1 = 220,
@@ -144,7 +151,7 @@ elements = {
   },
   {
     name = 'execi',
-    arg = "60 df | grep ^/dev/sda1| awk '{ print substr($5, 1, length($5) - 1) }'",
+    arg = "60 df | grep ^/dev/sda3| awk '{ print substr($5, 1, length($5) - 1) }'",
     max = 100,
     x = 400,
     y = 365,
@@ -155,7 +162,7 @@ elements = {
   },
   {
     name = 'execi',
-    arg = "30 df /mnt/usb/ | grep /media | awk '{ print substr($5, 1, length($5) - 1)}'",
+    arg = "30 df -h /mnt/usb/ | tail -n 1 | awk '{ print substr($5, 1, length($5) - 1)}'",
     max = 100,
     x = 400,
     y = 365,
@@ -166,58 +173,17 @@ elements = {
   },
   {
     x0 = 0,
-    y0 = 559,
+    y0 = 464,
     x1 = 337,
-    y1 = 559,
+    y1 = 464,
     width = 2
   },
   {
-    name = 'downspeedf',
-    arg = 'eno1',
-    max = 12,
-    log = true,
-    x = 400,
-    y = 560,
-    r = 60,
-    width = 6,
-    start_angle = -90,
-    end_angle = 180
-  },
-  {
-    name = 'downspeedf',
-    arg = 'wlo1',
-    max = 12,
-    log = true,
-    x = 400,
-    y = 560,
-    r = 52,
-    width = 6,
-    start_angle = -90,
-    end_angle = 180
-  },
-  {
-    name = 'upspeedf',
-    arg = 'eno1',
-    max = 12,
-    log = true,
-    x = 400,
-    y = 560,
-    r = 44,
-    width = 6,
-    start_angle = -90,
-    end_angle = 180
-  },
-  {
-    name = 'upspeedf',
-    arg = 'wlo1',
-    max = 12,
-    log = true,
-    x = 400,
-    y = 560,
-    r = 36,
-    width = 6,
-    start_angle = -90,
-    end_angle = 180
+    x0 = 0,
+    y0 = 535,
+    x1 = 337,
+    y1 = 535,
+    width = 2
   }
 }
 require 'cairo'

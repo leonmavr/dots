@@ -25,7 +25,11 @@ lua_load ~/.lua/scripts/rings.lua
 lua_draw_hook_pre rings
 
 TEXT
-${voffset 85}${font neuropol}CPU${goto 120}${font}Temp, usage 1,2,3,4%${goto 355}${cpu cpu3}${goto 325}${cpu cpu1}
+${voffset 0}${execi 60 echo Welcome, $USER}
+${execi 7200 uname -r}
+${execi 7200 echo RAM: `free -m | grep Mem | awk '{print $2" Mb"}'`, Swap: `free -m | grep Swap | awk '{print $2" Mb"}'`}
+${execi 99999 echo `cat /proc/cpuinfo | grep 'model name' | sed -e 's/model name.*: //' | wc -l` x `cat /proc/cpuinfo | grep 'model name' | sed -e 's/model name.*: //' | tail -n1` | fold -w 36}
+${voffset 2}${font FontAwesome:size=24}${voffset -18}${font}${goto 120}${font}Temp, usage 1,2,3,4%${goto 355}${cpu cpu3}${goto 325}${cpu cpu1}
 ${goto 300}${acpitemp}°C${goto 375}${cpu cpu4}${goto 345}${cpu cpu2}
 ${goto 220}${cpugraph 40, 170 8bb8e0 e6f1f4}
 ${voffset -70}
@@ -35,21 +39,26 @@ ${top name 3}${top cpu 3}%
 ${top name 4}${top cpu 4}%
 ${top name 5}${top cpu 5}%
 ${top name 6}${top cpu 6}%
-${voffset 13}${font neuropol}MEMORY${goto 120}${font}RAM, Swap${goto 325}${memperc}%${goto 355}${swapperc}%
+${voffset 13}${font FontAwesome:size=24}${voffset -12}${font neuropol}${goto 120}${font}RAM, Swap${goto 325}${memperc}%${goto 355}${swapperc}%
 ${goto 220}${memgraph 40, 170 8bb8e0 e6f1f4}
 ${voffset -60}
 ${top_mem name 1}${top_mem mem 1}%
 ${top_mem name 2}${top_mem mem 2}%
 ${top_mem name 3}${top_mem mem 3}%
-${voffset 40}${font neuropol}FILESYSTEMS${goto 160}${font}/, /home, mount% ${execi 60 df | grep ^/dev/sda1| awk '{print substr($5, 1, length($5) - 1) }'} ${execi 60 df | grep ^/dev/sda3| awk '{print substr($5, 1, length($5) - 1) }'} ${execi 30 df /mnt/usb/ | grep /media | awk '{print substr($5, 1, length($5) - 1)}'}
+${voffset 40}${font FontAwesome:size=24}${voffset -12}${font}${goto 120}${font}/, /home, mount%           ${execi 60 df | grep ^/dev/sda1| awk '{print substr($5, 1, length($5) - 1) }'} ${execi 60 df | grep ^/dev/sda3| awk '{print substr($5, 1, length($5) - 1) }'} ${execi 30 df /mnt/usb/ | grep /mnt/usb | awk '{print substr($5, 1, length($5) - 1)}'}
 
-/:
-/home:
-/mnt/usb:
-${goto 160}${execi 1 df | grep ^/dev | sed -n 3p | awk '{ print $6 }'}${alignr 106}${execi 1 df -h | grep ^/dev | sed -n 3p | awk '{ print $3 " / " $2 }'}
-${goto 160}${execi 1 df | grep ^/dev | sed -n 4p | awk '{ print $6 }'}${alignr 106}${execi 1 df -h | grep ^/dev | sed -n 4p | awk '{ print $3 " / " $2 }'}
-${goto 160}${execi 1 df | grep ^/dev | sed -n 5p | awk '{ print $6 }'}${alignr 106}${execi 1 df -h | grep ^/dev | sed -n 5p | awk '{ print $3 " / " $2 }'}
-${voffset 99}${font neuropol}NETWORK${goto 160}${font}eno1 down${alignr 106}${downspeed eno1}
-${goto 160}wlo1 down${alignr 106}${downspeed wlo1}
-${goto 160}eno1 up${alignr 106}${upspeed eno1}
-${goto 160}wlo1 up${alignr 106}${upspeed wlo1}
+/: ${execi 60 df -h | grep "\s/$"| awk '{print $3"/"$2}'}
+/home: ${execi 60 df -h | grep "\home"| awk '{print $3"/"$2}'}
+/mnt/usb: ${execi 30 df -h /mnt/usb/ | tail -n 1 | awk '{print $3"/"$2}'}
+${voffset 14}${font FontAwesome:size=24}${voffset -10}${font}
+
+WiFi ${execi 30 [[ `cat /sys/class/net/wlp3s0/operstate` == up ]] && echo UP, IP: $(dig +short myip.opendns.com @resolver1.opendns.com) || echo DOWN}${font} ${alignr}Eth ${execi 30 [[ `cat /sys/class/net/enp0s25/operstate` == up ]] && echo UP, IP: $(dig +short myip.opendns.com @resolver1.opendns.com) || echo DOWN}${font}       
+
+${font FontAwesome:size=24}${font}
+${goto 45}${voffset -26}QoD:${scroll 47 12 I've always lived cheaply. I live like a student, basically. And I like that, because it means that money is not telling me what to do. I can do what I think is important for me to do.}
+
+${execi 60 remind ~/.config/remind/reminders.rem | sed -s '/^\s*$/d' | fold -w 50}
+
+
+
+
