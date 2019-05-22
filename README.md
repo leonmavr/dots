@@ -14,7 +14,7 @@ For my i3-gaps setup, the following are/want to be added
 - [x] Good vim configuration with syntax checking, auto-complete etc.
 - [x] Window options - gap distance, key bindings etc.
 - [x] Appearance - terminal fonts, system fonts, etc.
-- [ ] conky (system info display) on wallpaper - partially done
+- [x] conky (system info display) on wallpaper - partially done
 - [x] window composition manager options (comption)
 - [x] Better .bashrc
 - [ ] Better terminal options
@@ -27,3 +27,10 @@ For my i3-gaps setup, the following are/want to be added
 - [ ] configure mutt for gmail
 - [ ] redshift (night light) options
 - [x] lock screen
+
+## Application screenshots
+
+| Application | Output | Relevant repo files | Dependancies
+| ------------- | ------------- | -------------| ------------- |
+| conky (system monitor) | ![alt text](https://github.com/0xLeo/dotfiles/blob/master/assets/arch-i3-gaps/conky_22-05-19.png)  | <ul><li>https://github.com/0xLeo/dotfiles/tree/master/arch-i3-gaps/.config/conky</li><li>https://github.com/0xLeo/dotfiles/tree/master/arch-i3-gaps/.lua/scripts</li></ul> | <ul><li>conky</lu><li>lua</li><li>jq</li><li>remind</li><li>Font Awesome</li></ul> |
+| vim  | ![alt text](https://github.com/0xLeo/dotfiles/blob/master/assets/arch-i3-gaps/vim_22-05-19.png)  | <ul><li>https://github.com/0xLeo/dotfiles/blob/master/.vimrc</li><li>https://github.com/0xLeo/dotfiles/blob/master/vim_setup.sh</li></ul>| Explained in installer script | 
