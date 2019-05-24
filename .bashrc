@@ -250,7 +250,7 @@ alias .....='cd ../../../..'
 if [ ! -z /usr/bin/remind ]; then
 	alias remind-get-month='remind -c1 ~/.config/remind/reminders.rem'
 	alias remind-get='remind ~/.config/remind/reminders.rem'
-	alias remind-edit='edit ~/.config/remind/reminders.rem'
+	alias remind-edit='vim ~/.config/remind/reminders.rem'
 fi
 
 
