@@ -36,18 +36,20 @@ elements = {
     y1 = 100,
     width = 2
   },
+  -- line next to CPU graph
   {
     x0 = 220,
     y0 = 122,
     x1 = 220,
-    y1 = 167,
+    y1 = 163,
     width = 2
   },
+  -- line next to mem graph
   {
     x0 = 220,
-    y0 = 265,
+    y0 = 262,
     x1 = 220,
-    y1 = 306,
+    y1 = 304,
     width = 2
   },
   {
