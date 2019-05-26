@@ -1,0 +1,38 @@
+[options]
+mouse_autohide = true
+scrollback_lines = 1500
+#font = Source Code Pro 12
+font = Iosevka 11 
+#font = Inconsolata 12 
+clickable_url = true
+allow_bold = true
+audible_bell = false
+bold_is_bright = true
+
+
+[colors]
+cursor = #e08d53
+background = #160b0e
+foreground_bold = #c1f4f2
+foreground = #b5f4f1
+
+# If unset, highlight is bg and fg reversed
+# highlight = #cdcdcd
+
+color0  = #000000
+color1  = #ff995e
+color2  = #b10058
+color3  = #d26c44
+color4  = #045954
+color5 =  #e27b3f
+color6 =  #d1257a
+color7 =  #4f8c88
+
+color8  = #777777
+color9  = #ffb489
+color10 = #e562a3
+color11 = #f7a383
+color12 = #129b93
+color13 = #f7a97b
+color14 = #ed499a
+color15 = #7dd1cb
