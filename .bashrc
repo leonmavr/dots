@@ -86,6 +86,7 @@ export DISPLAY=:0
 function ps1(){
 	if [ ${#PS1} -gt 50 ]; then
 		export PS1="\[$(tput bold)\]\[\033[38;5;209m\] \[$(tput sgr0)\]"
+		clear
 	else
 		export PS1="\[$(tput bold)\]\[\033[38;5;216m\]\u@\h\[$(tput sgr0)\]\[$(tput sgr0)\]\[\033[38;5;209m\]:\W\\$\[$(tput sgr0)\]\[\033[38;5;15m\] \[$(tput sgr0)\]"
 	fi
