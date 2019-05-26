@@ -17,7 +17,7 @@ For my i3-gaps setup, the following are/want to be added
 - [x] conky (system info display) on wallpaper - partially done
 - [x] window composition manager options (comption)
 - [x] Better .bashrc
-- [ ] Better terminal options
+- [x] Better terminal options (termite config)
 - [ ] Status bar (polybar) - mostly done
 - [ ] Launcher (dmenu/ rofi)
 - [ ] Ranger file manager options - add key bindings and work with sxiv
