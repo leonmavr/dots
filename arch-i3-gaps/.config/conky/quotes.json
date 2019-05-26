@@ -1,44 +1,20 @@
-{
-	"quotes":
-	[{
-		"firstName": "Richard",
-		"lastName": "Stallman",
-		"message": "Once GNU is written, everyone will be able to obtain good system software free, just like air."
-	},
-		{
-			"firstName": "Saint",
-			"lastName": "Ignucius",
-			"message": "I bless your computer, my child!"
-		},
-		{
-			"firstName": "Richard",
-			"lastName": "Stallman",
-			"message": "I've always lived cheaply. I live like a student, basically. And I like that, because it means that money is not telling me what to do. I can do what I think is important for me to do."
-		},
-		{
-			"firstName": "Richard",
-			"lastName": "Stallman",
-			"message": "Proprietary software tends to have malicious features. The point is with a proprietary program, when the users don't have the source code, we can never tell. So you must consider every proprietary program as potential malware."
-		},
-		{
-			"firstName": "Richard",
-			"lastName": "Stallman",
-			"message": "Facebook is not your friend, it is a surveillance engine."
-		},
-		{
-			"firstName": "Richard",
-			"lastName": "Stallman",
-			"message": "One reason you should not use web applications to do your computing is that you lose control."
-		},
-		{
-			"firstName": "",
-			"lastName": "Socrates",
-			"message": "He is the richest who is content with the least."
-		},
-		{
-			"firstName": "Richard",
-			"lastName": "Stallman",
-			"message": "In the free/libre software movement, we develop software that respects users'freedom, so we and you can escape from software that doesn't."
-		}
-	]
-}
+#!/bin/bash
+
+
+######################################
+# select message based on current day
+######################################
+sec=`date +%s`
+day=`echo $sec/3600/24 | bc`
+RAND=$day
+N_MSG=`cat ~/.config/conky/quotes.json | jq '.quotes | length'`
+
+RAND_PER_DAY=`RANDOM=$day;echo $RANDOM`
+
+rand_ind=`echo "$RAND_PER_DAY%$N_MSG" | bc`
+# TODO: decide a path!
+out_to_conky=`cat ~/.config/conky/quotes.json | jq ".quotes[$rand_ind].message" | tr -d '"'`
+echo `cat ~/.config/conky/quotes.json | jq ".quotes[$rand_ind].message"`
+
+# good so far
+ sed -i "/scroll/c\${goto 45}\${voffset -26}QoD: \${font ProFont for Powerline:size=12}\${scroll 47 14 $out_to_conky}" ~/.config/conky/conkylua
