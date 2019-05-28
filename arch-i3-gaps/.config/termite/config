@@ -11,8 +11,8 @@ bold_is_bright = true
 
 
 [colors]
-cursor = #e08d53
-background = #160b0e
+cursor = #222222
+background = #110509
 foreground_bold = #c1f4f2
 foreground = #b5f4f1
 
@@ -29,10 +29,10 @@ color6 =  #d1257a
 color7 =  #4f8c88
 
 color8  = #777777
-color9  = #ffb489
-color10 = #e562a3
-color11 = #f7a383
-color12 = #129b93
-color13 = #f7a97b
-color14 = #ed499a
-color15 = #7dd1cb
+color9  = #ffaf82
+color10 = #e22885
+color11 = #e08460
+color12 = #4dc1ba
+color13 = #d69168
+color14 = #d15190
+color15 = #9ebfbd
