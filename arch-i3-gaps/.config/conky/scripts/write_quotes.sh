@@ -30,9 +30,9 @@ N_MSG=`cat ~/.config/conky/quotes.json | jq '.quotes | length'`
 RAND_PER_DAY=`RANDOM=$day;echo $RANDOM`
 
 rand_ind=`echo "$RAND_PER_DAY%$N_MSG" | bc`
-# TODO: decide a path!
 out_to_conky=`cat ~/.config/conky/quotes.json | jq ".quotes[$rand_ind].message" | tr -d '"'`
 #echo `cat ~/.config/conky/quotes.json | jq ".quotes[$rand_ind].message"`
 
-# good so far
- sed -i "/scroll/c\${goto 45}\${voffset -26}QoD: \${font ProFont for Powerline:size=12}\${scroll 47 14 $out_to_conky - $full_name}" ~/.config/conky/conkylua
+# Refresh quote - author at `author_name`
+get_author
+sed -i "/scroll/c\${goto 45}\${voffset -26}QoD: \${font ProFont for Powerline:size=12}\${scroll 47 14 $out_to_conky - $full_name}" ~/.config/conky/conkylua
