@@ -7,7 +7,7 @@ no_buffers yes
 text_buffer_size 2048
 own_window yes
 own_window_transparent yes
-own_window_hints undecorated,sticky,skip_taskbar,skip_pager,below
+#own_window_hints undecorated,sticky,skip_taskbar,skip_pager,below
 own_window_type override
 border_inner_margin 0
 border_outer_margin 0
@@ -20,7 +20,7 @@ draw_graph_borders no
 use_xft yes
 xftfont Roboto Condensed:size=11:style=Bold
 xftalpha 0.5
-default_color f4abc9 
+default_color b5f4f1 
 color1 ffffff
 color2 ffffff
 color3 ffffff
@@ -63,7 +63,7 @@ ${font}Eth ${font ProFont for Powerline:size=12}${execi 30 [[ `cat /sys/class/ne
 ###### Calendar and misc. section ######
 ${font FontAwesome:size=24}${font}
 # This line is automatically written by the write_quotes.sh script!
-${goto 45}${voffset -26}QoD: ${font ProFont for Powerline:size=12}${scroll 47 14 Once GNU is written, everyone will be able to obtain good system software free, just like air.}
+${goto 45}${voffset -26}QoD: ${font ProFont for Powerline:size=12}${scroll 47 14 I've always lived cheaply. I live like a student, basically. And I like that, because it means that money is not telling me what to do. I can do what I think is important for me to do. - R. Stallman}
 ${goto 45}${font}1 BTC = ${font ProFont for Powerline:size=12}${execi 60 curl -s https://api.coinbase.com/v2/prices/spot?currency=USD | jq '.data.amount' | sed -E 's/(,"*)//' | xargs printf "$%.2f"}
 ${execi 60 remind ~/.config/remind/reminders.rem | sed -s '/^\s*$/d' | fold -w 50}
 
