@@ -17,7 +17,7 @@ do
         "C-c")
 			echo -n "$file" | xclip -selection clipboard ;;
         "C-w")
-			sed -i "/feh/c\feh --bg-scale ${file}" ~/.xinitrc;
+			sed -i "/feh -/c\feh --bg-scale ${file}" ~/.xinitrc > /dev/null 2>&1;
 			feh --bg-scale "$file" ;;
         esac
 done
