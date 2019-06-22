@@ -12,7 +12,7 @@ bold_is_bright = true
 
 [colors]
 cursor = #222222
-background = #110509
+background = #03050a
 foreground_bold = #c1f4f2
 foreground = #b5f4f1
 
@@ -20,19 +20,19 @@ foreground = #b5f4f1
 # highlight = #cdcdcd
 
 color0  = #000000
-color1  = #ff995e
-color2  = #b10058
-color3  = #d26c44
-color4  = #045954
-color5 =  #e27b3f
-color6 =  #d1257a
-color7 =  #4f8c88
+color1  = #bdd2f8
+color2  = #d362e2
+color3  = #a7fcf6
+color4  = #ba67cc
+color5 =  #57bfdb
+color6 =  #744252
+color7 =  #12d5c9
 
-color8  = #777777
-color9  = #ffaf82
-color10 = #e22885
-color11 = #e08460
-color12 = #4dc1ba
-color13 = #d69168
-color14 = #d15190
-color15 = #9ebfbd
+color8  = #888888
+color9  = #eff5ff
+color10 = #f3c2f9
+color11 = #d9f9f7
+color12 = #ca9ed3
+color13 = #a5d7e5
+color14 = #bf99a5
+color15 = #95f4ee
