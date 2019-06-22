@@ -18,15 +18,17 @@ For my i3-gaps setup, the following are/want to be added
 - [x] window composition manager options (comption)
 - [x] Better .bashrc
 - [x] Better terminal options (termite config)
-- [ ] Status bar (polybar) - mostly done
+- [ ] Status bar (polybar) - TODO: add current song
 - [ ] Launcher (dmenu/ rofi)
 - [ ] Ranger file manager options - add key bindings and work with sxiv
 - [x] Photo viewer (sxiv) - also add hotkeys
 - [ ] Music player (mpd) options and control music from status line
-- [ ] cava music visualiser
+- [x] cava music visualiser
 - [ ] configure mutt for gmail
 - [x] redshift (night light) options
 - [x] lock screen
+
+
 
 ## Application screenshots
 
@@ -35,3 +37,4 @@ For my i3-gaps setup, the following are/want to be added
 | conky (system monitor) | ![alt text](https://github.com/0xLeo/dotfiles/blob/master/assets/arch-i3-gaps/conky_24-05-19.png)  | <ul><li>https://github.com/0xLeo/dotfiles/tree/master/arch-i3-gaps/.config/conky</li><li>https://github.com/0xLeo/dotfiles/tree/master/arch-i3-gaps/.lua/scripts</li></ul> | <ul><li>conky</lu><li>lua</li><li>jq</li><li>remind</li><li>Font Awesome</li></ul> |
 | vim  | ![alt text](https://github.com/0xLeo/dotfiles/blob/master/assets/arch-i3-gaps/vim_22-05-19.png)  | <ul><li>https://github.com/0xLeo/dotfiles/blob/master/.vimrc</li><li>https://github.com/0xLeo/dotfiles/blob/master/vim_setup.sh</li></ul>| Explained in installer script | 
 | polybar (status bar)  | ![alt text](https://github.com/0xLeo/dotfiles/blob/master/assets/arch-i3-gaps/polybar_15-06-19.png)  | https://github.com/0xLeo/dotfiles/tree/master/arch-i3-gaps/.config/polybar| <ul><li>font awesome</li><li>ttf-material-design-icons</li><li>jq</li><li>rofi</li><li>yad</li><li>remind</li></ul> | 
+| cava (music visualiser)  | ![alt text](https://raw.githubusercontent.com/0xLeo/dotfiles/master/assets/arch-i3-gaps/cava_22-06-19.png)  | https://github.com/0xLeo/dotfiles/tree/master/arch-i3-gaps/.config/cava | <ul><li>[cava](https://github.com/karlstav/cava)</li></ul> | 
