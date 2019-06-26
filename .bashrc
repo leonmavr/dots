@@ -31,6 +31,7 @@ export TERM=termite
 
 
 export PAGER=/usr/bin/more
+export EDITOR=`which vim`
 
 
 ################################################
@@ -55,11 +56,18 @@ fi
 # make less more friendly for non-text input files, see lesspipe(1)
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 
+###### History is the best documentation ######
 # Don't put duplicate lines or lines starting with space in the history.
 HISTCONTROL=ignoreboth
+export HISTSIZE=5000
+# supress anything by adding space in front of the command
+# don't save one or two-letter commands, etc
+export HISTIGNORE="ls*:ll*:pwd:exit:clear:history:\
+		[ \t]*:?:??:[bf]g:*compton*"
 # search history with arrow keys
 bind '"\e[A": history-search-backward'
 bind '"\e[B": history-search-forward'
+
 
 # colored GCC warnings and errors
 export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
@@ -113,6 +121,10 @@ function ping() {
 
 function find() {
 	command find "$@" 2>&1 | grep -v "Permission denied"
+}
+
+function findhere(){
+	find . -name "$1" 2>&1 | grep -v "Permission denied"
 }
 
 function mdcd() {
@@ -214,6 +226,9 @@ if [ -x /usr/bin/dircolors ]; then
 	alias diff='diff --color'
 fi
 
+# silent gdb
+alias gdb='gdq -q'
+
 # list files
 alias ll='ls -alF'
 alias la='ls -A'
@@ -263,4 +278,4 @@ fi
 # yad --calendar
 
 # to query openweathermaps API - get a key from their website
-OPENWEATHERAPIKEY=XXXXXXXX
+OPENWEATHERAPIKEY=b8f2d720c34a57fd69ad75e7efd4ed35
