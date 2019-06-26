@@ -1,7 +1,48 @@
+###### glx backend ######
+# GLX typically uses less resources for blurring
+backend = "glx"
+
+glx-no-stencil = true;
+glx-copy-from-front = false;
+glx-swap-method = "undefined";
+
 blur-background = true;
 blur-background-frame = true;
 blur-background-fixed = true;
 
 blur-kern = "5x5box";
 blur-method = "kawase";
-blur-strength = 3;
+blur-strength = 5.25;
+
+###### Shadows ######
+shadow = true;
+dnd-shadow = false;
+dock-shadow = false;
+# that is the prevent drawing polybar's shadow
+no-dock-shadow = true
+shadow-offset-x = -5;
+shadow-offset-y = -5;
+shadow-radius = 5;
+
+###### Dim ######
+# 0.0 to 1.0
+inactive-dim = 0.075
+inactive-opacity-override = false;
+
+opacity-rule = [
+  "100:class_g = 'Polybar' && !_NET_WM_STATE:32a",
+  "100:class_g = 'Conky' && !_NET_WM_STATE:32a",
+  "80:class_g = 'Termite' && !_NET_WM_STATE:32a",
+  "94:class_g = 'Yad' && !_NET_WM_STATE:32a",
+  "96:class_g = 'URxvt' && !_NET_WM_STATE@:32a",
+  "0:_NET_WM_STATE@:32a *= '_NET_WM_STATE_HIDDEN'"
+];
+#for_window [class="Yad" title="yad-calendar"] floating enable
+
+###### Exceptions ######
+shadow-exclude = [
+  "! name~=''",
+  "class_g = 'Conky'"
+]
+
+
