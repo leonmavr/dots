@@ -30,9 +30,10 @@ inactive-dim = 0.075
 inactive-opacity-override = false;
 
 opacity-rule = [
-  "100:class_g = 'Polybar' && !_NET_WM_STATE:32a",
-  "100:class_g = 'Conky' && !_NET_WM_STATE:32a",
+  "80:class_g = 'Polybar' && !_NET_WM_STATE:32a",
   "80:class_g = 'Termite' && !_NET_WM_STATE:32a",
+  "70:class_g = 'Thunar' && !_NET_WM_STATE:32a",
+  "80:class_g = 'Gedit' && !_NET_WM_STATE:32a",
   "94:class_g = 'Yad' && !_NET_WM_STATE:32a",
   "96:class_g = 'URxvt' && !_NET_WM_STATE@:32a",
   "0:_NET_WM_STATE@:32a *= '_NET_WM_STATE_HIDDEN'"
@@ -44,5 +45,3 @@ shadow-exclude = [
   "! name~=''",
   "class_g = 'Conky'"
 ]
-
-
