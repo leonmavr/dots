@@ -231,7 +231,7 @@ if [ -x /usr/bin/dircolors ]; then
 fi
 
 # silent gdb
-alias gdb='gdq -q'
+alias gdb='gdb -q'
 
 # list files
 alias ll='ls -alF'
