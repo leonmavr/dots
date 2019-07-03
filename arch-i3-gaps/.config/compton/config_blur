@@ -45,8 +45,3 @@ shadow-exclude = [
   "! name~=''",
   "class_g = 'Conky'"
 ]
-opacity-dim-exclude = [
-  "! name~=''",
-  "80:class_g = 'Conky' && !_NET_WM_STATE:32a",
-  "class_g = 'Conky'"
-]
