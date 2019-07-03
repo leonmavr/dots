@@ -73,6 +73,7 @@ if s:enable_plugins != 0
     let g:airline#extensions#tabline#left_sep = ' '
     let g:airline#extensions#tabline#left_alt_sep = '|'
     let g:airline#extensions#tabline#formatter = 'default'
+	let g:airline#extensions#tabline#enabled = 0
     set laststatus=2 " at the bottom
     " the following line needs powerline fonts installed
     let g:airline_powerline_fonts = 1
