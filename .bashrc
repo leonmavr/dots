@@ -93,7 +93,7 @@ cd() {
 export PS1="\[$(tput bold)\]\[\033[38;5;216m\]\u@\h\[$(tput sgr0)\]\[$(tput sgr0)\]\[\033[38;5;209m\]:\W\\$\[$(tput sgr0)\]\[\033[38;5;15m\] \[$(tput sgr0)\]"
 # open programs that require windows
 export DISPLAY=:0
-XF86WakeUp
+
 # toggle betwen a short(1 char) and a full PS1 - 50 just empirical
 function ps1(){
 	if [ ${#PS1} -gt 50 ]; then
