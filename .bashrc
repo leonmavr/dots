@@ -1,10 +1,6 @@
 ################################################
-#  _               _              
-# | |__   __ _ ___| |__  _ __ ___ 
-# | '_ \ / _` / __| '_ \| '__/ __|
-# | |_) | (_| \__ \ | | | | | (__ 
-# |_.__/ \__,_|___/_| |_|_|  \___|                                
-#
+# ~/.bashrc
+################################################
 
 
 ################################################
@@ -26,6 +22,7 @@ export SYNCLIENTCONF=/usr/lib/X11/xorg.conf.d/10-synaptics.conf
 export I3LOCKCONFIG=~/.config/i3lock-color/lock.sh
 # needs `remind` package
 export REMINDERS=~/.config/remind/reminders.rem
+export FILECRON=/var/spool/cron/$USER
 
 
 ################################################
@@ -284,4 +281,4 @@ fi
 # yad --calendar
 
 # to query openweathermaps API - get a key from their website
-OPENWEATHERAPIKEY=XXXXXXXXXX
+OPENWEATHERAPIKEY=b8f2d720c34a57fd69ad75e7efd4ed35
