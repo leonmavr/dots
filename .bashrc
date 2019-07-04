@@ -225,8 +225,10 @@ if [ -x /usr/bin/dircolors ]; then
 	alias ls='ls --color=auto'
 	alias fgrep='fgrep --color=auto'
 	alias egrep='egrep --color=auto'
-	alias grep='grep --color=auto'
+	alias grep='grep -I' --color=auto'
 	alias diff='diff --color'
+else
+    alias grep='grep -I'
 fi
 
 # silent gdb
@@ -236,7 +238,8 @@ alias gdb='gdb -q'
 alias ll='ls -alF'
 alias la='ls -A'
 alias l='ls -CF'
-alias lltr='ls -ltr'
+# summon the power of LoTR to list files
+alias llotr='ls -lotr'
 
 alias pacman='sudo pacman'
 # for the next 2 commands, see sudoers - they don't need pwd!
@@ -281,4 +284,4 @@ fi
 # yad --calendar
 
 # to query openweathermaps API - get a key from their website
-OPENWEATHERAPIKEY=b8f2d720c34a57fd69ad75e7efd4ed35
+OPENWEATHERAPIKEY=xxxxxxxx
