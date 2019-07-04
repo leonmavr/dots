@@ -238,8 +238,7 @@ alias gdb='gdb -q'
 alias ll='ls -alF'
 alias la='ls -A'
 alias l='ls -CF'
-# summon the power of LoTR to list files
-alias llotr='ls -lotr'
+alias lltr='ls -lhtr'
 
 alias pacman='sudo pacman'
 # for the next 2 commands, see sudoers - they don't need pwd!
