@@ -28,9 +28,9 @@ export FILECRON=/var/spool/cron/$USER
 ################################################
 # Default apps
 ################################################
-export TERM=termite
-
-
+if [ -z "$TERM" ]; then
+	export TERM=termite
+fi
 export PAGER=/usr/bin/more
 export EDITOR=`which vim`
 
