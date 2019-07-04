@@ -225,7 +225,7 @@ if [ -x /usr/bin/dircolors ]; then
 	alias ls='ls --color=auto'
 	alias fgrep='fgrep --color=auto'
 	alias egrep='egrep --color=auto'
-	alias grep='grep -I' --color=auto'
+	alias grep='grep -I --color=auto'
 	alias diff='diff --color'
 else
     alias grep='grep -I'
