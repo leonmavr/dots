@@ -7,4 +7,4 @@ export DISPLAY=:0
 touch /tmp/cron.txt
 killall conky
 /home/first/.config/conky/scripts/write_quotes.sh
-conky -c ~/.config/conky/conkylua
+conky -c ~/.config/conky/conkylua &
