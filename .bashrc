@@ -103,7 +103,7 @@ function ps1(){
 
 # needs `thefuck` https://github.com/nvbn/thefuck
 # correct mistyped commands by typing one of the following
-if $( hash thefuck ); then
+if $( which thefuck ); then
 	eval $(thefuck --alias)
 	eval $(thefuck --alias shit)
 	eval $(thefuck --alias frick)
