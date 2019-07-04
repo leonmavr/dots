@@ -29,7 +29,7 @@ export FILECRON=/var/spool/cron/$USER
 # Default apps
 ################################################
 if [ -z "$TERM" ]; then
-	export TERM=termite
+    export TERM=termite
 fi
 export PAGER=/usr/bin/more
 export EDITOR=`which vim`
@@ -39,19 +39,19 @@ export EDITOR=`which vim`
 # General behaviour 
 ################################################
 case $- in
-	*i*) ;;
-	*) return;;
+    *i*) ;;
+    *) return;;
 esac
 
 # enable programmable completion features (you don't need to enable
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
 # sources /etc/bash.bashrc).
 if ! shopt -oq posix; then
-	if [ -f /usr/share/bash-completion/bash_completion ]; then
-		. /usr/share/bash-completion/bash_completion
-	elif [ -f /etc/bash_completion ]; then
-		. /etc/bash_completion
-	fi
+    if [ -f /usr/share/bash-completion/bash_completion ]; then
+        . /usr/share/bash-completion/bash_completion
+    elif [ -f /etc/bash_completion ]; then
+        . /etc/bash_completion
+    fi
 fi
 
 # make less more friendly for non-text input files, see lesspipe(1)
@@ -64,7 +64,7 @@ export HISTSIZE=5000
 # supress anything by adding space in front of the command
 # don't save one or two-letter commands, etc
 export HISTIGNORE="ls*:ll*:pwd:exit:clear:history:\
-		[ \t]*:?:??:[bf]g:*compton*"
+        [ \t]*:?:??:[bf]g:*compton*"
 # search history with arrow keys
 bind '"\e[A": history-search-backward'
 bind '"\e[B": history-search-forward'
@@ -83,7 +83,7 @@ complete -d cd
 # credits @pyratebeard
 # https://www.reddit.com/r/linux/comments/7oc5mt/what_are_some_useful_things_you_put_on_your/ds8q7yg?utm_source=share&utm_medium=web2x
 cd() {
-	builtin cd "$@" && ls -lA
+    builtin cd "$@" && ls -lA
 }
 
 # custom PS1
@@ -93,90 +93,90 @@ export DISPLAY=:0
 
 # toggle betwen a short(1 char) and a full PS1 - 50 just empirical
 function ps1(){
-	if [ ${#PS1} -gt 50 ]; then
-		export PS1="\[$(tput bold)\]\[\033[38;5;209m\] \[$(tput sgr0)\]"
-		clear
-	else
-		export PS1="\[$(tput bold)\]\[\033[38;5;216m\]\u@\h\[$(tput sgr0)\]\[$(tput sgr0)\]\[\033[38;5;209m\]:\W\\$\[$(tput sgr0)\]\[\033[38;5;15m\] \[$(tput sgr0)\]"
-	fi
+    if [ ${#PS1} -gt 50 ]; then
+        export PS1="\[$(tput bold)\]\[\033[38;5;209m\] \[$(tput sgr0)\]"
+        clear
+    else
+        export PS1="\[$(tput bold)\]\[\033[38;5;216m\]\u@\h\[$(tput sgr0)\]\[$(tput sgr0)\]\[\033[38;5;209m\]:\W\\$\[$(tput sgr0)\]\[\033[38;5;15m\] \[$(tput sgr0)\]"
+    fi
 }
 
 # needs `thefuck` https://github.com/nvbn/thefuck
 # correct mistyped commands by typing one of the following
-if $( which thefuck ); then
-	eval $(thefuck --alias)
-	eval $(thefuck --alias shit)
-	eval $(thefuck --alias frick)
-	eval $(thefuck --alias omg)
-	eval $(thefuck --alias lolno)
+if [ ! -z `which thefuck` ]; then
+    eval $(thefuck --alias)
+    eval $(thefuck --alias shit)
+    eval $(thefuck --alias frick)
+    eval $(thefuck --alias omg)
+    eval $(thefuck --alias lolno)
 fi
 
 ################################################
 # New commands/ overwrite system commands 
 ################################################
 function ping() {
-	if [[ $# -eq 0 ]] ; then
-		command ping -c 4 8.8.8.8
-	else
-		command ping "$@"
-	fi
+    if [[ $# -eq 0 ]] ; then
+        command ping -c 4 8.8.8.8
+    else
+        command ping "$@"
+    fi
 }
 
 function find() {
-	command find "$@" 2>&1 | grep -v "Permission denied"
+    command find "$@" 2>&1 | grep -v "Permission denied"
 }
 
 function findhere(){
-	find . -name "$1" 2>&1 | grep -v "Permission denied"
+    find . -name "$1" 2>&1 | grep -v "Permission denied"
 }
 
 function mdcd() {
-	mkdir $1 && cd $1
+    mkdir $1 && cd $1
 }
 
 # credits https://serverfault.com/a/3842
 extract () {
-	if [ -f "$1" ] ; then
-		case "$1" in
-			*.tar.bz2) tar xvjf "$1" ;;
-			*.tar.gz) tar xvzf "$1" ;;
-			*.bz2) bunzip2 "$1" ;;
-			*.rar) unrar x "$1" ;;
-			*.gz) gunzip "$1" ;;
-			*.tar) tar xvf "$1" ;;
-			*.tbz2) tar xvjf "$1" ;;
-			*.tgz) tar xvzf "$1" ;;
-			*.zip) unzip "$1" ;;
-			*.Z) uncompress "$1" ;;
-			*.7z) 7z x "$1" ;;
-			*) echo "don't know how to extract '$1'..." ;;
-		esac
-	else
-		echo "'$1' is not a valid file!"
-	fi
+    if [ -f "$1" ] ; then
+        case "$1" in
+            *.tar.bz2) tar xvjf "$1" ;;
+            *.tar.gz) tar xvzf "$1" ;;
+            *.bz2) bunzip2 "$1" ;;
+            *.rar) unrar x "$1" ;;
+            *.gz) gunzip "$1" ;;
+            *.tar) tar xvf "$1" ;;
+            *.tbz2) tar xvjf "$1" ;;
+            *.tgz) tar xvzf "$1" ;;
+            *.zip) unzip "$1" ;;
+            *.Z) uncompress "$1" ;;
+            *.7z) 7z x "$1" ;;
+            *) echo "don't know how to extract '$1'..." ;;
+        esac
+    else
+        echo "'$1' is not a valid file!"
+    fi
 }
 
 # credits https://serverfault.com/a/28649
 up(){
-	local d=""
-	limit=$1
-	for ((i=1 ; i <= limit ; i++))
-	do
-		d=$d/..
-	done
-	d=$(echo $d | sed 's/^\///')
-	if [ -z "$d" ]; then
-		d=..
-	fi
-	cd $d
+    local d=""
+    limit=$1
+    for ((i=1 ; i <= limit ; i++))
+    do
+        d=$d/..
+    done
+    d=$(echo $d | sed 's/^\///')
+    if [ -z "$d" ]; then
+        d=..
+    fi
+    cd $d
 }
 
 # credits https://serverfault.com/a/5551
 function fawk {
-	first="awk '{print "
-	last="}'"
-	cmd="${first}\$${1}${last}"
-	eval $cmd
+    first="awk '{print "
+    last="}'"
+    cmd="${first}\$${1}${last}"
+    eval $cmd
 }
 
 # Get IPs associated with this site
@@ -186,32 +186,32 @@ function fawk {
 # TODO: fix 
 function myip()
 {
-	extIp=$(dig +short myip.opendns.com @resolver1.opendns.com)
+    extIp=$(dig +short myip.opendns.com @resolver1.opendns.com)
 
-	printf "Wireless IP: "
-	MY_IP=$(/sbin/ifconfig wlp3s0 | awk '/inet/ { print $2 } ' |
-	sed -e s/addr://)
-	echo ${MY_IP:-"Not connected"}
+    printf "Wireless IP: "
+    MY_IP=$(/sbin/ifconfig wlp3s0 | awk '/inet/ { print $2 } ' |
+    sed -e s/addr://)
+    echo ${MY_IP:-"Not connected"}
 
 
-	printf "Wired IP: "
-	MY_IP=$(/sbin/ifconfig enp0s25 | awk '/inet/ { print $2 } ' |
-		sed -e s/addr://)
-	echo ${MY_IP:-"Not connected"}
+    printf "Wired IP: "
+    MY_IP=$(/sbin/ifconfig enp0s25 | awk '/inet/ { print $2 } ' |
+        sed -e s/addr://)
+    echo ${MY_IP:-"Not connected"}
 
-	echo ""
-	echo "WAN IP: $extIp"
+    echo ""
+    echo "WAN IP: $extIp"
 }
 
 # source https://www.digitalocean.com/community/questions/what-are-your-favorite-bash-aliases
 # Syntax: "repeat [X] [command]"
 function repeat()
 {
-	local i max
-	max=$1; shift;
-	for ((i=1; i <= max ; i++)); do # --> C-like syntax
-		eval "$@";
-	done
+    local i max
+    max=$1; shift;
+    for ((i=1; i <= max ; i++)); do # --> C-like syntax
+        eval "$@";
+    done
 }
 
 
@@ -222,11 +222,11 @@ alias h='history'
 
 # coloured commands                             
 if [ -x /usr/bin/dircolors ]; then
-	alias ls='ls --color=auto'
-	alias fgrep='fgrep --color=auto'
-	alias egrep='egrep --color=auto'
-	alias grep='grep -I --color=auto'
-	alias diff='diff --color'
+    alias ls='ls --color=auto'
+    alias fgrep='fgrep --color=auto'
+    alias egrep='egrep --color=auto'
+    alias grep='grep -I --color=auto'
+    alias diff='diff --color'
 else
     alias grep='grep -I'
 fi
@@ -269,9 +269,9 @@ alias ....='cd ../../../'
 alias .....='cd ../../../..'
 
 if [ ! -z /usr/bin/remind ]; then
-	alias remind-get-month='remind -c1 ~/.config/remind/reminders.rem'
-	alias remind-get='remind ~/.config/remind/reminders.rem'
-	alias remind-edit='vim ~/.config/remind/reminders.rem'
+    alias remind-get-month='remind -c1 ~/.config/remind/reminders.rem'
+    alias remind-get='remind ~/.config/remind/reminders.rem'
+    alias remind-edit='vim ~/.config/remind/reminders.rem'
 fi
 
 
