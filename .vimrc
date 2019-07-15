@@ -271,6 +271,16 @@ vnoremap <Leader>p "*p
 vnoremap <Leader>Y "+y
 vnoremap <Leader>P "+p
 
+" Surround in brackets
+vnoremap <leader>( xi()<Esc>P
+vnoremap <leader>) xi()<Esc>P
+vnoremap <leader>[ xi[]<Esc>P
+vnoremap <leader>] xi[]<Esc>P
+vnoremap <leader>" xi""<Esc>P
+vnoremap <leader>' xi''<Esc>P
+vnoremap <leader>{ xi{}<Esc>P
+vnoremap <leader>} xi{}<Esc>P
+
 "" Other mappings
 " <zz> to save
 " <qq> to quit after saving
@@ -291,6 +301,9 @@ inoremap [[ []<Left>
 inoremap [<space> []<Left>
 inoremap "<space> ""<Left>
 inoremap '<space> ''<Left>
+
+
+
 if s:auto_close_brackets!=0
     " see here: https://stackoverflow.com/a/34992101
     inoremap " ""<left>
@@ -391,8 +404,14 @@ autocmd Filetype python nnoremap <Leader>b oimport pdb; pdb.set_trace()<Esc>j
 "auto-source upon saving
 autocmd! bufwritepost .vimrc source %
 "" Tex
-"TODO: make bold, italic, insert figure, insert equation, list...
+"TODO: make bold, italic
 autocmd FileType tex inoremap $$ $$<Left>
+"autocmd FileType tex vnoremap <leader>£ xi$$<Esc>P
+"autocmd FileType tex vnoremap <leader>B xi\textbf{}<Esc>P
+"autocmd FileType tex vnoremap <leader>I xi\textit{}<Esc>P
+
 ""Exceptions
 autocmd FileType * if &ft != 'py'| imap "" ""<Left>
 autocmd FileType * if &ft != 'py'| imap '' ''<Left>
+execute pathogen#infect()
+set tags=tags
