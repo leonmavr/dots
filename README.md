@@ -1,2 +1,2 @@
 # dotfiles
-This is the master branch and its contents should be minimum. Dotfiles for each setup are provided in the other branches. They can be copied assuming that this repository is the home directory. Screenshots, workflows and instructions are also provided
+This is the master branch and its contents should be minimum. Master contains only files that should work on any OS and window manager/DE. Currently the only config I'm planning to make universal is vim. Dotfiles for each setup are provided in other branches. They can be copied assuming that this repository is the home directory. Screenshots, workflows and instructions are also provided.
