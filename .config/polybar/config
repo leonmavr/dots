@@ -17,7 +17,7 @@
 ;==========================================================
 
 [colors]
-background = #5524201f
+background = #6603050a
 background1 = #22449966
 foreground = #c1edff
 icons = #60819b
@@ -108,6 +108,7 @@ format-prefix-foreground = ${colors.foreground-alt}
 interval = 60
 exec = "echo "(`remind ~/.config/remind/reminders.rem | sed '/^\s*$/d' | sed -n '2,9999 p' |  wc -l`)""
 click-left = ~/.config/polybar/scripts/notifs.sh
+click-right = ~/.config/polybar/scripts/notifs_edit.sh
 
 
 [module/xwindow]
