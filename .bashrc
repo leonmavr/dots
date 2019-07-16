@@ -71,8 +71,8 @@ export HISTTIMEFORMAT='(%d/%m, %H:%M) '
 shopt -s cmdhist
 # supress anything by adding space in front of the command
 # don't save one or two-letter commands, etc
-export HISTIGNORE="ls*:ll*:pwd:exit:clear:history:\
-		[ \t]*:?:??:[bf]g:*compton*"
+export HISTIGNORE="ls*:pwd:exit:clear:history:\
+		[ \t]*:?:??:[bf]g:neofetch*:ufetch*"
 # search history with arrow keys
 bind '"\e[A": history-search-backward'
 bind '"\e[B": history-search-forward'
