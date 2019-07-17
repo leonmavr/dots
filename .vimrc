@@ -406,9 +406,10 @@ autocmd! bufwritepost .vimrc source %
 "" Tex
 "TODO: make bold, italic
 autocmd FileType tex inoremap $$ $$<Left>
-"autocmd FileType tex vnoremap <leader>£ xi$$<Esc>P
-"autocmd FileType tex vnoremap <leader>B xi\textbf{}<Esc>P
-"autocmd FileType tex vnoremap <leader>I xi\textit{}<Esc>P
+autocmd FileType tex inoremap \[ \[<esc>o<esc>o<bs>\]<esc>ki<tab>
+autocmd FileType tex vnoremap ,$ xi$$<Esc>P
+autocmd FileType tex vnoremap ,b xi\textbf{}<Esc>P
+autocmd FileType tex vnoremap ,i xi\textit{}<Esc>P
 
 ""Exceptions
 autocmd FileType * if &ft != 'py'| imap "" ""<Left>
