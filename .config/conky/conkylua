@@ -64,7 +64,7 @@ ${font}Eth ${font ProFont for Powerline:size=12}${execi 30 [[ `cat /sys/class/ne
 ${font FontAwesome:size=24}${font}
 # This line is automatically written by the write_quotes.sh script!
 ${goto 45}${voffset -26}QoD: ${font ProFont for Powerline:size=12}${scroll 47 14 Well begun is half done. - Aristetole}
-${goto 45}${font}1 BTC = ${font ProFont for Powerline:size=12}${execi 60 curl -s https://api.coinbase.com/v2/prices/spot?currency=USD | jq '.data.amount' | sed -E 's/(,"*)//' | xargs printf "$%.2f"}${voffset -2}${font} Fear = ${font ProFont for Powerline:size=12}${execi 900  curl -s https://api.alternative.me/fng/ | jq ".data[0].value" | tr -d '"'}%
+${goto 45}${font}1 BTC = ${font ProFont for Powerline:size=12}${execi 60 curl -s https://api.coinbase.com/v2/prices/spot?currency=USD | jq '.data.amount' | sed -E 's/(,"*)//' | xargs printf "$%.2f"}${voffset -2}${font} Greed = ${font ProFont for Powerline:size=12}${execi 900  curl -s https://api.alternative.me/fng/ | jq ".data[0].value" | tr -d '"'}%
 ${execi 60 remind ~/.config/remind/reminders.rem | sed -s '/^\s*$/d' | fold -w 50}
 
 
