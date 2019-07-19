@@ -1,4 +1,4 @@
-background no
+background yes 
 update_interval 2
 cpu_avg_samples 1
 net_avg_samples 1
@@ -7,20 +7,20 @@ no_buffers yes
 text_buffer_size 2048
 own_window yes
 own_window_transparent yes
-#own_window_hints undecorated,sticky,skip_taskbar,skip_pager,below
+own_window_hints undecorated,sticky,skip_taskbar,skip_pager,below
 own_window_type override
 border_inner_margin 0
 border_outer_margin 0
 border_width 0
 minimum_size 500 300
 alignment tr
-draw_shades no
+draw_shades no 
 draw_borders no
 draw_graph_borders no 
 use_xft yes
 xftfont Roboto Condensed:size=11:style=Bold
 xftalpha 0.5
-default_color 96e1f3
+default_color 4aefd6
 color1 ffffff
 color2 ffffff
 color3 ffffff
@@ -33,9 +33,9 @@ ${execi 7200 uname -r}
 ${execi 7200 echo RAM: `free -m | grep Mem | awk '{print $2" Mb"}'`, Swap: `free -m | grep Swap | awk '{print $2" Mb"}'`}
 ${execi 99999 echo `cat /proc/cpuinfo | grep 'model name' | sed -e 's/model name.*: //' | wc -l` x `cat /proc/cpuinfo | grep 'model name' | sed -e 's/model name.*: //' | tail -n1` | fold -w 36}
 ###### CPU section ######
-${voffset 3}${font FontAwesome:size=24}${voffset -18}${font}${goto 120}${font}Temp, usage 1,2,3,4%${font Pro Font for Powerline:size=12}${goto 355}${cpu cpu3}${goto 325}${cpu cpu1}
+${voffset 3}${font FontAwesome:size=24}${voffset -18}${font}${goto 120}${font}Temp, usage 1,2,3,4%${font ProFont for Powerline:size=12}${goto 355}${cpu cpu3}${goto 325}${cpu cpu1}
 ${voffset -4}${goto 300}${acpitemp}°C${goto 375}${cpu cpu4}${goto 345}${cpu cpu2}
-${goto 220}${cpugraph 40, 170 96e1f3 8b119e}
+${goto 220}${cpugraph 40, 170 4aefd6 8b119e}
 ${voffset -70}
 ${top name 1}${top cpu 1}%
 ${top name 2}${top cpu 2}%
@@ -45,7 +45,7 @@ ${top name 5}${top cpu 5}%
 ${top name 6}${top cpu 6}%
 ###### Mem section ######
 ${voffset 16}${font FontAwesome:size=24}${voffset -12}${font}${goto 120}${font}RAM, Swap%${font ProFont for Powerline:size=12}${goto 328}${memperc}${goto 357}${swapperc}
-${goto 220}${memgraph 40, 170 96e1f3 8b119e}
+${goto 220}${memgraph 40, 170 4aefd6 8b119e}
 ${voffset -60}
 ${top_mem name 1}${top_mem mem 1}%
 ${top_mem name 2}${top_mem mem 2}%
@@ -63,8 +63,8 @@ ${font}Eth ${font ProFont for Powerline:size=12}${execi 30 [[ `cat /sys/class/ne
 ###### Calendar and misc. section ######
 ${font FontAwesome:size=24}${font}
 # This line is automatically written by the write_quotes.sh script!
-${goto 45}${voffset -26}QoD: ${font ProFont for Powerline:size=12}${scroll 47 14 Wise men speak because they have something to say; fools because they have to say something. - Plato}
-${goto 45}${font}1 BTC = ${font ProFont for Powerline:size=12}${execi 60 curl -s https://api.coinbase.com/v2/prices/spot?currency=USD | jq '.data.amount' | sed -E 's/(,"*)//' | xargs printf "$%.2f"}
+${goto 45}${voffset -26}QoD: ${font ProFont for Powerline:size=12}${scroll 47 14 Well begun is half done. - Aristetole}
+${goto 45}${font}1 BTC = ${font ProFont for Powerline:size=12}${execi 60 curl -s https://api.coinbase.com/v2/prices/spot?currency=USD | jq '.data.amount' | sed -E 's/(,"*)//' | xargs printf "$%.2f"}${voffset -2}${font} Fear = ${font ProFont for Powerline:size=12}${execi 900  curl -s https://api.alternative.me/fng/ | jq ".data[0].value" | tr -d '"'}%
 ${execi 60 remind ~/.config/remind/reminders.rem | sed -s '/^\s*$/d' | fold -w 50}
 
 
