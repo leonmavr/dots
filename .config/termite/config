@@ -1,9 +1,11 @@
 [options]
 mouse_autohide = true
 scrollback_lines = 1500
-#font = Source Code Pro 12
-font = Iosevka 11 
+#font = Source Code Pro 11
+#font = Iosevka 11 
 #font = Inconsolata 12 
+#font = Code New Roman 11
+font = Bitstream Vera Sans Mono 11
 clickable_url = true
 allow_bold = true
 audible_bell = false
@@ -11,13 +13,13 @@ bold_is_bright = true
 
 
 [colors]
-cursor = #222222
-background = #03050a
+cursor = #ff0000
+background = #090f1c
 foreground_bold = #c1f4f2
 foreground = #b5f4f1
 
 # If unset, highlight is bg and fg reversed
-# highlight = #cdcdcd
+highlight = #2b0314
 
 color0  = #000000
 color1  = #bdd2f8
@@ -25,14 +27,14 @@ color2  = #d362e2
 color3  = #a7fcf6
 color4  = #ba67cc
 color5 =  #57bfdb
-color6 =  #744252
+color6 =  #5db8d4
 color7 =  #12d5c9
 
 color8  = #444444
-color9  = #eff5ff
-color10 = #f3c2f9
-color11 = #d9f9f7
-color12 = #ca9ed3
-color13 = #a5d7e5
-color14 = #bf99a5
-color15 = #95f4ee
+color9  = #6cabc1
+color10 = #603866
+color11 = #b29fb5
+color12 = #63366d
+color13 = #316270
+color14 = #72bff2
+color15 = #0f706a
