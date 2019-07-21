@@ -59,7 +59,7 @@ font-6 = "Wuncon Siji:size=12;2"
 ; {TX} blah ${T-}
 ; X is the 1-indexed font number from above
 
-modules-left = i3 pulseaudio backlight
+modules-left = i3 pulseaudio backlight mpd
 modules-center = popup-calendar date weather notifs
 modules-right = wlan memory cpu xkeyboard battery powermenu 
 ; skype icon etc.
@@ -189,7 +189,8 @@ label-urgent-padding = ${module/bspwm.label-urgent-padding}
 
 [module/mpd]
 type = internal/mpd
-format-online = <label-song>  <icon-prev> <icon-stop> <toggle> <icon-next>
+;%{T6} %{T-}
+format-online = %{T3} %{T-}<label-song>  <icon-prev> <icon-stop> <toggle> <icon-next>
 
 icon-prev = 
 icon-stop = 
@@ -197,7 +198,7 @@ icon-play = 
 icon-pause = 
 icon-next = 
 
-label-song-maxlen = 25
+label-song-maxlen = 30
 label-song-ellipsis = true
 
 
