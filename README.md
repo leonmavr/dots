@@ -18,11 +18,11 @@ For my i3-gaps setup, the following are/want to be added
 - [x] window composition manager options (comption)
 - [x] Better .bashrc
 - [x] Better terminal options (termite config)
-- [ ] Status bar (polybar) - TODO: add current song
+- [x] Status bar (polybar) - TODO: add current song
 - [ ] Launcher (dmenu/ rofi)
 - [ ] Ranger file manager options - add key bindings and work with sxiv
 - [x] Photo viewer (sxiv) - also add hotkeys
-- [ ] Music player (mpd) options and control music from status line
+- [x] Music player (mpd) options and control music from status line
 - [x] cava music visualiser
 - [ ] configure mutt for gmail
 - [x] redshift (night light) options
