@@ -41,10 +41,11 @@ exec_always --no-startup-id conky -c ~/.config/conky/conkylua
 
 
 # change focus
-bindsym $mod+j focus left
-bindsym $mod+k focus down
-bindsym $mod+l focus up
-bindsym $mod+semicolon focus right
+# TODO: use another key
+#bindsym $mod+h focus left
+bindsym $mod+j focus down
+bindsym $mod+k focus up
+bindsym $mod+l focus right
 
 # alternatively, you can use the cursor keys:
 bindsym $mod+Left focus left
@@ -86,6 +87,7 @@ bindsym $mod+Shift+space floating toggle
 # change focus between tiling / floating windows
 bindsym $mod+space focus mode_toggle
 
+for_window [class="Yad"] floating enable"
 # Define names for default workspaces for which we configure key bindings later on.
 # We use variables to avoid repeating the names in multiple places.
 set $ws1 "1"
@@ -247,10 +249,10 @@ bindsym XF86MonBrightnessUp exec light -A 10 # increase screen brightness
 bindsym XF86MonBrightnessDown exec light -U 10 # decrease screen brightnes
 
 # Media player controls
-bindsym XF86AudioPlay exec playerctl play
-bindsym XF86AudioPause exec playerctl pause
-bindsym XF86AudioNext exec playerctl next
-bindsym XF86AudioPrev exec playerctl previous
+bindsym XF86AudioPlay exec mpc toggle 
+#bindsym XF86AudioPause exec playerctl pause
+bindsym XF86AudioNext exec mpc next
+bindsym XF86AudioPrev exec mpc prev 
 
 # XF86WebCam = Fn+F6 on my Thinkpad
 # Take screenshot of the whole screen and save to clipboard
@@ -261,4 +263,3 @@ bindsym $Mod+XF86WebCam exec import /tmp/screenshot.png; exec xclip -selection c
 bindsym XF86ScreenSaver exec ~/.config/i3lock-color/lock.sh
 
 ###############
-for_window [class="Yad"] floating enable"
