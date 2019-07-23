@@ -327,7 +327,7 @@ function! AutoHighlightToggle()
   if exists('#auto_highlight')
     au! auto_highlight
     augroup! auto_highlight
-    setl updatetime=4000
+    setl updatetime=2000
     echo 'Highlight current word: off'
     return 0
   else
