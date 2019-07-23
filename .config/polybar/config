@@ -54,12 +54,13 @@ font-3 = FontAwesome5:pixelsize=13;0
 font-4 = Siji:pixelsize=10;1
 font-5 = "Material Icons:size=13;4"
 font-6 = "Wuncon Siji:size=12;2"
+font-7 = FontAwesome:pixelsize=10;1
 ;;; HOWTO:
 ; To manually specify a font, use
 ; {TX} blah ${T-}
 ; X is the 1-indexed font number from above
 
-modules-left = i3 pulseaudio backlight mpd
+modules-left = i3 pulseaudio backlight redshift mpd
 modules-center = popup-calendar date weather notifs
 modules-right = wlan memory cpu xkeyboard battery powermenu 
 ; skype icon etc.
@@ -109,6 +110,15 @@ interval = 60
 exec = "echo "(`remind ~/.config/remind/reminders.rem | sed '/^\s*$/d' | sed -n '2,9999 p' |  wc -l`)""
 click-left = ~/.config/polybar/scripts/notifs.sh
 click-right = ~/.config/polybar/scripts/notifs_edit.sh
+
+[module/redshift]
+type = custom/script
+label=%{T3}%{T-}
+label-foreground = ${colors.foreground-alt}
+interval = once
+exec = "echo dummy msg"
+click-left = ~/.config/polybar/scripts/reshift_on.sh 3300
+click-right = redshift -x 
 
 
 [module/xwindow]
@@ -189,14 +199,17 @@ label-urgent-padding = ${module/bspwm.label-urgent-padding}
 
 [module/mpd]
 type = internal/mpd
-;%{T6} %{T-}
 format-online = %{T3} %{T-}<label-song>  <icon-prev> <icon-stop> <toggle> <icon-next>
 
-icon-prev = 
-icon-stop = 
-icon-play = 
-icon-pause = 
-icon-next = 
+icon-prev = %{T8}%{T-}
+icon-stop = %{T8}%{T-} 
+icon-play = %{T8}%{T-} 
+icon-pause = %{T8}%{T-} 
+icon-next = %{T8}%{T-} 
+icon-prev-foreground = ${colors.foreground-alt}
+icon-stop-foreground = ${colors.foreground-alt}
+icon-play-foreground = ${colors.foreground-alt}
+icon-next-foreground = ${colors.foreground-alt}
 
 label-song-maxlen = 30
 label-song-ellipsis = true
