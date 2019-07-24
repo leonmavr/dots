@@ -15,19 +15,19 @@ DATA_FILE=/tmp/weather.js
 
 get_icon(){
 	if [[ $1 == *[C\|c]lear* ]]; then
-		icon=
+		icon=
 	elif [[ $1 == *[c\|C]loud* ]]; then
-		icon=""
+		icon=
 	elif [[ $1 == *[r\|R]ain* ]]; then
-		icon=
+		icon=
 	elif [[ $1 == *[d\|D]rizzle* ]]; then
-		icon=
+		icon=
 	elif [[ $1 == *[f\|F]og* ]]; then 
 		icon=≡
 	elif [[ $1 == *[m\|M]ist* ]]; then 
 		icon=≡
 	elif [[ $1 == *[s\|S]now* ]]; then
-		icon=
+		icon=
 	elif [[ $1 == *[s\|S]torm* ]]; then
 		icon=Thunderstorm🗲
 	elif [[ $1 == *[s\|S]and* ]]; then
