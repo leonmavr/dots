@@ -252,7 +252,7 @@ click-left = ~/.config/polybar/scripts/current_song.sh
 [module/mpd]
 type = internal/mpd
 label-song = %artist% - %title%
-format-online = <icon-random> <icon-prev> <icon-stop> <toggle> <icon-next>
+format-online = <icon-repeat> <icon-random> <icon-prev> <icon-stop> <toggle> <icon-next>
 label-offline = MPD OFF 
 
 icon-prev = %{T8}%{T-}
@@ -263,7 +263,7 @@ icon-next = %{T8}%{T-}
 #icon-seekb = ⏪
 #icon-seekf = ⏩
 icon-random = %{T6}%{T-} 
-#icon-repeat = 🔁
+icon-repeat = %{T6}%{T-} 
 #icon-repeatone = 🔂
 #icon-single = 🔂
 #icon-consume = ✀
@@ -272,8 +272,7 @@ icon-stop-foreground = ${colors.foreground-alt}
 icon-play-foreground = ${colors.foreground-alt}
 icon-next-foreground = ${colors.foreground-alt}
 icon-pause-foreground = ${colors.foreground-alt}
-#icon-random-foreground = ${colors.foreground-alt}
-
+icon-repeat-foreground = ${colors.foreground-alt}
 
 ; Used to display the state of random/repeat/repeatone/single
 ; Only applies if <icon-[random|repeat|repeatone|single]> is used
