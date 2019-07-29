@@ -17,7 +17,8 @@
 ;==========================================================
 
 [colors]
-background = #6603050a
+#background = #6603050a
+background = #ff090f1c
 background1 = #22449966
 foreground = #c1edff
 icons = #60819b
@@ -30,16 +31,16 @@ secondary = #89bcc4
 [bar/top]
 ;monitor = ${env:MONITOR:HDMI-1}
 width = 100%
-height = 29
-;offset-x = 1%
+height = 30
+;offset-x = -8%
 ;offset-y = 1%
-radius = 5.0
+radius = 10.0
 fixed-center = true 
 background = ${colors.background}
 foreground = ${colors.foreground}
 line-size = 0
 line-color = #000000
-border-size = 0
+border-size = 4
 border-color = #00000000
 padding-left = 2
 padding-right = 2
@@ -67,10 +68,10 @@ modules-right = wlan memory cpu xkeyboard battery powermenu
 ; skype icon etc.
 tray-position = right
 
-wm-restack = i3
+wm-restack = i3 
 
 cursor-click = pointer
-cursor-scroll = ns-resize
+cursor-scroll = ns-scroll 
 
 [module/date]
 type = internal/date
@@ -175,7 +176,7 @@ icon-5 = 6;
 icon-6 = 7;
 icon-7 = 8;
 icon-8 = 9;
-icon-default = 
+icon-default = 0 
 
 format = <label-state>
 label-active = %icon%
@@ -183,13 +184,13 @@ label-occupied = %icon%
 label-urgent = %icon%
 label-empty = %icon%
 
-label-occupied-padding = 2
-label-empty-padding = 2
-label-urgent-padding = 2
-label-active-padding = 2
+label-occupied-padding = 0
+label-empty-padding = 0
+label-urgent-padding = 0
+label-active-padding = 0
 
 label-active-foreground = ${colors.primary}
-label-urgent-foreground = ${colors.primary}
+label-urgent-foreground = ${colors.alert}
 label-empty-foreground = ${colors.foreground-alt}
 label-occupied-foreground = ${colors.foreground-alt}
 
@@ -229,7 +230,6 @@ label-urgent-padding = ${module/bspwm.label-urgent-padding}
 
 ; Separator in between workspaces
 ; label-separator = |
-
 
 
 
