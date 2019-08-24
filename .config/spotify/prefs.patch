@@ -1,0 +1,7 @@
+--- prefs	2019-08-24 17:57:44.907071157 +0300
++++ prefs.new	2019-08-24 17:57:44.907071157 +0300
+@@ -12,3 +12,4 @@
+ core.clock_delta=0
+ app.last-launched-version="1.1.10.546.ge08ef575"
+ app.autostart-configured=true
++storage.size=1600
