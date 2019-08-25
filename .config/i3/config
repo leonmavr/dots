@@ -226,6 +226,7 @@ mode "apps" {
 assign [class="Firefox"] $ws2
 assign [class="Thunar"] $ws3
 assign [class="Skype"] $ws4
+for_window [title="^Spotify*"] move to workspace $ws3
 
 ########## Window style ##########
 # Gaps around windows
@@ -236,6 +237,7 @@ gaps outer 0
 # No borders
 new_window none 
 new_float none
+#border_radius 20
 
 ########## Hotkeys ##########
 # Run `xev` to find out the hardware name of each key
