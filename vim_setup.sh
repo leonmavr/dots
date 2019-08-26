@@ -88,8 +88,9 @@ cd fonts
 # Themes and appearance
 #----------------------------------------------------------#
 cd
-echo "Installing Twilight theme..."
+echo "Installing colour schemes..."
 wget "https://www.vim.org/scripts/download_script.php?src_id=10496" -O ~/.vim/colors/twilight.vim
+wget "https://raw.githubusercontent.com/wolf-dog/nighted.vim/master/colors/nighted.vim" ~/.vim/colors/nighted.vim
 wget "https://www.vim.org/scripts/download_script.php?src_id=14937" -O ~/.vim/colors/twilight256.vim
 echo "Adding vimrc..."
 wget "https://raw.githubusercontent.com/0xLeo/dotfiles/master/.vimrc" -O ~/.vimrc

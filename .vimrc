@@ -207,6 +207,7 @@ set lazyredraw
 set autoread
 " make splits equal size"
 set equalalways 
+autocmd VimResized * wincmd =
 
 "-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 " (S) Colors, themes, fonts
@@ -221,7 +222,7 @@ if  s:use_custom_themes!=0
         colorscheme twilight
         set guifont=Source\ Code\ Pro\ 14
     else
-        colorscheme twilight256
+        colorscheme nighted 
         hi StatusLine ctermbg=2 ctermfg=8 " overwr status line
     endif
 endif
@@ -414,3 +415,5 @@ autocmd FileType tex vnoremap ,i xi\textit{}<Esc>P
 ""Exceptions
 autocmd FileType * if &ft != 'py'| imap "" ""<Left>
 autocmd FileType * if &ft != 'py'| imap '' ''<Left>
+execute pathogen#infect()
+set tags=tags
