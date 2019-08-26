@@ -125,7 +125,7 @@ fi
 ################################################
 # New commands/ overwrite system commands 
 ################################################
-function ping() {
+ping() {
     if [[ $# -eq 0 ]] ; then
         command ping -c 4 8.8.8.8
     else
@@ -133,15 +133,15 @@ function ping() {
     fi
 }
 
-function find() {
+find() {
     command find "$@" 2>&1 | grep -v "Permission denied"
 }
 
-function findhere(){
+findhere(){
     find . -name "$1" 2>&1 | grep -v "Permission denied"
 }
 
-function mdcd() {
+mdcd() {
     mkdir $1 && cd $1
 }
 
@@ -195,7 +195,7 @@ up(){
 }
 
 # credits https://serverfault.com/a/5551
-function fawk {
+fawk() {
     first="awk '{print "
     last="}'"
     cmd="${first}\$${1}${last}"
@@ -207,7 +207,7 @@ function fawk {
 # Currently only uses the hardcoded interface names
 # source https://www.digitalocean.com/community/questions/what-are-your-favorite-bash-aliases
 # TODO: fix 
-function myip()
+myip()
 {
     extIp=$(dig +short myip.opendns.com @resolver1.opendns.com)
 
@@ -228,7 +228,7 @@ function myip()
 
 # source https://www.digitalocean.com/community/questions/what-are-your-favorite-bash-aliases
 # Syntax: "repeat [X] [command]"
-function repeat()
+repeat()
 {
     local i max
     max=$1; shift;
@@ -283,6 +283,7 @@ alias start-cron='systemctl start cronie'
 
 alias vimrc='vim ~/.vimrc'
 alias bashrc='vim ~/.bashrc'
+alias svim='sudo vim'
 
 alias record-screen="ffmpeg -video_size `xrandr | grep *+ | awk '{print $1}'` -b:v 1M -framerate 30 -f x11grab -i :0.0+0,0 /tmp/output.mp4"
 
