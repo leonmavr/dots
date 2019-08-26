@@ -415,5 +415,3 @@ autocmd FileType tex vnoremap ,i xi\textit{}<Esc>P
 ""Exceptions
 autocmd FileType * if &ft != 'py'| imap "" ""<Left>
 autocmd FileType * if &ft != 'py'| imap '' ''<Left>
-execute pathogen#infect()
-set tags=tags
