@@ -72,7 +72,7 @@ export HISTTIMEFORMAT='(%d/%m, %H:%M) '
 shopt -s cmdhist
 # supress anything by adding space in front of the command
 # don't save one or two-letter commands, etc
-export HISTIGNORE="pwd:exit:clear:history:\
+export HISTIGNORE="pwd:exit:clear:history*:\
         [ \t]*:?:??:[bf]g:neofetch:ufetch"
 # search history with arrow keys
 bind '"\e[A": history-search-backward'
@@ -284,7 +284,7 @@ alias start-cron='systemctl start cronie'
 alias vimrc='vim ~/.vimrc'
 alias bashrc='vim ~/.bashrc'
 
-alias record-screen="ffmpeg -video_size `xrandr | grep *+ | awk '{print $1}'` -framerate 30 -f x11grab -i :0.0+0,0 /tmp/output.mp4"
+alias record-screen="ffmpeg -video_size `xrandr | grep *+ | awk '{print $1}'` -b:v 1M -framerate 30 -f x11grab -i :0.0+0,0 /tmp/output.mp4"
 
 alias ..='cd ..'
 alias ...='cd ../../'
