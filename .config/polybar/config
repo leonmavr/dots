@@ -64,7 +64,7 @@ font-8 = "Weather Icons:size=12;1"
 
 modules-left = i3 pulseaudio backlight redshift current_song mpd
 modules-center = popup-calendar date weather notifs
-modules-right = wlan memory cpu xkeyboard battery powermenu 
+modules-right = wlan memory cpu xkeyboard battery powerrofi 
 ; skype icon etc.
 tray-position = right
 
@@ -93,16 +93,10 @@ interval = 60
 click-left = ~/.config/polybar/scripts/calendar-popup.sh --popup
 
 [module/weather]
-#format-prefix= 
-#format-prefix-foreground = ${colors.foreground-alt}
-#label=MET: 
-#label-foreground = ${colors.foreground}  
 type = custom/script
-exec = ~/.config/polybar/scripts/weather.sh lindau de 
-#click-left = ~/.config/polybar/scripts/weather.sh lindau de 
+exec = ~/.config/polybar/scripts/weather.sh munich de 
 exec-if = ping openweathermap.org -c 1
 interval = 600
-;label-font = 4
 
 [module/notifs]
 type = custom/script
@@ -434,6 +428,13 @@ animation-discharging-4 = 
 animation-discharging-foreground = ${colors.foreground-alt}
 animation-discharging-framerate = 750
 
+[module/powerrofi]
+type = custom/script
+format-prefix= 
+format-prefix-foreground = ${colors.foreground-alt}
+interval = 60
+exec = echo " " 
+click-left = ~/.config/polybar/scripts/powerrofi.sh
 
 [module/powermenu]
 type = custom/menu
