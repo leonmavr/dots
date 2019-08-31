@@ -6,7 +6,7 @@ selected=`echo "Shut down
 Sleep" | rofi -dmenu -p "" -theme purple -location 3 -width 15  -separator-style none -hide-scrollbar -font "Roboto Condensed 11" -lines 4 -yoffset 34`
 
 if [[ $selected == *[S\|s]hut* ]]; then
-	poweroff
+	shutdown -h now
 elif [[ $selected == *[R\|r]eboot* ]]; then
 	reboot
 elif [[ $selected == *[L\|l]ock* ]]; then
