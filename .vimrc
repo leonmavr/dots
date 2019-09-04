@@ -321,6 +321,9 @@ imap hhh <Esc>
 imap kkk <Esc>
 " something overwrote a
 nmap a $i<Right>
+" re-select visual block after identing it
+vnoremap < <gv
+vnoremap > >gv
 " Leader+h to auto-highlight word under cursor
 nnoremap <leader>h :if AutoHighlightToggle()<Bar>set hls<Bar>endif<CR>
 function! AutoHighlightToggle()
