@@ -72,11 +72,15 @@ export HISTTIMEFORMAT='(%d/%m, %H:%M) '
 shopt -s cmdhist
 # supress anything by adding space in front of the command
 # don't save one or two-letter commands, etc
-export HISTIGNORE="pwd:exit:clear:history*:\
-        [ \t]*:?:??:[bf]g:neofetch:ufetch"
+export HISTIGNORE="pwd*:exit*:clear*:history*:ls*\
+        [ \t]*:?:??:[bf]g:neofetch:ufetch:ll*"
+
+###### Key binds - these could also be in ~/.inputrc ######
 # search history with arrow keys
 bind '"\e[A": history-search-backward'
 bind '"\e[B": history-search-forward'
+# case-insensitive cd
+bind 'set completion-ignore-case on'
 
 
 # colored GCC warnings and errors
@@ -87,6 +91,8 @@ stty -ixon
 
 # autocomplete only dirs
 complete -d cd
+# fix minor typos in cd
+shopt -s cdspell
 
 # cd always followed by ls
 # credits @pyratebeard
@@ -141,19 +147,25 @@ findhere(){
     find . -name "$1" 2>&1 | grep -v "Permission denied"
 }
 
-mdcd() {
-    mkdir $1 && cd $1
+grephere(){
+	grep -rnw . -e "$1"
 }
 
-######################################
+mdcd() {
+    mkdir '$1' && cd '$1'
+}
+
+# need to make sure the directory is in .ncmpcpp's config
 # @arg1: directory with mp3 files
-######################################
 function music_from_dir() {
     # make sure mpd is running
     [ -z `pgrep mpd` ]  && mpd
     # clear playlist and add all files
     mpc clear
+	SAVEIFS=$IFS
+	IFS=$(echo -en "\n\b")
     ls "$1" | mpc add
+	IFS=$SAVEIFS
     ncmpcpp
 }
 
@@ -163,6 +175,7 @@ extract () {
         case "$1" in
             *.tar.bz2) tar xvjf "$1" ;;
             *.tar.gz) tar xvzf "$1" ;;
+            *.tar.xz) tar xf "$1" ;;
             *.bz2) bunzip2 "$1" ;;
             *.rar) unrar x "$1" ;;
             *.gz) gunzip "$1" ;;
@@ -258,10 +271,11 @@ fi
 alias gdb='gdb -q'
 
 # list files
-alias ll='ls -alF'
+alias ll='ls -alFh'
 alias la='ls -A'
 alias l='ls -CF'
-alias lltr='ls -lhtr'
+alias lll='ls -lhtr'
+alias llla='ls -lhtrA'
 
 alias pacman='sudo pacman'
 # for the next 2 commands, see sudoers - they don't need pwd!
@@ -285,7 +299,7 @@ alias vimrc='vim ~/.vimrc'
 alias bashrc='vim ~/.bashrc'
 alias svim='sudo vim'
 
-alias record-screen="ffmpeg -video_size `xrandr | grep *+ | awk '{print $1}'` -b:v 1M -framerate 30 -f x11grab -i :0.0+0,0 /tmp/output.mp4"
+alias record-screen="ffmpeg -video_size `xrandr | grep *+ | awk '{print $1}'` -framerate 30 -f x11grab -i :0.0+0,0 /tmp/output.mp4"
 
 alias ..='cd ..'
 alias ...='cd ../../'
@@ -297,6 +311,14 @@ if [ ! -z /usr/bin/remind ]; then
     alias remind-get='remind ~/.config/remind/reminders.rem'
     alias remind-edit='vim ~/.config/remind/reminders.rem'
 fi
+
+alias ga='git add'
+alias grm='git rm'
+alias gcm='git commit -m'
+alias gpo='git push origin'
+alias gch='git checkout'
+alias gba='git branch -a'
+alias gbr='git checkout -b'
 
 
 ## correct time

@@ -18,7 +18,7 @@
 
 [colors]
 #background = #6603050a
-background = #ff090f1c
+background = #ff03060c
 background1 = #22449966
 foreground = #c1edff
 icons = #60819b
@@ -93,10 +93,16 @@ interval = 60
 click-left = ~/.config/polybar/scripts/calendar-popup.sh --popup
 
 [module/weather]
+#format-prefix= 
+#format-prefix-foreground = ${colors.foreground-alt}
+#label=MET: 
+#label-foreground = ${colors.foreground}  
 type = custom/script
-exec = ~/.config/polybar/scripts/weather.sh munich de 
+exec = ~/.config/polybar/scripts/weather.sh 
+#click-left = ~/.config/polybar/scripts/weather.sh lindau de 
 exec-if = ping openweathermap.org -c 1
 interval = 600
+;label-font = 4
 
 [module/notifs]
 type = custom/script

@@ -14,7 +14,7 @@ bold_is_bright = true
 
 [colors]
 cursor = #ff0000
-background = #090f1c
+background = #03060c
 foreground_bold = #c1f4f2
 foreground = #b5f4f1
 
