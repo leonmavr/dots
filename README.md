@@ -1,15 +1,14 @@
-# dotfiles
-This repository contains dotfiles for various setups.  
-The top level contains files that can be used in any setup and the subdirectories contain specific ones.
+## This setup
+Based around Arch, i3-gaps window manager, termite terminal emulator and Polybar.
 
 ## Usage
+This repository contains dotfiles for various setups.  
+The top level contains files that can be used in any setup and the subdirectories contain specific ones.  
+
 To use them, simply copy them in your system, assuming that this repository is the home directory.  
 Vim plugins and configs can be installed by their own installler script.
 
 ## Things I want my setup to include
-
-For my i3-gaps setup, the following are/want to be added
-
 - [x] Set i3 config (key bindings etc.)
 - [x] Good vim configuration with syntax checking, auto-complete etc.
 - [x] Window options - gap distance, key bindings etc.
@@ -36,7 +35,7 @@ For my i3-gaps setup, the following are/want to be added
 | ------------- | ------------- | -------------| ------------- |
 | conky (system monitor) | ![alt text](https://raw.githubusercontent.com/0xLeo/assets/master/dotfiles/arch-i3-gaps/conky_04-07-19.png)  | <ul><li>https://github.com/0xLeo/dotfiles/tree/master/arch-i3-gaps/.config/conky</li><li>https://github.com/0xLeo/dotfiles/tree/master/arch-i3-gaps/.lua/scripts</li></ul> | <ul><li>conky</lu><li>lua</li><li>conky-lua</li><li>jq</li><li>remind</li><li>Font Awesome</li></ul> |
 | vim  | ![alt text](https://raw.githubusercontent.com/0xLeo/assets/master/dotfiles/arch-i3-gaps/vim_22-05-19.png)  | <ul><li>https://github.com/0xLeo/dotfiles/blob/master/.vimrc</li><li>https://github.com/0xLeo/dotfiles/blob/master/vim_setup.sh</li></ul>| Explained in installer script | 
-| polybar (status bar)  | ![alt text](https://raw.githubusercontent.com/0xLeo/assets/master/dotfiles/arch-i3-gaps/polybar_15-06-19.png)  | https://github.com/0xLeo/dotfiles/tree/master/arch-i3-gaps/.config/polybar| <ul><li>font awesome</li><li>ttf-material-design-icons</li><li>jq</li><li>rofi</li><li>yad</li><li>remind</li></ul> | 
+| polybar (status bar)  | ![alt text](https://raw.githubusercontent.com/0xLeo/assets/master/dotfiles/arch-i3-gaps/polybar.png)  | https://github.com/0xLeo/dotfiles/tree/master/arch-i3-gaps/.config/polybar| <ul><li>font awesome</li><li>ttf-material-design-icons</li><li>jq</li><li>rofi</li><li>yad</li><li>remind</li></ul> | 
 | cava (music visualiser)  | ![alt text](https://raw.githubusercontent.com/0xLeo/assets/master/dotfiles/arch-i3-gaps/cava_04-07-19.png)  | https://github.com/0xLeo/dotfiles/tree/master/arch-i3-gaps/.config/cava | <ul><li>[cava](https://github.com/karlstav/cava)</li></ul> | 
 | compton (window compositor) | ![alt text](https://raw.githubusercontent.com/0xLeo/assets/master/dotfiles/arch-i3-gaps/compton_04-07-19.png)  | <ul><li>(opacity only) https://github.com/0xLeo/dotfiles/blob/master/arch-i3-gaps/.compton</li><li>(blur) https://github.com/0xLeo/dotfiles/tree/master/arch-i3-gaps/.config/compton</li></ul> | <ul><li>(if you want blur) [tyrone144's fork](https://github.com/tryone144/compton)</li></ul> | 
 
