@@ -25,7 +25,7 @@ get_icon(){
 	elif [[ $1 == *[f\|F]og* ]]; then 
 		icon=≡
 	elif [[ $1 == *[m\|M]ist* ]]; then 
-		icon=≡
+		icon=
 	elif [[ $1 == *[s\|S]now* ]]; then
 		icon=
 	elif [[ $1 == *[s\|S]torm* ]]; then
