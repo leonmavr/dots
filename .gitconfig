@@ -1,0 +1,32 @@
+[user]
+	email = 0xleo@gmail.com
+	name = 0xleo
+[push]
+	default = current
+[core]
+	editor = vim
+[alias]
+	a = add -A
+	al = add --all
+	ba = branch -a
+	cl = clone
+	cm = commit -m
+	cma = commit --ammend
+	co = checkout
+	cob = checkout -b
+	d = diff
+	deleted = ls-files --deleted
+	f = fetch
+	fu = !git fetch `git upstream-remote`
+	l = log --pretty=custom
+	lg = log --graph --pretty=custom
+	modified = ls-files --modified
+	pl = pull
+	pname = config --local remote.origin.url|sed -n 's#.*/\([^.]*\)\.git#\1#p'
+	ps = push
+	sh = stash
+	st = status
+	staged = ls-files --staged
+	untracked = ls-files --other --exclude-standard
+[pretty]
+	custom = "%C(magenta)%h%C(red)%d %C(yellow)%ar %C(green)%s %C(yellow)(%an)"
