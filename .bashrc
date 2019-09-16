@@ -312,14 +312,6 @@ if [ ! -z /usr/bin/remind ]; then
     alias remind-edit='vim ~/.config/remind/reminders.rem'
 fi
 
-alias ga='git add'
-alias grm='git rm'
-alias gcm='git commit -m'
-alias gpo='git push origin'
-alias gch='git checkout'
-alias gba='git branch -a'
-alias gbr='git checkout -b'
-
 
 ## correct time
 # timedatectl set-ntp true
