@@ -1,5 +1,5 @@
 ## This setup
-Based around Arch, i3-gaps window manager, termite terminal emulator and Polybar.
+Based around Arch, i3-gaps window manager, termite terminal emulator running Bash and Polybar.
 
 ## Usage
 This repository contains dotfiles for various setups.  
@@ -38,4 +38,5 @@ Vim plugins and configs can be installed by their own installler script.
 | polybar (status bar)  | ![alt text](https://raw.githubusercontent.com/0xLeo/assets/master/dotfiles/arch-i3-gaps/polybar.png)  | https://github.com/0xLeo/dotfiles/tree/master/arch-i3-gaps/.config/polybar| <ul><li>font awesome</li><li>ttf-material-design-icons</li><li>jq</li><li>rofi</li><li>yad</li><li>remind</li></ul> | 
 | cava (music visualiser)  | ![alt text](https://raw.githubusercontent.com/0xLeo/assets/master/dotfiles/arch-i3-gaps/cava_04-07-19.png)  | https://github.com/0xLeo/dotfiles/tree/master/arch-i3-gaps/.config/cava | <ul><li>[cava](https://github.com/karlstav/cava)</li></ul> | 
 | compton (window compositor) | ![alt text](https://raw.githubusercontent.com/0xLeo/assets/master/dotfiles/arch-i3-gaps/compton_04-07-19.png)  | <ul><li>(opacity only) https://github.com/0xLeo/dotfiles/blob/master/arch-i3-gaps/.compton</li><li>(blur) https://github.com/0xLeo/dotfiles/tree/master/arch-i3-gaps/.config/compton</li></ul> | <ul><li>(if you want blur) [tyrone144's fork](https://github.com/tryone144/compton)</li></ul> | 
+| i3-gaps (window manager) | TODO  | ![alt text](https://github.com/0xLeo/dotfiles/blob/arch-i3-gaps/.config/i3/config) | <ul><li>wpa_supplicant (pacman)</li><li>wireless_tools (pacman)</li><li>networkmanager (pacman)</li><li>network-manager-applet (pacman)</li><li>gnome-keyring (pacman)</li><li>gnome-keyring (pacman)</li><li>xev</li><li>other optional startup programs; see my config</li></ul> | 
 
