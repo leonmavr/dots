@@ -282,6 +282,9 @@ vnoremap <leader>' xi''<Esc>P
 vnoremap <leader>{ xi{}<Esc>P
 vnoremap <leader>} xi{}<Esc>P
 
+"" Undo is u. So map redo to U
+nnoremap U <C-R>
+
 "" Other mappings
 " <zz> to save
 " <qq> to quit after saving
