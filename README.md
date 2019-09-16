@@ -1,5 +1,5 @@
 ## This setup
-Based around Arch, i3-gaps window manager, termite terminal emulator and Polybar.
+Based around Arch, i3-gaps window manager, termite terminal emulator running Bash and Polybar.
 
 ## Usage
 This repository contains dotfiles for various setups.  
