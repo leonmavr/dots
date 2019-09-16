@@ -39,6 +39,7 @@ exec_always --no-startup-id synclient TapButton1=1
 exec_always systemctl start cronie 
 exec_always --no-startup-id ~/.config/polybar/startup.sh
 exec_always --no-startup-id conky -c ~/.config/conky/conkylua
+exec_always --no-startup-id nm-applet 
 
 
 # change focus
