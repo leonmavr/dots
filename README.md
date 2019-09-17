@@ -42,7 +42,7 @@ Vim plugins and configs can be installed by their own installler script.
 
 
 ## Notes regarding packages
-* `light` and `acpilight` conflict, meaning that they use the same rules file. For example, if `light` is installed and you try to install `acpilight`. If you have both of them, they also break the update (`pacman -Syu`).
+* `light` and `acpilight` conflict, meaning that they use the same rules file. For example, if `light` is installed and you try to install `acpilight` the following error is shown. If you have both of them, they also break the update (`pacman -Syu`).
 ```
 acpilight: /usr/lib/udev/rules.d/90-backlight.rules exists in filesystem (owned by light)
 ```
