@@ -40,3 +40,10 @@ Vim plugins and configs can be installed by their own installler script.
 | compton (window compositor) | ![alt text](https://raw.githubusercontent.com/0xLeo/assets/master/dotfiles/arch-i3-gaps/compton_04-07-19.png)  | <ul><li>(opacity only) https://github.com/0xLeo/dotfiles/blob/master/arch-i3-gaps/.compton</li><li>(blur) https://github.com/0xLeo/dotfiles/tree/master/arch-i3-gaps/.config/compton</li></ul> | <ul><li>(if you want blur) [tyrone144's fork](https://github.com/tryone144/compton)</li></ul> | 
 | i3-gaps (window manager) | TODO  | ![alt text](https://github.com/0xLeo/dotfiles/blob/arch-i3-gaps/.config/i3/config) | <ul><li>wpa_supplicant (pacman)</li><li>wireless_tools (pacman)</li><li>networkmanager (pacman)</li><li>network-manager-applet (pacman)</li><li>gnome-keyring (pacman)</li><li>gnome-keyring (pacman)</li><li>xev</li><li>other optional startup programs; see my config</li></ul> | 
 
+
+## Notes regarding packages
+* `light` and `acpilight` conflict, meaning that they use the same rules file. For example, if `light` is installed and you try to install `acpilight`. If you have both of them, they also break the update (`pacman -Syu`).
+```
+acpilight: /usr/lib/udev/rules.d/90-backlight.rules exists in filesystem (owned by light)
+```
+
