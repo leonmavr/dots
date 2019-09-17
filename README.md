@@ -46,4 +46,8 @@ Vim plugins and configs can be installed by their own installler script.
 ```
 acpilight: /usr/lib/udev/rules.d/90-backlight.rules exists in filesystem (owned by light)
 ```
-
+* I like to use keyboard keys to change my brightness, but `light` needs admin rights and password. To remove the need for password, use visudo and add the following line:
+```
+# visudo
+yourusername ALL=(ALL) NOPASSWD: /usr/bin/light
+```
