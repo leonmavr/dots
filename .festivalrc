@@ -1,4 +1,5 @@
 ; Speech synthesis config - just for fun :)
 ; requires packages `festival` and `festival-english`
+; See Arch wiki on how to configure alsa/ pulsestudio
 (Parameter.set 'Audio_Method 'Audio_Command)
 (Parameter.set 'Audio_Command "aplay -q -c 1 -t raw -f s16 -r $SR $FILE")
