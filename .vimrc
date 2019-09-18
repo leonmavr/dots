@@ -411,13 +411,14 @@ autocmd Filetype python nnoremap <Leader>b oimport pdb; pdb.set_trace()<Esc>j
 "auto-source upon saving
 autocmd! bufwritepost .vimrc source %
 "" Tex
-"TODO: make bold, italic
 autocmd FileType tex inoremap $$ $$<Left>
 autocmd FileType tex inoremap \[ \[<esc>o<esc>o<bs>\]<esc>ki<tab>
 autocmd FileType tex vnoremap ,$ xi$$<Esc>P
 autocmd FileType tex vnoremap ,b xi\textbf{}<Esc>P
 autocmd FileType tex vnoremap ,i xi\textit{}<Esc>P
-
+"" Bash
+autocmd Filetype sh inoremap <F5> <esc>:w!<cr>:!clear;bash %<cr>
+autocmd Filetype sh noremap <F5> :w!<cr>:!clear;bash %<cr>
 ""Exceptions
 autocmd FileType * if &ft != 'py'| imap "" ""<Left>
 autocmd FileType * if &ft != 'py'| imap '' ''<Left>
