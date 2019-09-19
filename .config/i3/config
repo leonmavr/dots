@@ -225,7 +225,8 @@ mode "apps" {
 }
 
 ########## Send apps to specific workspaces ##########
-assign [class="Firefox"] $ws2
+# do `xprop` to find out class name
+assign [class="firefox*"] $ws2
 assign [class="Thunar"] $ws3
 assign [class="Skype"] $ws4
 for_window [title="^Spotify*"] move to workspace $ws3
@@ -249,8 +250,8 @@ bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume 0 -5% #d
 bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute 0 toggle # mute sound
 
 # Sreen brightness controls - use `light` from AUR
-bindsym XF86MonBrightnessUp exec light -A 10 # increase screen brightness
-bindsym XF86MonBrightnessDown exec light -U 10 # decrease screen brightnes
+bindsym XF86MonBrightnessUp exec sudo light -A 10 # increase screen brightness
+bindsym XF86MonBrightnessDown exec sudo light -U 10 # decrease screen brightnes
 
 # Media player controls
 bindsym XF86AudioPlay exec mpc toggle 
