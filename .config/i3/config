@@ -23,8 +23,7 @@ bindsym $mod+q kill
 # The (new) i3-dmenu-desktop which only displays applications
 # shipping a .desktop file. It is a wrapper around dmenu, so you need that installed.
 bindsym $mod+d exec --no-startup-id i3-dmenu-desktop
-#bindsym $mod+d exec "rofi -combi-modi window,drun -show combi -modi combi -theme purple"
-
+# rofi -modi "window#run#ssh" -show drun -show-icons
 
 ########## Startup ##########
 exec_always --no-startup-id compton -b --config ~/.config/compton/config_blur > /dev/null 2>&1 
@@ -266,5 +265,7 @@ bindsym XF86WebCam exec scrot /tmp/screenshot.png; exec xclip -selection clipboa
 bindsym $Mod+XF86WebCam exec import /tmp/screenshot.png; exec xclip -selection clipboard -t image/png -i /tmp/screenshot.png
 # Fn+F3 => lock 
 bindsym XF86ScreenSaver exec ~/.config/i3lock-color/lock.sh
+# F2 => toggle touchpad - useful when I write
+bindsym F2 exec ~/.config/misc/toggle_touchpad.sh
 
 ###############
