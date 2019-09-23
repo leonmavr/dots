@@ -420,7 +420,7 @@ autocmd FileType tex vnoremap ,i xi\textit{}<Esc>P
 "" Bash
 autocmd Filetype sh inoremap <F5> <esc>:w!<cr>:!clear;bash %<cr>
 autocmd Filetype sh noremap <F5> :w!<cr>:!clear;bash %<cr>
-autocad Filetype sh imap `` ``<esc>i
+autocmd Filetype sh imap `` ``<esc>i
 ""Exceptions
 autocmd FileType * if &ft != 'py'| imap "" ""<Left>
 autocmd FileType * if &ft != 'py'| imap '' ''<Left>
