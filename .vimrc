@@ -404,8 +404,9 @@ autocmd Filetype python set expandtab
 autocmd Filetype python set foldmethod=indent
 "Disable folding by default
 set nofoldenable
-" <Leader>b = breakpoint
+" <Leader>b = breakpoint, <Leader>B deletes them all
 autocmd Filetype python nnoremap <Leader>b oimport pdb; pdb.set_trace()<Esc>j
+autocmd Filetype python nnoremap <Leader>B :g/pdb.set_trace/d<cr>
 " TODO: <Leader>B = delete all breakpoints
 "" vimrc  o n l y
 "auto-source upon saving
@@ -419,6 +420,7 @@ autocmd FileType tex vnoremap ,i xi\textit{}<Esc>P
 "" Bash
 autocmd Filetype sh inoremap <F5> <esc>:w!<cr>:!clear;bash %<cr>
 autocmd Filetype sh noremap <F5> :w!<cr>:!clear;bash %<cr>
+autocad Filetype sh imap `` ``<esc>i
 ""Exceptions
 autocmd FileType * if &ft != 'py'| imap "" ""<Left>
 autocmd FileType * if &ft != 'py'| imap '' ''<Left>
