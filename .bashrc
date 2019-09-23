@@ -60,6 +60,11 @@ fi
 # make less more friendly for non-text input files, see lesspipe(1)
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 
+# git - autcomplete branches
+if [ -f ~/.git-completion.bash ]; then
+  . ~/.git-completion.bash
+fi
+
 ###### History is the best documentation ######
 # Don't put duplicate lines or lines starting with space in the history.
 export HISTCONTROL=ignoreboth
@@ -104,7 +109,7 @@ cd() {
 # Make sure env variables in prompt get expanded
 shopt -s promptvars 
 # custom PS1
-export PS1='\[\033[38;5;197m\]⌌ \[$(tput bold)\][\u@\h:${PWD#"${PWD%/*/*}/"}] :$(git branch 2>/dev/null | grep '^*' | colrm 1 2)\n⌎ \[$(tput sgr0)\]\[$(tput sgr0)\]'
+export PS1='\[\033[38;5;197m\]╭ \[$(tput bold)\][\u@\h:${PWD#"${PWD%/*/*}/"}] :$(git branch 2>/dev/null | grep '^*' | colrm 1 2)\n╰ \[$(tput sgr0)\]\[$(tput sgr0)\]'
 # open programs that require windows
 export DISPLAY=:0
 
@@ -114,7 +119,7 @@ function ps1(){
         export PS1="\[$(tput bold)\]\[\033[38;5;197m\] \[$(tput sgr0)\]"
         clear
     else
-        export PS1='\[\033[38;5;197m\]⌌ \[$(tput bold)\][\u@\h:${PWD#"${PWD%/*/*}/"}] :$(git branch 2>/dev/null | grep '^*' | colrm 1 2)\n⌎ \[$(tput sgr0)\]\[$(tput sgr0)\]'
+		export PS1='\[\033[38;5;197m\]╭ \[$(tput bold)\][\u@\h:${PWD#"${PWD%/*/*}/"}] :$(git branch 2>/dev/null | grep '^*' | colrm 1 2)\n╰ \[$(tput sgr0)\]\[$(tput sgr0)\]'
     fi
 }
 
