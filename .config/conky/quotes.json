@@ -1,20 +1,215 @@
-#!/bin/bash
-
-
-######################################
-# select message based on current day
-######################################
-sec=`date +%s`
-day=`echo $sec/3600/24 | bc`
-RAND=$day
-N_MSG=`cat ~/.config/conky/quotes.json | jq '.quotes | length'`
-
-RAND_PER_DAY=`RANDOM=$day;echo $RANDOM`
-
-rand_ind=`echo "$RAND_PER_DAY%$N_MSG" | bc`
-# TODO: decide a path!
-out_to_conky=`cat ~/.config/conky/quotes.json | jq ".quotes[$rand_ind].message" | tr -d '"'`
-echo `cat ~/.config/conky/quotes.json | jq ".quotes[$rand_ind].message"`
-
-# good so far
- sed -i "/scroll/c\${goto 45}\${voffset -26}QoD: \${font ProFont for Powerline:size=12}\${scroll 47 14 $out_to_conky}" ~/.config/conky/conkylua
+{
+	"quotes":
+	[
+		{
+			"firstName": "Saint",
+			"lastName": "Ignucius",
+			"message": "I bless your computer, my child!"
+		},
+		{
+			"firstName": "Richard",
+			"lastName": "Stallman",
+			"message": "Proprietary software tends to have malicious features. The point is with a proprietary program, when the users don't have the source code, we can never tell. So you must consider every proprietary program as potential malware."
+		},
+		{
+			"firstName": "Richard",
+			"lastName": "Stallman",
+			"message": "Facebook is not your friend, it is a surveillance engine."
+		},
+		{
+			"firstName": "Richard",
+			"lastName": "Stallman",
+			"message": "One reason you should not use web applications to do your computing is that you lose control."
+		},
+		{
+			"firstName": "",
+			"lastName": "Socrates",
+			"message": "He is the richest who is content with the least."
+		},
+		{
+			"firstName": "Diogenes of Sinope",
+			"lastName": "",
+			"message": "It is the privilege of the gods to want nothing, and of godlike men to want little."
+		},
+		{
+			"firstName": "Anon",
+			"lastName": "",
+			"message": "Hone your virgin wizard energy. The only reason that someone like McCaffe can get anything done is because of fat wizards. Look at the most optimal programmers: Linus, and Stallman. They're fat. Know why? Because they spend all day staring at a computer screen mastering the blade. Easy minimal fitness: pushups, situps, intermittent fasting, cut soda. Don't waste time being overly fit. Study the blade. Spend time watching star trek not some fucking autist classical music shit. Obviously read as much manga as you possibly can. Manga is the ultimate virgin autism. Use emacs. Study the blade. STUDY THE BLADE. REEEEEEEEEEEEEEEEEEEEEEEEEE"
+		},
+		{
+			"firstName": "Albert",
+			"lastName": "Camus",
+			"message": "If we believe in nothing, if nothing has any meaning and if we can affirm no values whatsoever, then everything is possible and nothing has any importance."
+		},
+		{
+			"firstName": "Friedrich",
+			"lastName": "Nietzsche",
+			"message": " The individual has always had to struggle to keep from being overwhelmed by the tribe. If you try it, you will be lonely often, and sometimes frightened. But no price is too high to pay for the privilege of owning yourself."
+		},
+		{
+			"firstName": "Jules",
+			"lastName": "Winnfield",
+			"message": "Say what again! SAY WHAT AGAIN! I dare you! I double dare you muthafucka! Say what one more goddamn time!"
+		},
+		{
+			"firstName": "Plato",
+			"lastName": "",
+			"message": "Wise men speak because they have something to say; fools because they have to say something."
+		},
+		{
+			"firstName": "Plato",
+			"lastName": "",
+			"message": "Those who are able to see beyond the shadows and lies of their culture will never be understood, let alone believed, by the masses."
+		},
+		{
+			"firstName": "Pythagoras",
+			"lastName": "",
+			"message": "Say not a little with a lot, but a lot with a little."
+		},
+		{
+			"firstName": "Hesiod",
+			"lastName": "",
+			"message": "If you add little to little, and do so repeatedly, it will very quickly become much. "
+		},
+		{
+			"firstName": "Aristetole",
+			"lastName": "",
+			"message": "Well begun is half done."
+		},
+		{
+			"firstName": "Richard",
+			"lastName": "Feynmann",
+			"message": "Study hard what interests you the most in the most undisciplined, irreverent and original manner possible."
+		},
+		{
+			"firstName": "Richard",
+			"lastName": "Feynmann",
+			"message": "I don't know what's the matter with people: they don't learn by understanding, they learn by some other way — by rote or something. Their knowledge is so fragile!"
+		},
+		{
+			"firstName": "William",
+			"lastName": "Shakespeare",
+			"message": "Life's but a walking shadow, a poor player, that struts and frets his hour upon the stage, and then is heard no more; it is a tale told by an idiot, full of sound and fury, signifying nothing."
+		},
+		{
+			"firstName": "Alexander Graham",
+			"lastName": "Bell",
+			"message": "When one door closes, another opens; but we often look so long and so regretfully upon the closed door that we do not see the one that has opened for us."
+		},
+		{
+			"firstName": "Oscar",
+			"lastName": "Wilde",
+			"message": "To live is the rarest thing in the world. Most people exist, that is all."
+		},
+		{
+			"firstName": "Dennis",
+			"lastName": "Kimbro",
+			"message": "Life is 10% what happens to us and 90% how we react to it."
+		},
+		{
+			"firstName": "Steve",
+			"lastName": "Jobs",
+			"message": "Your time is limited, so don't waste it living someone else's life. "
+		},
+		{
+			"firstName": "Walter",
+			"lastName": "Bagehot",
+			"message": "The great pleasure in life is doing what people say you cannot do. "
+		},
+		{
+			"firstName": "William",
+			"lastName": "Yeats",
+			"message": "Do not wait to strike till the iron is hot; but make it hot by striking."
+		},
+		{
+			"firstName": "Socrates",
+			"lastName": "",
+			"message": "People learn more on their own rather than being force fed."
+		},
+		{
+			"firstName": "Seth",
+			"lastName": "Godin",
+			"message": "If it scares you, it might be a good thing to try."
+		},
+		{
+			"firstName": "Og",
+			"lastName": "Mandino",
+			"message": "Failure will never overtake me if my determination to succeed is strong enough."
+		},
+		{
+			"firstName": "Mark",
+			"lastName": "Twain",
+			"message": "Never let formal education get in the way of your learning."
+		},
+		{
+			"firstName": "Clive Staples",
+			"lastName": "Lewis",
+			"message": "Isn't it funny how day by day nothing changes but, when we look back everything is different."
+		},
+		{
+			"firstName": "Frank",
+			"lastName": "Roosevelt",
+			"message": "A smooth sea never made a skilled sailor"
+		},
+		
+		{
+			"firstName": "Steve",
+			"lastName": "Maraboli",
+			"message": "Why let go of yesterday? Because yesterday has already let go of you."
+		},
+		{
+			"firstName": "Roy",
+			"lastName": "Bennet",
+			"message": "Instead of worrying about what you cannot control, shift your energy to what you can create."
+		},
+		{
+			"firstName": "Miyamoto",
+			"lastName": "Musashi",
+			"message": "Do not regret what you have done."
+		},
+		{
+			"firstName": "Miyamoto",
+			"lastName": "Musashi",
+			"message": "Do not act following customary beliefs."
+		},
+		{
+			"firstName": "The first requirement in taking a step in the right direction is to take a step in some direction.",
+			"lastName": "Brault",
+			"message": "Robert"
+		},
+		{
+			"firstName": "Peter",
+			"lastName": "Marshall",
+			"message": "Small deeds done are better than great deeds planned."
+		},
+		{
+			"firstName": "",
+			"lastName": "Bodhidharma",
+			"message": "All know the way; few actually walk it."
+		},
+		{
+			"firstName": "George",
+			"lastName": "Martin",
+			"message": "When you tear out a man's tongue, you are not proving him a liar, you're only telling the world that you fear what he might say."
+		},
+		{
+			"firstName": "Edward",
+			"lastName": "Snowden",
+			"message": "I grew up with the understanding that the world I lived in was one where people enjoyed a sort of freedom to communicate with each other in privacy, without it being monitored, without it being measured or analyzed or sort of judged by these shadowy figures or systems, any time they mention anything that travels across public lines."
+		},
+		{
+			"firstName": "Edward",
+			"lastName": "Snowden",
+			"message": "I do not want to live in a world where everything I do and say is recorded. That is not something I am willing to support or live under."
+		},
+		{
+			"firstName": "Julian",
+			"lastName": "Assagne",
+			"message": "What are the differences between Mark Zuckerberg and me? I give private information on corporations to you for free, and I'm a villain. Zuckerberg gives your private information to corporations for money and he’s Man of the Year."
+		},
+			"firstName": "Julian",
+			"lastName": "Assagne",
+			"message": "Dont shoot the messenger for revealing uncomfortable truths."
+		}
+	]
+}

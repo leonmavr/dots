@@ -22,8 +22,8 @@ bindsym $mod+q kill
 
 # The (new) i3-dmenu-desktop which only displays applications
 # shipping a .desktop file. It is a wrapper around dmenu, so you need that installed.
-bindsym $mod+d exec --no-startup-id i3-dmenu-desktop
-# rofi -modi "window#run#ssh" -show drun -show-icons
+#bindsym $mod+d exec --no-startup-id i3-dmenu-desktop
+bindsym $mod+d exec rofi -modi "window#run#ssh#drun" -show drun -columns 2 
 
 ########## Startup ##########
 exec_always --no-startup-id compton -b --config ~/.config/compton/config_blur > /dev/null 2>&1 
