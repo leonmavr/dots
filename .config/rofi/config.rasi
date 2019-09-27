@@ -1,7 +1,7 @@
 configuration {
 /*	modi: "window,run,ssh";*/
 /*	width: 50;*/
-	lines: 12;
+/*	lines: 12;*/
 /*	columns: 1;*/
 	font: "Roboto Condensed 13";
 /*	bw: 1;*/
@@ -139,7 +139,7 @@ configuration {
 /*	ml-row-right: "ScrollRight";*/
 /*	ml-row-up: "ScrollUp";*/
 /*	ml-row-down: "ScrollDown";*/
-/*	me-select-entry: "MousePrimary";*/
-/*	me-accept-entry: "MouseDPrimary";*/
+	me-select-entry: "";
+	me-accept-entry: "MousePrimary";
 /*	me-accept-custom: "Control+MouseDPrimary";*/
 }
