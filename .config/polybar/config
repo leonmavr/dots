@@ -124,7 +124,7 @@ label=%{T6}%{T-}
 label-foreground = ${colors.foreground-alt}
 interval = 500 
 exec = "echo dummy msg"
-click-left = ~/.config/polybar/scripts/reshift_on.sh 3300
+click-left = ~/.config/polybar/scripts/screen_temp_rofi.sh
 click-right = redshift -x 
 
 
