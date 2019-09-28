@@ -16,5 +16,6 @@ temp=`echo $selected | grep -Eo [0-9]*`
 
 if [ ! -z $temp ]; then
 	redshift -x
+	sleep 1
 	redshift -O $temp
 fi
