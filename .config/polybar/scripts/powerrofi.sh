@@ -12,7 +12,7 @@ elif [[ $selected == *[R\|r]eboot* ]]; then
 	reboot
 elif [[ $selected == *[L\|l]ock* ]]; then
 	~/.config/i3lock-color/lock.sh &&\
-		sleep 10 &&\
+		sleep 3 &&\
 		xset dpms force off
 elif [[ $selected == *[L\|l]og* ]]; then
 	logout
