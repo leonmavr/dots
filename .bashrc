@@ -157,7 +157,7 @@ grephere(){
 }
 
 mdcd() {
-    mkdir '$1' && cd '$1'
+    mkdir "$1" && cd "$1"
 }
 
 # need to make sure the directory is in .ncmpcpp's config
@@ -306,6 +306,8 @@ alias svim='sudo vim'
 
 alias record-screen="ffmpeg -video_size `xrandr | grep *+ | awk '{print $1}'` -framerate 30 -f x11grab -i :0.0+0,0 /tmp/output.mp4"
 
+alias md='mkdir'
+
 alias ..='cd ..'
 alias ...='cd ../../'
 alias ....='cd ../../../'
@@ -316,6 +318,8 @@ if [ ! -z /usr/bin/remind ]; then
     alias remind-get='remind ~/.config/remind/reminders.rem'
     alias remind-edit='vim ~/.config/remind/reminders.rem'
 fi
+
+alias uf='ufetch'
 
 
 ## correct time
