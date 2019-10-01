@@ -157,7 +157,7 @@ grephere(){
 }
 
 mdcd() {
-    mkdir "$@" && cd "$@"
+    mkdir "$1" && cd "$1"
 }
 
 # need to make sure the directory is in .ncmpcpp's config
@@ -255,6 +255,10 @@ repeat()
     done
 }
 
+#! /bin/bash
+function pacfield() {
+    pacman -Qi | awk -vF="$@" -F':' 'BEGIN{p="^"F} $0~p{print $2}'
+}
 
 ################################################
 # My aliases
@@ -319,6 +323,7 @@ if [ ! -z /usr/bin/remind ]; then
     alias remind-edit='vim ~/.config/remind/reminders.rem'
 fi
 
+alias pac-by-date='pr -tm <(pacfield Name) <(date --file=<(pacfield "Install Date") +%F) | sort -k2 -d'
 alias uf='ufetch'
 
 
