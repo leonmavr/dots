@@ -157,7 +157,7 @@ grephere(){
 }
 
 mdcd() {
-    mkdir "$1" && cd "$1"
+    mkdir "$@" && cd "$@"
 }
 
 # need to make sure the directory is in .ncmpcpp's config
