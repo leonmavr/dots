@@ -80,18 +80,13 @@ shopt -s cmdhist
 export HISTIGNORE="pwd*:exit*:clear*:history*:ls*\
         [ \t]*:?:??:[bf]g:neofetch:ufetch:ll*"
 
-###### Key binds - these could also be in ~/.inputrc ######
-# search history with arrow keys
-bind '"\e[A": history-search-backward'
-bind '"\e[B": history-search-forward'
 # case-insensitive cd
 bind 'set completion-ignore-case on'
-
 
 # colored GCC warnings and errors
 export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 
-# keymaps don't work:
+# Ctr+S and Ctr+Q do nothing so I can use them in vim 
 stty -ixon
 
 # autocomplete only dirs
