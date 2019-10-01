@@ -19,7 +19,7 @@ Vim plugins and configs can be installed by their own installler script.
 - [x] Better terminal options (termite config)
 - [x] Status bar (polybar) - TODO: add current song
 - [x] Program launcher (rofi)
-- [ ] Ranger file manager options - add key bindings and work with sxiv
+- [ ] ~~Ranger file manager options - add key bindings and work with sxiv~~
 - [x] Photo viewer (sxiv) - also add hotkeys
 - [x] Music player (mpd) options and control music from status line
 - [x] cava music visualiser
