@@ -323,7 +323,9 @@ if [ ! -z /usr/bin/remind ]; then
     alias remind-edit='vim ~/.config/remind/reminders.rem'
 fi
 
+# list packages by chronological order
 alias pac-by-date='pr -tm <(pacfield Name) <(date --file=<(pacfield "Install Date") +%F) | sort -k2 -d'
+
 alias uf='ufetch'
 
 
