@@ -1,11 +1,5 @@
-# @file: .bashrc
-# @author: 0xleo
-# @OS: Arch
-
-
-################################################
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -   
 # Config files
-################################################
 export I3CONFIG=~/.config/i3/config
 #export I3STATUS=~/.config/i3status/config
 export TERMITECONFIG=~/.config/termite/config
@@ -26,9 +20,8 @@ export FILECRON=/var/spool/cron/$USER
 export MPDCONFIG=~/.config/mpd/mpd.conf
 
 
-################################################
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -   
 # Default apps
-################################################
 if [ -z "$TERM" ]; then
     export TERM=termite
 fi
@@ -36,9 +29,9 @@ export PAGER=/usr/bin/more
 export EDITOR=`which vim`
 
 
-################################################
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -   
 # General behaviour 
-################################################
+
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 case $- in
@@ -65,7 +58,10 @@ if [ -f ~/.git-completion.bash ]; then
   . ~/.git-completion.bash
 fi
 
-###### History is the best documentation ######
+
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -   
+# History options
+
 # Don't put duplicate lines or lines starting with space in the history.
 export HISTCONTROL=ignoreboth
 export HISTSIZE=5000
@@ -80,30 +76,30 @@ shopt -s cmdhist
 export HISTIGNORE="pwd*:exit*:clear*:history*:ls*\
         [ \t]*:?:??:[bf]g:neofetch:ufetch:ll*"
 
-# colored GCC warnings and errors
-export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
+
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -   
+# Shopt (autcompletion) etc. options
+
 
 # Ctr+S and Ctr+Q do nothing so I can use them in vim 
 stty -ixon
 
 # autocomplete only dirs
 complete -d cd
+
 # fix minor typos in cd
 shopt -s cdspell
 
-# cd always followed by ls
-# credits @pyratebeard
-# https://www.reddit.com/r/linux/comments/7oc5mt/what_are_some_useful_things_you_put_on_your/ds8q7yg?utm_source=share&utm_medium=web2x
-cd() {
-    builtin cd "$@" && ls -lA
-}
-
 # Make sure env variables in prompt get expanded
 shopt -s promptvars 
-# custom PS1
-export PS1='\[\033[38;5;197m\]╭ \[$(tput bold)\][\u@\h:${PWD#"${PWD%/*/*}/"}] :$(git branch 2>/dev/null | grep '^*' | colrm 1 2)\n╰ \[$(tput sgr0)\]\[$(tput sgr0)\]'
 # open programs that require windows
 export DISPLAY=:0
+
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -   
+# Appearance
+
+# custom PS1
+export PS1='\[\033[38;5;197m\]╭ \[$(tput bold)\][\u@\h:${PWD#"${PWD%/*/*}/"}] :$(git branch 2>/dev/null | grep '^*' | colrm 1 2)\n╰ \[$(tput sgr0)\]\[$(tput sgr0)\]'
 
 # toggle betwen a short(1 char) and a full PS1 - 40 just empirical
 function ps1(){
@@ -115,42 +111,12 @@ function ps1(){
     fi
 }
 
-# needs `thefuck` https://github.com/nvbn/thefuck
-# correct mistyped commands by typing one of the following
-if [ ! -z `which thefuck` ]; then
-    eval $(thefuck --alias)
-    eval $(thefuck --alias shit)
-    eval $(thefuck --alias frick)
-    eval $(thefuck --alias omg)
-    eval $(thefuck --alias lolno)
-fi
+# colored GCC warnings and errors
+export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 
-################################################
-# New commands/ overwrite system commands 
-################################################
-ping() {
-    if [[ $# -eq 0 ]] ; then
-        command ping -c 4 8.8.8.8
-    else
-        command ping "$@"
-    fi
-}
 
-find() {
-    command find "$@" 2>&1 | grep -v "Permission denied"
-}
-
-findhere(){
-    find . -name "$1" 2>&1 | grep -v "Permission denied"
-}
-
-grephere(){
-	grep -rnw . -e "$1"
-}
-
-mdcd() {
-    mkdir "$1" && cd "$1"
-}
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -   
+# Custom commands and aliases
 
 # need to make sure the directory is in .ncmpcpp's config
 # @arg1: directory with mp3 files
@@ -164,52 +130,6 @@ function music_from_dir() {
     ls "$1" | mpc add
 	IFS=$SAVEIFS
     ncmpcpp
-}
-
-# credits https://serverfault.com/a/3842
-extract () {
-    if [ -f "$1" ] ; then
-        case "$1" in
-            *.tar.bz2) tar xvjf "$1" ;;
-            *.tar.gz) tar xvzf "$1" ;;
-            *.tar.xz) tar xf "$1" ;;
-            *.bz2) bunzip2 "$1" ;;
-            *.rar) unrar x "$1" ;;
-            *.gz) gunzip "$1" ;;
-            *.tar) tar xvf "$1" ;;
-            *.tbz2) tar xvjf "$1" ;;
-            *.tgz) tar xvzf "$1" ;;
-            *.zip) unzip "$1" ;;
-            *.Z) uncompress "$1" ;;
-            *.7z) 7z x "$1" ;;
-            *) echo "don't know how to extract '$1'..." ;;
-        esac
-    else
-        echo "'$1' is not a valid file!"
-    fi
-}
-
-# credits https://serverfault.com/a/28649
-up(){
-    local d=""
-    limit=$1
-    for ((i=1 ; i <= limit ; i++))
-    do
-        d=$d/..
-    done
-    d=$(echo $d | sed 's/^\///')
-    if [ -z "$d" ]; then
-        d=..
-    fi
-    cd $d
-}
-
-# credits https://serverfault.com/a/5551
-fawk() {
-    first="awk '{print "
-    last="}'"
-    cmd="${first}\$${1}${last}"
-    eval $cmd
 }
 
 # Get IPs associated with this site
@@ -236,57 +156,32 @@ myip()
     echo "WAN IP: $extIp"
 }
 
-# source https://www.digitalocean.com/community/questions/what-are-your-favorite-bash-aliases
-# Syntax: "repeat [X] [command]"
-repeat()
-{
-    local i max
-    max=$1; shift;
-    for ((i=1; i <= max ; i++)); do # --> C-like syntax
-        eval "$@";
-    done
-}
-
 #! /bin/bash
 function pacfield() {
     pacman -Qi | awk -vF="$@" -F':' 'BEGIN{p="^"F} $0~p{print $2}'
 }
 
-################################################
-# My aliases
-################################################
-alias h='history'
 
-# coloured commands                             
-if [ -x /usr/bin/dircolors ]; then
-    alias ls='ls --color=auto'
-    alias fgrep='fgrep --color=auto'
-    alias egrep='egrep --color=auto'
-    alias grep='grep -I --color=auto'
-    alias diff='diff --color'
-else
-    alias grep='grep -I'
+# needs `thefuck` https://github.com/nvbn/thefuck
+# correct mistyped commands by typing one of the following
+if [ ! -z `which thefuck` ]; then
+    eval $(thefuck --alias)
+    eval $(thefuck --alias shit)
+    eval $(thefuck --alias frick)
+    eval $(thefuck --alias omg)
+    eval $(thefuck --alias lolno)
 fi
 
-# silent gdb
-alias gdb='gdb -q'
 
-# list files
-alias ll='ls -alFh'
-alias la='ls -A'
-alias l='ls -CF'
-alias lll='ls -lhtr'
-alias llla='ls -lhtrA'
+### General aliases
+[ -f ~/.bash_aliases ] && . ~/.bash_aliases
 
+
+### OS-specific aliases
 alias pacman='sudo pacman'
-# for the next 2 commands, see sudoers - they don't need pwd!
-alias wifi-radar='sudo wifi-radar'
-alias wifi-menu='sudo wifi-menu'
+alias pac='sudo pacman'
 
-alias mex='chmod u+x'
-alias mwr='chmod u+w'
 alias bat-level='cat /sys/class/power_supply/BAT0/capacity'
-alias py='python'
 # e.g. timezone Europe/Berlin
 alias timezone='timedatectl set-timezone'
 
@@ -296,18 +191,8 @@ alias restart-compton='killall compton;compton -b --config $COMPTONCONFIG'
 # from cronie package
 alias start-cron='systemctl start cronie'
 
-alias vimrc='vim ~/.vimrc'
-alias bashrc='vim ~/.bashrc'
-alias svim='sudo vim'
-
 alias record-screen="ffmpeg -video_size `xrandr | grep *+ | awk '{print $1}'` -framerate 30 -f x11grab -i :0.0+0,0 /tmp/output.mp4"
 
-alias md='mkdir'
-
-alias ..='cd ..'
-alias ...='cd ../../'
-alias ....='cd ../../../'
-alias .....='cd ../../../..'
 
 if [ ! -z /usr/bin/remind ]; then
     alias remind-get-month='remind -c1 ~/.config/remind/reminders.rem'
@@ -325,8 +210,6 @@ alias uf='ufetch'
 # timedatectl set-ntp true
 ## send notification
 # dbus-launch notify-send "Hello"
-## calendar
-# yad --calendar
 # tex snippets:
 # /home/first/.vim/bundle/vim-snippets/UltiSnips/tex.snippets
 # /home/first/.vim/bundle/vim-snippets/snippets/tex.snippets
