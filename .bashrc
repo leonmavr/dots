@@ -25,7 +25,8 @@ export MPDCONFIG=~/.config/mpd/mpd.conf
 if [ -z "$TERM" ]; then
     export TERM=termite
 fi
-export PAGER=/usr/bin/more
+
+export PAGER=/usr/bin/less
 export EDITOR=`which vim`
 
 
@@ -156,7 +157,6 @@ myip()
     echo "WAN IP: $extIp"
 }
 
-#! /bin/bash
 function pacfield() {
     pacman -Qi | awk -vF="$@" -F':' 'BEGIN{p="^"F} $0~p{print $2}'
 }
