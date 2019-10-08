@@ -41,7 +41,7 @@ Vim plugins and configs can be installed by their own installler script.
 | i3-gaps (window manager) | TODO  | ![alt text](https://github.com/0xLeo/dotfiles/blob/arch-i3-gaps/.config/i3/config) | <ul><li>wpa_supplicant (pacman)</li><li>wireless_tools (pacman)</li><li>networkmanager (pacman)</li><li>network-manager-applet (pacman)</li><li>gnome-keyring (pacman)</li><li>gnome-keyring (pacman)</li><li>xev</li><li>other optional startup programs; see my config</li></ul> | 
 
 
-## Notes regarding packages
+## System maintanance tips/ issues
 * `light` and `acpilight` conflict, meaning that they use the same rules file. For example, if `light` is installed and you try to install `acpilight` the following error is shown. If you have both of them, they also break the update (`pacman -Syu`).
 ```
 acpilight: /usr/lib/udev/rules.d/90-backlight.rules exists in filesystem (owned by light)
@@ -51,3 +51,4 @@ acpilight: /usr/lib/udev/rules.d/90-backlight.rules exists in filesystem (owned 
 # visudo
 yourusername ALL=(ALL) NOPASSWD: /usr/bin/light
 ```
+* Run `pacman -Sc` once in a while to remove old cached versions of installed packages.
