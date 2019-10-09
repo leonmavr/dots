@@ -100,7 +100,7 @@ repeat()
 # credits @pyratebeard
 # https://www.reddit.com/r/linux/comments/7oc5mt/what_are_some_useful_things_you_put_on_your/ds8q7yg?utm_source=share&utm_medium=web2x
 cd() {
-    builtin cd "$@" && ls -lA
+    builtin cd "$@" && ls -lAh
 }
 
 
