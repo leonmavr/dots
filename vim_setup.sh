@@ -83,6 +83,9 @@ git clone https://github.com/powerline/fonts
 cd fonts
 ./install.sh
 
+echo "Installing Doxygen toolkit..."
+wget "https://raw.githubusercontent.com/vim-scripts/DoxygenToolkit.vim/master/plugin/DoxygenToolkit.vim" -O ~/.vim/plugin/DoxygenToolkit.vim
+
 
 #----------------------------------------------------------#
 # Themes and appearance
