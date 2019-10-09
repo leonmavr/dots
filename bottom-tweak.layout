@@ -1,0 +1,171 @@
+[Toplevel top]
+orientation=top
+expand=true
+size=24
+
+[Toplevel toplevel-0]
+orientation=bottom
+expand=false
+size=49
+
+[Object topmenumatepanelapplet]
+locked=true
+position=48
+panel-right-stick=false
+toplevel-id=top
+applet-iid=TopMenuMatePanelAppletFactory::TopMenuMatePanelApplet
+object-type=applet
+
+[Object notificationarea]
+locked=true
+position=50
+panel-right-stick=true
+toplevel-id=top
+applet-iid=NotificationAreaAppletFactory::NotificationArea
+object-type=applet
+
+[Object clockapplet]
+locked=true
+position=40
+panel-right-stick=true
+toplevel-id=top
+applet-iid=ClockAppletFactory::ClockApplet
+object-type=applet
+
+[Object shutdown]
+action-type=shutdown
+locked=true
+position=0
+panel-right-stick=true
+toplevel-id=top
+object-type=action
+
+[Object menu]
+locked=false
+position=197
+panel-right-stick=false
+toplevel-id=toplevel-0
+object-type=menu
+
+[Object workspaceswitcherapplet]
+locked=false
+position=0
+panel-right-stick=false
+toplevel-id=toplevel-0
+applet-iid=WnckletFactory::WorkspaceSwitcherApplet
+object-type=applet
+
+[Object trashapplet]
+locked=false
+position=245
+panel-right-stick=false
+toplevel-id=toplevel-0
+applet-iid=TrashAppletFactory::TrashApplet
+object-type=applet
+
+[Object shutdown]
+action-type=shutdown
+locked=false
+position=24
+panel-right-stick=true
+toplevel-id=toplevel-0
+object-type=action
+
+[Object dockapplet]
+locked=false
+position=315
+panel-right-stick=false
+toplevel-id=toplevel-0
+applet-iid=DockAppletFactory::DockApplet
+object-type=applet
+
+[Object clockapplet]
+locked=false
+position=680
+panel-right-stick=false
+toplevel-id=toplevel-0
+applet-iid=ClockAppletFactory::ClockApplet
+object-type=applet
+
+[Object battstatapplet]
+locked=false
+position=642
+panel-right-stick=false
+toplevel-id=toplevel-0
+applet-iid=BattstatAppletFactory::BattstatApplet
+object-type=applet
+
+[Object indicatorapplet]
+locked=false
+position=536
+panel-right-stick=false
+toplevel-id=toplevel-0
+applet-iid=IndicatorAppletFactory::IndicatorApplet
+object-type=applet
+
+[Object separator]
+locked=false
+position=708
+panel-right-stick=false
+toplevel-id=toplevel-0
+object-type=separator
+
+[Object separator]
+locked=false
+position=305
+panel-right-stick=false
+toplevel-id=toplevel-0
+object-type=separator
+
+[Object separator]
+locked=false
+position=642
+panel-right-stick=false
+toplevel-id=toplevel-0
+object-type=separator
+
+[Object separator]
+locked=false
+position=295
+panel-right-stick=false
+toplevel-id=toplevel-0
+object-type=separator
+
+[Object separator]
+locked=false
+position=698
+panel-right-stick=false
+toplevel-id=toplevel-0
+object-type=separator
+
+[Object separator]
+locked=false
+position=652
+panel-right-stick=false
+toplevel-id=toplevel-0
+object-type=separator
+
+[Object logout]
+action-type=logout
+locked=false
+position=750
+panel-right-stick=false
+toplevel-id=toplevel-0
+object-type=action
+
+[Object showdesktopapplet]
+locked=false
+position=664
+panel-right-stick=false
+toplevel-id=toplevel-0
+applet-iid=WnckletFactory::ShowDesktopApplet
+object-type=applet
+
+[Object stickynotesapplet]
+locked=false
+position=616
+panel-right-stick=false
+toplevel-id=toplevel-0
+applet-iid=StickyNotesAppletFactory::StickyNotesApplet
+object-type=applet
+
