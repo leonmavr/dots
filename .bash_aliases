@@ -25,20 +25,6 @@ mdcd() {
     mkdir "$1" && cd "$1"
 }
 
-# need to make sure the directory is in .ncmpcpp's config
-# @arg1: directory with mp3 files
-function music_from_dir() {
-    # make sure mpd is running
-    [ -z `pgrep mpd` ]  && mpd
-    # clear playlist and add all files
-    mpc clear
-	SAVEIFS=$IFS
-	IFS=$(echo -en "\n\b")
-    ls "$1" | mpc add
-	IFS=$SAVEIFS
-    ncmpcpp
-}
-
 # credits https://serverfault.com/a/3842
 extract () {
     if [ -f "$1" ] ; then
@@ -132,8 +118,6 @@ alias mex='chmod u+x'
 alias mwr='chmod u+w'
 alias py='python'
 
-
-
 alias vimrc='vim ~/.vimrc'
 alias bashrc='vim ~/.bashrc'
 alias svim='sudo vim'
@@ -144,3 +128,4 @@ alias ..='cd ..'
 alias ...='cd ../../'
 alias ....='cd ../../../'
 alias .....='cd ../../../..'
+alias cd-='cd -'
