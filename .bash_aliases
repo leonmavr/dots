@@ -114,6 +114,8 @@ alias la='ls -A'
 alias l='ls -CF'
 alias lll='ls -lhtr'
 alias llla='ls -lhtrA'
+alias n='ls -la . | wc -l'
+
 alias mex='chmod u+x'
 alias mwr='chmod u+w'
 alias py='python'
