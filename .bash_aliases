@@ -114,6 +114,8 @@ alias la='ls -A'
 alias l='ls -CF'
 alias lll='ls -lhtr'
 alias llla='ls -lhtrA'
+# credits: piffey on reddit
+alias lsmod="ls -la --color | awk '{k=0;for(i=0;i<=8;i++)k+=((substr(\$1,i+2,1)~/[rwx]/)*2^(8-i));if(k)printf(\" %0o \",k);print}'"
 alias n='ls -la . | wc -l'
 
 alias mex='chmod u+x'
