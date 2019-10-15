@@ -38,7 +38,7 @@ wget "https://www.vim.org/scripts/download_script.php?src_id=19375" -O ~/.vim/au
 echobold "Installing Syntastic..."
 cd ~/.vim/bundle && \
 git clone --depth=1 https://github.com/vim-syntastic/syntastic.git
-echobold "execute pathogen#infect()" >> ~/.vimrc
+echo "execute pathogen#infect()" >> ~/.vimrc
 vim +Helptags +qall
 
 echobold "Installlig NERDTree..."
@@ -50,7 +50,7 @@ cd ~/.vim
 git clone https://github.com/kien/ctrlp.vim.git bundle/ctrlp.vim
 vim +helptags ~/.vim/bundle/ctrlp.vim/doc +qall
 echobold "Configuring ctags..."
-echobold "set tags=tags" >> ~/.vimrc
+echo "set tags=tags" >> ~/.vimrc
 
 echobold "Installing Jedi..."
 git clone --recursive https://github.com/davidhalter/jedi-vim.git ~/.vim/bundle/jedi-vim
