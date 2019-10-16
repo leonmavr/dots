@@ -89,6 +89,10 @@ cd() {
     builtin cd "$@" && ls -lAh
 }
 
+nn() {
+	cat "$1" | wc -l
+}
+
 
 ### Aliases
 
@@ -114,17 +118,20 @@ alias la='ls -A'
 alias l='ls -CF'
 alias lll='ls -lhtr'
 alias llla='ls -lhtrA'
-# credits: piffey on reddit
-alias lsmod="ls -la --color | awk '{k=0;for(i=0;i<=8;i++)k+=((substr(\$1,i+2,1)~/[rwx]/)*2^(8-i));if(k)printf(\" %0o \",k);print}'"
+alias cll='clear; ll'
+alias clll='clear; lll'
+alias cllla='clear; llla' 
 alias n='ls -la . | wc -l'
 
 alias mex='chmod u+x'
 alias mwr='chmod u+w'
 alias py='python'
 
+alias edit='vim'
 alias vimrc='vim ~/.vimrc'
 alias bashrc='vim ~/.bashrc'
 alias svim='sudo vim'
+alias v='vim'
 
 alias md='mkdir'
 
