@@ -89,6 +89,15 @@ cd() {
     builtin cd "$@" && ls -lAh
 }
 
+function n() {
+	if [ #$ -eq 0 ]
+	then 
+		ls -l . | wc -l
+	else
+		ls -l "$1" | wc -l
+	fi
+}
+
 nn() {
 	cat "$1" | wc -l
 }
@@ -121,7 +130,8 @@ alias llla='ls -lhtrA'
 alias cll='clear; ll'
 alias clll='clear; lll'
 alias cllla='clear; llla' 
-alias n='ls -la . | wc -l'
+# credits: piffey on reddit
+alias lsmod="ls -lah --color | awk '{k=0;for(i=0;i<=8;i++)k+=((substr(\$1,i+2,1)~/[rwx]/)*2^(8-i));if(k)printf(\" %0o \",k);print}'"
 
 alias mex='chmod u+x'
 alias mwr='chmod u+w'
@@ -130,6 +140,7 @@ alias py='python'
 alias edit='vim'
 alias vimrc='vim ~/.vimrc'
 alias bashrc='vim ~/.bashrc'
+alias .b='. ~/.bashrc'
 alias svim='sudo vim'
 alias v='vim'
 
