@@ -89,15 +89,6 @@ cd() {
     builtin cd "$@" && ls -lAh
 }
 
-function n() {
-	if [ #$ -eq 0 ]
-	then 
-		ls -l . | wc -l
-	else
-		ls -l "$1" | wc -l
-	fi
-}
-
 nn() {
 	cat "$1" | wc -l
 }
@@ -132,6 +123,7 @@ alias clll='clear; lll'
 alias cllla='clear; llla' 
 # credits: piffey on reddit
 alias lsmod="ls -lah --color | awk '{k=0;for(i=0;i<=8;i++)k+=((substr(\$1,i+2,1)~/[rwx]/)*2^(8-i));if(k)printf(\" %0o \",k);print}'"
+alias n='ls -l | grep ^- | wc -l'
 
 alias mex='chmod u+x'
 alias mwr='chmod u+w'
