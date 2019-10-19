@@ -34,7 +34,9 @@ if s:enable_plugins != 0
     let g:syntastic_check_on_wq = 0
     let g:pymode_lint = 1
     let g:pyemode_lint_on_write = 0
-    let g:syntastic_loc_list_height=5
+    let g:syntastic_python_checkers=['flake8']
+	let g:syntastic_python_flake8_args='--ignore=E101,E111,E112,E113,E114,E115,E116,E121,E122,E123,E124,E125,E126,E127,E128,E129,E131,E133,E201,E202,E203,E211,E221,E222,E223,E224,E225,E226,E227,E228,E231,E241,E242,E251,E261,E262,E265,E266,E271,E272,E273,E274,E301,E302,E303,E304,E401,E402,E501,E502,E701,E702,E703,E704,E711,E712,E713,E714,E721,E731,E901,E902,W191,W291,W292,W293,W391,W503,W601,W602,W603,W604'
+	let g:syntastic_loc_list_height=6
     "" Nerdtree - start automatically
     autocmd StdinReadPre * let s:std_in=1
     autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
@@ -104,8 +106,6 @@ if s:enable_plugins != 0
     " pressing F7 toggles distractions
     nmap <F7> :Goyo<CR>
     imap <F7> <Esc>:Goyo<CR>i
-	"" Doxygen toolking
-	" Put the cursor on a function declaration and run :Dox
 endif
 
 
@@ -303,12 +303,12 @@ inoremap {<space> {}<Left>
 inoremap {{ {}<Left>
 inoremap (<space> ()<Left>
 inoremap (( ()<Left>
+inoremap )) ()<Left>
 inoremap [[ []<Left>
+inoremap ]] []<Left>
 inoremap [<space> []<Left>
 inoremap "<space> ""<Left>
 inoremap '<space> ''<Left>
-
-
 
 if s:auto_close_brackets!=0
     " see here: https://stackoverflow.com/a/34992101
@@ -389,6 +389,7 @@ autocmd BufNewFile *.{h,hpp} call <SID>insert_gates()
 
 " Visual mode select and then comment (/**/) with Backspace
 autocmd Filetype c,cpp,h,hpp vnoremap <BS> meomsv`ea */<Esc>`si/* <Esc>`e4l"
+autocmd Filetype c,cpp,h,hpp inoremap <Leader>ii #include <><Esc>i
 autocmd Filetype c imap <F5> <Esc>:w<CR>:!clear;gcc % -std=c99 -lm;./a.out<CR>
 autocmd Filetype c nmap <F5> <Esc>:w<CR>:!clear;gcc % -std=c99 -lm;./a.out<CR>
 autocmd Filetype c,cpp inoremap "" ""<Left>
