@@ -15,3 +15,6 @@ set show-all-if-ambiguous on
 # ctr + left/right to move word
 "\e[1;5D" backward-word 
 "\e[1;5C" forward-word
+
+# disable annoying bell sound
+set bell-style none
