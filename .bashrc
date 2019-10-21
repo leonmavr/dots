@@ -85,19 +85,7 @@ export DISPLAY=:0
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -   
 # Appearance
-
-# custom PS1
-export PS1='\[\033[38;5;197m\]╭ \[$(tput bold)\][\u@\h:${PWD#"${PWD%/*/*}/"}] :$(git branch 2>/dev/null | grep '^*' | colrm 1 2)\n╰ \[$(tput sgr0)\]\[$(tput sgr0)\]'
-
-# toggle betwen a short(1 char) and a full PS1 - 40 just empirical
-function ps1(){
-    if [ ${#PS1} -gt 40 ]; then
-        export PS1="\[$(tput bold)\]\[\033[38;5;197m\] \[$(tput sgr0)\]"
-        clear
-    else
-		export PS1='\[\033[38;5;197m\]╭ \[$(tput bold)\][\u@\h:${PWD#"${PWD%/*/*}/"}] :$(git branch 2>/dev/null | grep '^*' | colrm 1 2)\n╰ \[$(tput sgr0)\]\[$(tput sgr0)\]'
-    fi
-}
+[ -f ~/.bash_prompt ] && . ~/.bash_prompt
 
 # colored GCC warnings and errors
 export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
