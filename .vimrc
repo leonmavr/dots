@@ -140,6 +140,8 @@ set showmatch
 set nohidden
 " For 256 colour terminals
 set t_Co=256
+" no visual bell
+set noeb vb t_vb=
 
 "-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 " (S) Text insertion & test misc
