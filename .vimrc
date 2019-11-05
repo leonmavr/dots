@@ -90,7 +90,7 @@ if s:enable_plugins != 0
     "" clang-complete
     " IMPORTANT: modify clang path
     " If clang is not found, try setting the path to something like /usr/lib/llvm-*/lib/
-    let g:clang_library_path = '/usr/lib'
+    let g:clang_library_path = '/usr/lib/llvm-3.8/lib/'
     let g:clang_c_options = '-std=gnu11'
     let g:clang_cpp_options = '-std=c++11 -stdlib=libc++'
     let g:clang_complete = 1 "automatically selects the first entry in the popup menu
@@ -296,6 +296,8 @@ nnoremap zz :w!<cr>
 inoremap zz <Esc>:w!<cr>
 nnoremap qq :wq!<cr>
 inoremap qq <Esc>:wq!<cr>
+" auto save when leaving insert mode
+autocmd InsertLeave * write
 " quit all w/o saving - needs stty -ixon in bash profile/ bash rc
 nnoremap <C-q> :qa!<cr>
 inoremap <C-q> <Esc>:qa!<cr>
