@@ -296,6 +296,8 @@ nnoremap zz :w!<cr>
 inoremap zz <Esc>:w!<cr>
 nnoremap qq :wq!<cr>
 inoremap qq <Esc>:wq!<cr>
+" auto save when leaving insert mode
+autocmd InsertLeave * write
 " quit all w/o saving - needs stty -ixon in bash profile/ bash rc
 nnoremap <C-q> :qa!<cr>
 inoremap <C-q> <Esc>:qa!<cr>
