@@ -31,7 +31,6 @@ selected=`echo "6500
 	-xoffset $ws_width_total`
 
 temp=`echo $selected | grep -Eo [0-9]*`
-#echo $temp
 
 if [ ! -z $temp ]; then
 	redshift -x
