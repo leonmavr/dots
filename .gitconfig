@@ -15,6 +15,7 @@
 	co = checkout
 	cob = checkout -b
 	d = diff
+	dc = diff --cached
 	deleted = ls-files --deleted
 	f = fetch
 	fu = !git fetch `git upstream-remote`
