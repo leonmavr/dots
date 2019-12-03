@@ -393,8 +393,10 @@ autocmd BufNewFile *.{h,hpp} call <SID>insert_gates()
 
 " Visual mode select and then comment (/**/) with Backspace
 autocmd Filetype c,cpp,h,hpp vnoremap <BS> meomsv`ea */<Esc>`si/* <Esc>`e4l"
-autocmd Filetype c imap <F5> <Esc>:w<CR>:!clear;gcc % -std=c99 -lm;./a.out<CR>
-autocmd Filetype c nmap <F5> <Esc>:w<CR>:!clear;gcc % -std=c99 -lm;./a.out<CR>
+autocmd Filetype c imap <F5> <Esc>:w<CR>:!clear;gcc % -g -std=c99 -lm;./a.out<CR>
+autocmd Filetype c nmap <F5> <Esc>:w<CR>:!clear;gcc % -g -std=c99 -lm;./a.out<CR>
+autocmd Filetype c imap <F6> <Esc>:w<CR>:!clear;gcc % -g -std=c99 -lm;gdb -q a.out<CR>
+autocmd Filetype c nmap <F6> <Esc>:w<CR>:!clear;gcc % -g -std=c99 -lm;gdb -q a.out<CR>
 autocmd Filetype c,cpp inoremap "" ""<Left>
 "" TODO: this should next if the next character is space
 "" Python
