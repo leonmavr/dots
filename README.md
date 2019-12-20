@@ -63,7 +63,7 @@ or this iw command outputs something like this:
 $ iw reg get
 global
 country 00: DFS-UNSET
-``
+```
 Then you need to set your regdb, for example as:
 ```
 $ sudo iw reg set DE
