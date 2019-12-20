@@ -52,3 +52,20 @@ acpilight: /usr/lib/udev/rules.d/90-backlight.rules exists in filesystem (owned 
 yourusername ALL=(ALL) NOPASSWD: /usr/bin/light
 ```
 * Run `pacman -Sc` once in a while to remove old cached versions of installed packages.
+* Slow wifi
+If this is grepped:
+```
+$ dmesg | grep firmw
+[    5.099057] platform regulatory.0: Direct firmware load for regulatory.db failed with error -2
+```
+or this iw command outputs something like this:
+```
+$ iw reg get
+global
+country 00: DFS-UNSET
+``
+Then you need to set your regdb, for example as:
+```
+$ sudo iw reg set DE
+```
+Finally, restart the wifi.
