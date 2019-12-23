@@ -17,6 +17,25 @@
 let s:enable_plugins = 1
 let s:auto_close_brackets = 0
 let s:use_custom_themes = 1
+let s:enable_jedi_hack = 1
+
+"-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+" (S) Ugly Hacks 
+"-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+"credits https://github.com/davidhalter/jedi-vim/issues/389#issuecomment-279498977
+" This one is needed for jedi-vim, which autocompletes
+" ESTIMATE PYTHON VERSION, BASED ON THIS WE WILL SIMPLY CALL PY or PY3
+" note +python/dyn and +python3/dyn has to be loaded
+if s:enable_jedi_hack != 0
+	let py_version = system('python -V 2>&1 | grep -Po "(?<=Python )[2|3]"')
+	if  py_version == 2
+	  python pass
+	elseif py_version == 3
+	  python3 pass
+	else
+	  python pass
+	endif 
+endif
 
 "-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 " (S) Plugins
@@ -60,11 +79,12 @@ if s:enable_plugins != 0
     "" jedi - reads tags and autocompletes with doc
     "init jedi plugin
     let g:jedi#auto_initialization = 1
-    let g:jedi#auto_vim_configuration = 0
+    let g:jedi#auto_vim_configuration = 1
     "tabs when going to a definition
     let g:jedi#use_tabs_not_buffers = 1
     "jedi for splits
     let g:jedi#use_splits_not_buffers = "left"
+	" let g:jedi#force_py_version = 3
     "" ctags
     " ctags usage: https://robhoward.id.au/blog/2012/03/ctags-with-vim/
     set tags=tags
@@ -90,7 +110,8 @@ if s:enable_plugins != 0
     "" clang-complete
     " IMPORTANT: modify clang path
     " If clang is not found, try setting the path to something like /usr/lib/llvm-*/lib/
-    let g:clang_library_path = '/usr/lib/llvm-3.8/lib/'
+    "let g:clang_library_path = '/usr/lib/llvm-3.8/lib/'
+    let g:clang_library_path = '/usr/lib/libclang.so'
     let g:clang_c_options = '-std=gnu11'
     let g:clang_cpp_options = '-std=c++11 -stdlib=libc++'
     let g:clang_complete = 1 "automatically selects the first entry in the popup menu
