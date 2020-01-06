@@ -127,6 +127,10 @@ if s:enable_plugins != 0
     " pressing F7 toggles distractions
     nmap <F7> :Goyo<CR>
     imap <F7> <Esc>:Goyo<CR>i
+	"" vim-latex-live-preview
+	let g:livepreview_previewer = 'zathura'
+	let g:livepreview_engine = 'pdflatex' . ' -shell-escape'
+	" Remember: LLPStartPreview compiles it
 endif
 
 
