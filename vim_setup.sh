@@ -98,6 +98,10 @@ cd fonts
 echobold "Installing Doxygen toolkit..."
 wget "https://raw.githubusercontent.com/vim-scripts/DoxygenToolkit.vim/master/plugin/DoxygenToolkit.vim" -O ~/.vim/plugin/DoxygenToolkit.vim
 
+echobold "Installing vim-latex-live-preview.."
+cd ~/.vim/plugin/
+wget https://raw.githubusercontent.com/xuhdev/vim-latex-live-preview/master/plugin/latexlivepreview.vim
+
 
 #----------------------------------------------------------#
 # Themes and appearance
