@@ -23,7 +23,7 @@ bindsym $mod+q kill
 # The (new) i3-dmenu-desktop which only displays applications
 # shipping a .desktop file. It is a wrapper around dmenu, so you need that installed.
 #bindsym $mod+d exec --no-startup-id i3-dmenu-desktop
-bindsym $mod+d exec rofi -modi "window#run#ssh#drun" -show drun -columns 2 -lines 12
+bindsym $mod+d exec rofi -modi "window#run#ssh#drun" -show drun -columns 2 -lines 10 -font "Oxanium 13"
 
 ########## Startup ##########
 exec_always --no-startup-id compton -b --config ~/.config/compton/config_blur > /dev/null 2>&1 
@@ -239,7 +239,7 @@ gaps outer 0
 # No borders
 new_window none 
 new_float none
-#border_radius 20
+#border_radius 30
 
 ########## Hotkeys ##########
 # Run `xev` to find out the hardware name of each key
@@ -260,9 +260,9 @@ bindsym XF86AudioPrev exec mpc prev
 
 # XF86WebCam = Fn+F6 on my Thinkpad
 # Take screenshot of the whole screen and save to clipboard
-bindsym XF86WebCam exec scrot /tmp/screenshot.png; exec xclip -selection clipboard -t image/png -i /tmp/screenshot.png
+bindsym XF86WebCam exec scrot /tmp/screenshot.png && xclip -selection clipboard -t image/png -i /tmp/screenshot.png
 # Take screenshot of an area and save to clipboard
-bindsym $Mod+XF86WebCam exec import /tmp/screenshot.png; exec xclip -selection clipboard -t image/png -i /tmp/screenshot.png
+bindsym $Mod+XF86WebCam exec import /tmp/screenshot.png && xclip -selection clipboard -t image/png -i /tmp/screenshot.png
 # Fn+F3 => lock 
 bindsym XF86ScreenSaver exec ~/.config/i3lock-color/lock.sh
 # F2 => toggle touchpad - useful when I write
