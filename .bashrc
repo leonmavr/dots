@@ -61,31 +61,15 @@ fi
 
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -   
-# History options
+# Settings found in bashrc  sub-files 
 [ -f ~/.bash_history ] && . ~/.bash_history
-
-
-#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -   
-# Shopt (autcompletion) etc. options
-
-
-# Ctr+S and Ctr+Q do nothing so I can use them in vim 
-stty -ixon
-
-# autocomplete only dirs
-complete -d cd
-
-# fix minor typos in cd
-shopt -s cdspell
-
-# Make sure env variables in prompt get expanded
-shopt -s promptvars 
+[ -f ~/.bash_shopt ] && . ~/.bash_shopt
+[ -f ~/.bash_prompt ] && . ~/.bash_prompt
 # open programs that require windows
 export DISPLAY=:0
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -   
 # Appearance
-[ -f ~/.bash_prompt ] && . ~/.bash_prompt
 
 # colored GCC warnings and errors
 export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
