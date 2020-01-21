@@ -94,6 +94,11 @@ nn() {
 }
 
 
+### Key bindings
+# Key bindings that couldn't go into .input rc
+bind '"\C-F":"fzf\n"'
+
+
 ### Aliases
 
 alias h='history'
