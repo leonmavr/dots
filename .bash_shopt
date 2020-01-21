@@ -1,0 +1,14 @@
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -   
+# Shopt (autcompletion) etc. options
+# Ctr+S and Ctr+Q do nothing so I can use them in vim 
+stty -ixon
+
+# autocomplete only dirs
+complete -d cd
+
+# fix minor typos in cd
+shopt -s cdspell
+
+# Make sure env variables in prompt get expanded
+shopt -s promptvars 
+shopt -s autocd
