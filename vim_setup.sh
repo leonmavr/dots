@@ -15,7 +15,7 @@ echobold () {
 #----------------------------------------------------------#
 # Preparation
 #----------------------------------------------------------#
-usage_str="Requirements for this setup:\n* exuberant-ctags (ctags)\n* clang\n* libclang-dev\n* cmake\n* python-dev\n* python3-dev\n* wget\n* flake8 (pip)\notherwise it will not work.\nIt will also delete your current .vimrc so it's better to keep a backup.\nKeeping a backup anyway at /tmp/.vimrc.\n\n"
+usage_str="Requirements for this setup:\n* exuberant-ctags (ctags)\n* clang\n* libclang-dev\n* cmake\n* python-dev\n* python3-dev\n* wget\n* flake8 (pip)\n* zathura (for latex)\n* pdflatex (for latex)\notherwise it will not work.\nIt will also delete your current .vimrc so it's better to keep a backup.\nKeeping a backup anyway at /tmp/.vimrc.\n\n"
 cp ~/.vimrc /tmp/.vimrc 2 > /dev/null
 printf "$usage_str"
 read -p "Are you ready to proceed? (y/n) " start
