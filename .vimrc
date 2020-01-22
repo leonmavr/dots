@@ -129,7 +129,7 @@ if s:enable_plugins != 0
     imap <F7> <Esc>:Goyo<CR>i
 	"" vim-latex-live-preview
 	let g:livepreview_previewer = 'zathura'
-	let g:livepreview_engine = 'pdflatex' . ' -shell-escape'
+	let g:livepreview_engine = 'pdflatex' . ' -shell-escape' . '-synctex=1'
 	" Remember: LLPStartPreview compiles it
 endif
 
@@ -449,6 +449,11 @@ autocmd FileType tex inoremap \[ \[<esc>o<esc>o<bs>\]<esc>ki<tab>
 autocmd FileType tex vnoremap ,$ xi$$<Esc>P
 autocmd FileType tex vnoremap ,b xi\textbf{}<Esc>P
 autocmd FileType tex vnoremap ,i xi\textit{}<Esc>P
+autocmd FileType tex setlocal spell spelllang=en_uk
+autocmd Filetype tex inoremap <F5> <esc>:w!<cr>:LLPStartPreview<cr>
+autocmd Filetype tex nnoremap <F5> :w!<cr>:LLPStartPreview<cr>
+autocmd Filetype tex inoremap <F6> <esc>:!pdflatex -shell-escape %<cr>
+autocmd Filetype tex nnoremap <F6> :!pdflatex -shell-escape %<cr>
 "" Bash
 autocmd Filetype sh inoremap <F5> <esc>:w!<cr>:!clear;bash %<cr>
 autocmd Filetype sh noremap <F5> :w!<cr>:!clear;bash %<cr>
@@ -456,3 +461,4 @@ autocmd Filetype sh imap `` ``<esc>i
 ""Exceptions
 autocmd FileType * if &ft != 'py'| imap "" ""<Left>
 autocmd FileType * if &ft != 'py'| imap '' ''<Left>
+
