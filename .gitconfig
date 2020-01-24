@@ -12,6 +12,7 @@
 	cl = clone
 	cm = commit -m
 	cma = commit --ammend
+	cmdiff = !git diff $1~ $1 # $1 is the commit hash
 	co = checkout
 	cob = checkout -b
 	d = diff
@@ -28,6 +29,7 @@
 	sh = stash
 	st = status
 	staged = ls-files --staged
+	subup = submodule update --init --recursive
 	untracked = ls-files --other --exclude-standard
 [pretty]
 	custom = "%C(magenta)%h%C(red)%d %C(yellow)%ar %C(green)%s %C(yellow)(%an)"
