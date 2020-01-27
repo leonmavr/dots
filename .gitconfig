@@ -10,6 +10,7 @@
 	al = add --all
 	ba = branch -a
 	cl = clone
+        clcd = !git clone "$1" && cd  "`ls -1dt ./*/ | head -n 1`"
 	cm = commit -m
 	cma = commit --ammend
 	cmdiff = !git diff $1~ $1 # $1 is the commit hash
