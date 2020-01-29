@@ -7,3 +7,11 @@ wget "https://raw.githubusercontent.com/0xLeo/dotfiles/master/.bash_prompt" -O ~
 wget "https://raw.githubusercontent.com/0xLeo/dotfiles/master/.inputrc" -O ~/.inputrc
 wget "https://raw.githubusercontent.com/0xLeo/dotfiles/master/.gdbinit" -O ~/.gdbinit
 wget "https://raw.githubusercontent.com/0xLeo/dotfiles/master/.gitconfig" -O ~/.gitconfig
+
+for bash in {aliases,history,shopt,prompt}; do
+	echo "[ -f ~/.bash_$bash ] && . ~/.bash_$bash" >> ~/.bashrc
+done
+# requirement: fzf package
+if [ -f ~/.fzf.bash]; then
+	echo "[ -f ~/.fzf.bash ] && source ~/.fzf.bash" >> ~/.bashrc
+fi
