@@ -453,7 +453,9 @@ autocmd FileType tex setlocal spell spelllang=en_uk
 autocmd Filetype tex inoremap <F5> <esc>:w!<cr>:LLPStartPreview<cr>
 autocmd Filetype tex nnoremap <F5> :w!<cr>:LLPStartPreview<cr>
 autocmd Filetype tex inoremap <F6> <esc>:!pdflatex -shell-escape %<cr>
-autocmd Filetype tex nnoremap <F6> :!pdflatex -shell-escape %<cr>
+nnoremap <F6> :!pdflatex -shell-escape %<cr>
+" : included in words for easier referencing
+autocmd Filetype tex set iskeyword+=:
 "" Bash
 autocmd Filetype sh inoremap <F5> <esc>:w!<cr>:!clear;bash %<cr>
 autocmd Filetype sh noremap <F5> :w!<cr>:!clear;bash %<cr>
