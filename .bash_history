@@ -25,16 +25,3 @@ shopt -s cmdhist
 # don't save one or two-letter commands, etc
 export HISTIGNORE="pwd*:exit*:clear*:history*:ls*\
         [ \t]*:?:??:[bf]g:neofetch:ufetch:ll*"
-
-#1580451345
-sudo mount -t vboxdf share /mnt/share
-#1580451352
-sudo mount -t vboxsf share /mnt/share
-#1580451356
-vim ~/.bash_history 
-#1580451396
-vim ~/.bash_shopt 
-#1580451405
-vim ~/.bash_history 
-#1580451465
-cd /tmp
