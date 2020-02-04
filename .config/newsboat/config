@@ -13,8 +13,7 @@ external-url-viewer "urlview"
 refresh-on-startup yes
 player mplayer
 download-full-page yes
-# if lynx, see https://www.pc-freak.net/blog/how-to-permanently-enable-cookies-in-lynx-text-browser-disable-accept-cookies-prompt-in-lynx-console-browser/
-browser "lynx -vikeys -accept_all_cookies %u"
+browser "lynx -vikeys -editor=vim -accept_all_cookies %u"
 
 # ignore ads
 ignore-article "*" "title =~ \"Sponsor\""
@@ -22,19 +21,21 @@ ignore-article "*" "title =~ \"Advertisement\""
 ignore-mode "display"
 
 # keybinds
-bind-key e open-in-browser-and-mark-read
 bind-key o open-in-browser-and-mark-read
 bind-key j down feedlist
 bind-key k up feedlist
 bind-key j next articlelist
 bind-key k prev articlelist
-bind-key G  end
+bind-key G end
 bind-key l open
 bind-key h quit
+bind-key H hard-quit
 bind-key J next-feed articlelist
 bind-key K prev-feed articlelist
 bind-key j down article
 bind-key k up article
+bind-key ; goto-url
+bind-key q hard-quit 
 
 # quitting
 confirm-exit no
