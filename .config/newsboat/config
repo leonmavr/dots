@@ -7,12 +7,13 @@ download-retries 5
 download-timeout 20
 max-items 30
 keep-articles-days 3
-download-full-page yes
-external-url-viewer "urlview"
 
 # behaviour
+external-url-viewer "urlview"
 refresh-on-startup yes
 player mplayer
+download-full-page yes
+# if lynx, see https://www.pc-freak.net/blog/how-to-permanently-enable-cookies-in-lynx-text-browser-disable-accept-cookies-prompt-in-lynx-console-browser/
 browser "lynx -vikeys -accept_all_cookies %u"
 
 # ignore ads
@@ -21,20 +22,19 @@ ignore-article "*" "title =~ \"Advertisement\""
 ignore-mode "display"
 
 # keybinds
-unbind-key o
-bind-key space open-in-browser
+bind-key e open-in-browser-and-mark-read
+bind-key o open-in-browser-and-mark-read
 bind-key j down feedlist
 bind-key k up feedlist
 bind-key j next articlelist
 bind-key k prev articlelist
+bind-key G  end
 bind-key l open
 bind-key h quit
-bind-key H hard-quit
 bind-key J next-feed articlelist
 bind-key K prev-feed articlelist
 bind-key j down article
 bind-key k up article
-bind-key ; goto-url 
 
 # quitting
 confirm-exit no
