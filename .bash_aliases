@@ -1,5 +1,4 @@
-#!/bin/bash
-
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 ### Commands
 ping() {
     if [[ $# -eq 0 ]] ; then
@@ -94,10 +93,6 @@ nn() {
 }
 
 
-### Key bindings
-# Key bindings that couldn't go into .input rc
-bind '"\C-F":"fzf\n"'
-
 
 ### Aliases
 
@@ -134,6 +129,7 @@ alias n='ls -l | grep ^- | wc -l'
 alias mex='chmod u+x'
 alias mwr='chmod u+w'
 alias py='python'
+which fzf > /dev/null 2>&1 && alias fzf="fzf | tr -d '\n' | xclip -selection c -i"
 
 alias edit='vim'
 alias vimrc='vim ~/.vimrc'
@@ -149,3 +145,8 @@ alias ...='cd ../../'
 alias ....='cd ../../../'
 alias .....='cd ../../../..'
 alias cd-='cd -'
+
+
+### Key bindings
+# Key bindings that couldn't go into .input rc
+bind '"\C-F":"fzf\n"'
