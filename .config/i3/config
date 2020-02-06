@@ -252,11 +252,13 @@ bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute 0 toggle # mute s
 bindsym XF86MonBrightnessUp exec sudo light -A 10 # increase screen brightness
 bindsym XF86MonBrightnessDown exec sudo light -U 10 # decrease screen brightnes
 
-# Media player controls
+# Media player controls - hold $Mod to control spotify
 bindsym XF86AudioPlay exec mpc toggle 
-#bindsym XF86AudioPause exec playerctl pause
+bindsym $Mod+XF86AudioPlay exec dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.PlayPause 
 bindsym XF86AudioNext exec mpc next
-bindsym XF86AudioPrev exec mpc prev 
+bindsym $Mod+XF86AudioNext exec dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Next
+bindsym XF86AudioPrev exec mpc prev
+bindsym $Mod+XF86AudioPrev exec dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Previous
 
 # XF86WebCam = Fn+F6 on my Thinkpad
 # Take screenshot of the whole screen and save to clipboard
