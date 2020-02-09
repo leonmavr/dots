@@ -7,7 +7,7 @@ ws_icon_width=26
 ws_width_total=$[ 165+$ws_icon_width*$n_ws ]
 
 current_val=`cat /tmp/redshift_val`
-[ -z $current_val ] && current_val=then_i_will_not_grep_this_value
+[ -z $current_val ] && current_val=6500
 
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
