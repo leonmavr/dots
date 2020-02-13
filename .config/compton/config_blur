@@ -12,7 +12,7 @@ blur-background-fixed = true;
 
 blur-kern = "5x5box";
 blur-method = "kawase";
-blur-strength = 7;
+blur-strength = 15;
 
 ###### Shadows ######
 shadow = true;
@@ -20,9 +20,9 @@ dnd-shadow = false;
 dock-shadow = false;
 # that is the prevent drawing polybar's shadow
 no-dock-shadow = true
-shadow-offset-x = -5;
-shadow-offset-y = -5;
-shadow-radius = 5;
+shadow-offset-x = -6;
+shadow-offset-y = -6;
+shadow-radius = 6;
 
 ###### Dim ######
 # 0.0 to 1.0
@@ -30,9 +30,15 @@ inactive-dim = 0.075
 inactive-opacity-override = false;
 
 opacity-rule = [
-  "80:class_g = 'Polybar' && !_NET_WM_STATE:32a",
-  "80:class_g = 'Termite' && !_NET_WM_STATE:32a",
-  "80:class_g = 'Thunar' && !_NET_WM_STATE:32a",
+  "75:class_g = 'Polybar' && !_NET_WM_STATE:32a",
+  "75:class_g = 'Termite' && !_NET_WM_STATE:32a",
+  "75:class_g = 'Rofi' && !_NET_WM_STATE:32a",
+  "75:class_g = 'rofi' && !_NET_WM_STATE:32a",
+  "75:class_g = 'Dunst' && !_NET_WM_STATE:32a",
+  "60:class_g = 'Yad' && !_NET_WM_STATE:32a",
+  "80:class_g = 'Spotify' && !_NET_WM_STATE:32a",
+  "80:class_g = 'dunst' && !_NET_WM_STATE:32a",
+  "75:class_g = 'Thunar' && !_NET_WM_STATE:32a",
   "80:class_g = 'Gedit' && !_NET_WM_STATE:32a",
   "94:class_g = 'Yad' && !_NET_WM_STATE:32a",
   "96:class_g = 'URxvt' && !_NET_WM_STATE@:32a",
@@ -41,7 +47,15 @@ opacity-rule = [
 #for_window [class="Yad" title="yad-calendar"] floating enable
 
 ###### Exceptions ######
+focus-exclude = [ "class_g = 'Conky'" ];
+
 shadow-exclude = [
   "! name~=''",
+  "class_g = 'Conky'"
+]
+
+inactive-dim-exclude = [
+  "! name~=''",
+  "80:class_g = 'Conky' && !_NET_WM_STATE:32a",
   "class_g = 'Conky'"
 ]

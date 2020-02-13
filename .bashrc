@@ -3,7 +3,7 @@
 export I3CONFIG=~/.config/i3/config
 #export I3STATUS=~/.config/i3status/config
 export TERMITECONFIG=~/.config/termite/config
-export COMPTONCONFIG=~/.compton
+export COMPTONCONFIG=~/.config/compton/config_blur
 export GTKCONFIG=~/.gtkrc-2.0
 export RANGERCONFIG=~/.config/ranger/rc.conf
 export CONKYCONFIG=~/.config/conky/conky.conf
@@ -18,6 +18,7 @@ export I3LOCKCONFIG=~/.config/i3lock-color/lock.sh
 export REMINDERS=~/.config/remind/reminders.rem
 export FILECRON=/var/spool/cron/$USER
 export MPDCONFIG=~/.config/mpd/mpd.conf
+export DUNSTRC=~/.config/dunst/dunstrc
 
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -   
@@ -59,19 +60,72 @@ if [ -f ~/.git-completion.bash ]; then
   . ~/.git-completion.bash
 fi
 
+# needs `fzf` (fuzzy find) package
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash
+
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -   
-# Settings found in bashrc  sub-files 
-[ -f ~/.bash_history ] && . ~/.bash_history
-[ -f ~/.bash_shopt ] && . ~/.bash_shopt
-[ -f ~/.bash_prompt ] && . ~/.bash_prompt
+# History options
+
+# Don't put duplicate lines or lines starting with space in the history.
+export HISTCONTROL=ignoreboth
+export HISTSIZE=5000
+# Append to history instead of overwrite
+shopt -s histappend
+# show date and time in history
+export HISTTIMEFORMAT='(%d/%m, %H:%M) '
+# Multiple commands on one line show up as a single line
+shopt -s cmdhist
+# supress anything by adding space in front of the command
+# don't save one or two-letter commands, etc
+export HISTIGNORE="pwd*:exit*:clear*:history*:ls*\
+        [ \t]*:?:??:[bf]g:neofetch:ufetch:ll*"
+
+
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -   
+# Shopt (autcompletion) etc. options
+
+
+# Ctr+S and Ctr+Q do nothing so I can use them in vim 
+stty -ixon
+
+# autocomplete only dirs
+complete -d cd
+
+# fix minor typos in cd
+shopt -s cdspell
+
+# Make sure env variables in prompt get expanded
+shopt -s promptvars 
 # open programs that require windows
 export DISPLAY=:0
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -   
 # Appearance
 
-# colored GCC warnings and errors
+# custom PS1
+export PS1='\[\033[38;5;197m\]╭ \[$(tput bold)\][\u@\h:${PWD#"${PWD%/*/*}/"}] :$(git branch 2>/dev/null | grep '^*' | colrm 1 2)\n╰ \[$(tput sgr0)\]\[$(tput sgr0)\]'
+
+# toggle betwen a short(1 char) and a full PS1 - 35 just empirical
+function ps1(){
+    if [ ${#PS1} -gt 45 ]; then
+        export PS1="\[$(tput bold)\]\[\033[38;5;197m\] \[$(tput sgr0)\]"
+        clear
+    else
+		export PS1='\[\033[38;5;197m\]╭ \[$(tput bold)\][\u@\h:${PWD#"${PWD%/*/*}/"}] :$(git branch 2>/dev/null | grep '^*' | colrm 1 2)\n╰ \[$(tput sgr0)\]\[$(tput sgr0)\]'
+		clear
+    fi
+}
+
+#function _update_ps1() {
+#    PS1=$(powerline-shell $?)
+#}
+#
+#if [[ $TERM != linux && ! $PROMPT_COMMAND =~ _update_ps1 ]]; then
+#    PROMPT_COMMAND="_update_ps1; $PROMPT_COMMAND"
+#fi
+#
+## colored GCC warnings and errors
 export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 
 
@@ -151,6 +205,8 @@ alias restart-compton='killall compton;compton -b --config $COMPTONCONFIG'
 alias start-cron='systemctl start cronie'
 
 alias record-screen="ffmpeg -video_size `xrandr | grep *+ | awk '{print $1}'` -framerate 30 -f x11grab -i :0.0+0,0 /tmp/output.mp4"
+alias webcam-snap="mplayer tv:// -tv driver=v4l2:width=640:height=480:device=/dev/video0 -fps 15 -vf screenshot" # s for snapshot
+alias webcam-vid="mencoder tv:// -tv driver=v4l2:width=640:height=480:device=/dev/video0:forceaudio:adevice=/dev/dsp -ovc lavc -oac mp3lame -lameopts cbr:br=64:mode=3 -o filename.avi"
 
 
 if [ ! -z /usr/bin/remind ]; then
@@ -164,11 +220,13 @@ alias pac-by-date='pr -tm <(pacfield Name) <(date --file=<(pacfield "Install Dat
 
 alias uf='ufetch'
 
-
+function notification () {
+	dbus-launch notify-send "$1"
+}
 ## correct time
 # timedatectl set-ntp true
 ## send notification
-# dbus-launch notify-send "Hello"
+#alias notification='dbus-launch notify-send "Hello"'
 # tex snippets:
 # /home/first/.vim/bundle/vim-snippets/UltiSnips/tex.snippets
 # /home/first/.vim/bundle/vim-snippets/snippets/tex.snippets
@@ -177,3 +235,8 @@ alias uf='ufetch'
 # to query openweathermaps API - get a key from their website
 OPENWEATHERAPIKEY=XXXXXXXXXXXXXXXXXXXXXXX
 #remove wifi-menu entry /etc/netctl
+[ -f ~/.bash_aliases ] && . ~/.bash_aliases
+[ -f ~/.bash_history_cfg ] && . ~/.bash_history_cfg
+[ -f ~/.bash_shopt ] && . ~/.bash_shopt
+[ -f ~/.bash_prompt ] && . ~/.bash_prompt
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash
