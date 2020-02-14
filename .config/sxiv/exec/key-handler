@@ -15,38 +15,38 @@ mkdir -p ~/.trash/
 
 while read -r file
 do
-		fpath=$(pwd)/$file
+        fpath=$(pwd)/$file
         case "$1" in
         "d")
-			mv "$fpath" ~/.trash
-			dunstify "$file moved to ~/.trash"
-			;;
+            mv "$fpath" ~/.trash
+            dunstify "$file moved to ~/.trash"
+            ;;
         "D")
-			rm -rf "$fpath"
-			dunstify "$file deleted permanently"
-			;;
-		"f")
-			# horizontal flip
-			convert -transpose "$fpath" "$fpath" 
-			convert -rotate 90 "$fpath" "$fpath"
-			;;
-		"i")
-			dunstify "[$file] `identify $fpath | cut -d" " -f1`, `identify $fpath | cut -d" " -f2`, `identify $fpath | cut -d" " -f3`, `ls -lh $fpath | cut -d" " -f5`"
-			;;
+            rm -rf "$fpath"
+            dunstify "$file deleted permanently"
+            ;;
+        "f")
+            # horizontal flip
+            convert -transpose "$fpath" "$fpath" 
+            convert -rotate 90 "$fpath" "$fpath"
+            ;;
+        "i")
+            dunstify "[$file] `identify $fpath | cut -d" " -f1`, `identify $fpath | cut -d" " -f2`, `identify $fpath | cut -d" " -f3`, `ls -lh $fpath | cut -d" " -f5`"
+            ;;
         "r")
-			convert -rotate 90 "$fpath" "$fpath"
-			;;
+            convert -rotate 90 "$fpath" "$fpath"
+            ;;
         "R")
-			convert -rotate 270 "$fpath" "$fpath"
-			;;
+            convert -rotate 270 "$fpath" "$fpath"
+            ;;
         "c")
-			xclip -selection clipboard -t image/png -i $fpath
-			dunstify "$file copied to clipboard"
-			;;
+            xclip -selection clipboard -t image/png -i $fpath
+            dunstify "$file copied to clipboard"
+            ;;
         "w")
-			sed -i "/feh/c\feh --bg-scale $(pwd)/$file" ~/.xinitrc;
-			feh --bg-scale "$file"
-			dunstify "$file set as wallpaper"
-			;;
+            sed -i "/feh/c\feh --bg-scale $(pwd)/$file" ~/.xinitrc;
+            feh --bg-scale "$file"
+            dunstify "$file set as wallpaper"
+            ;;
         esac
 done
