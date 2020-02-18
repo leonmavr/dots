@@ -15,7 +15,7 @@ mkdir -p ~/.trash/
 
 while read -r file
 do
-        fpath=$(pwd)/$file
+        fpath=$file
         case "$1" in
         "d")
             mv "$fpath" ~/.trash
@@ -27,8 +27,7 @@ do
             ;;
         "f")
             # horizontal flip
-            convert -transpose "$fpath" "$fpath" 
-            convert -rotate 90 "$fpath" "$fpath"
+            convert -flop "$fpath" "$fpath" 
             ;;
         "i")
             dunstify "[$file] `identify $fpath | cut -d" " -f1`, `identify $fpath | cut -d" " -f2`, `identify $fpath | cut -d" " -f3`, `ls -lh $fpath | cut -d" " -f5`"
