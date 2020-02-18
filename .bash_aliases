@@ -129,7 +129,6 @@ alias n='ls -l | grep ^- | wc -l'
 alias mex='chmod u+x'
 alias mwr='chmod u+w'
 alias py='python'
-which fzf > /dev/null 2>&1 && alias fzf="fzf | tr -d '\n' | xclip -selection c -i"
 
 alias edit='vim'
 alias vimrc='vim ~/.vimrc'
@@ -146,6 +145,36 @@ alias ....='cd ../../../'
 alias .....='cd ../../../..'
 alias cd-='cd -'
 
+### Dependant on installed software
+
+
+which fzf > /dev/null 2>&1 && alias fzf="fzf | tr -d '\n' | xclip -selection c -i"
+
+# Usage: sxiv *png -o | collage-hor
+# Requires: imagemagick
+which convert > /dev/null 2>&1 &&\
+	collage-horrr() {
+		tojoin=""
+		while read frompipe; do
+			tojoin="$tojoin `echo $frompipe | tr -d '\n'`";
+		done
+		convert $tojoin +append /tmp/collage.png
+		xclip -selection clipboard -t image/png -i /tmp/collage.png
+		pgrep dunst > /dev/null 2>&1 && dunstify -i /tmp/collage.png "Collage saved to /tmp/collage.png and copied to clipboard"
+		#rm out_$$.png
+	}
+
+which convert > /dev/null 2>&1 &&\
+	collage-ver() {
+		tojoin=""
+		while read frompipe; do
+			tojoin="$tojoin `echo $frompipe | tr -d '\n'`";
+		done
+		convert $tojoin -append /tmp/collage.png
+		xclip -selection clipboard -t image/png -i /tmp/collage.png
+		pgrep dunst > /dev/null 2>&1 && dunstify -i /tmp/collage.png "Collage saved to /tmp/collage.png and copied to clipboard"
+		#rm out_$$.png
+	}
 
 ### Key bindings
 # Key bindings that couldn't go into .input rc
