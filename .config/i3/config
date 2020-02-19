@@ -3,6 +3,10 @@
 #
 # Please see https://i3wm.org/docs/userguide.html for a complete reference!
 
+########## Requirements #########
+# dunst, scrot, imagemagick, mpd, xclip, pactl, light (AUR)
+# i3lock-color (AUR), spotify (AUR), rofi, compton, polybar
+
 # If using Ctrl/ Fn, Ctrl and Fn and swapped in my laptop
 set $mod Mod4 
 set $alt Mod1
@@ -262,9 +266,15 @@ bindsym $Mod+XF86AudioPrev exec dbus-send --print-reply --dest=org.mpris.MediaPl
 
 # XF86WebCam = Fn+F6 on my Thinkpad
 # Take screenshot of the whole screen and save to clipboard
-bindsym XF86WebCam exec scrot /tmp/screenshot.png && xclip -selection clipboard -t image/png -i /tmp/screenshot.png
+bindsym XF86WebCam exec rm -f /tmp/screenshot.png &&\
+	scrot /tmp/screenshot.png &&\
+	xclip -selection clipboard -t image/png -i /tmp/screenshot.png &&\
+	dunstify -u low -i /tmp/screenshot.png "screenshot to clipboard"
 # Take screenshot of an area and save to clipboard
-bindsym $Mod+XF86WebCam exec import /tmp/screenshot.png && xclip -selection clipboard -t image/png -i /tmp/screenshot.png
+bindsym $Mod+XF86WebCam exec rm -f /tmp/screenshot.png &&\
+	import /tmp/screenshot.png &&\
+	xclip -selection clipboard -t image/png -i /tmp/screenshot.png&&\
+	dunstify -u low -i /tmp/screenshot.png "screenshot to clipboard"
 # Fn+F3 => lock 
 bindsym XF86ScreenSaver exec ~/.config/i3lock-color/lock.sh
 # F2 => toggle touchpad - useful when I write
