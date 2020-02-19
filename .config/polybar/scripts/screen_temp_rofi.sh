@@ -6,8 +6,17 @@ n_ws=`i3-msg -t get_workspaces | jq '. | length'`
 ws_icon_width=26
 ws_width_total=$[ 165+$ws_icon_width*$n_ws ]
 
-current_val=`cat /tmp/redshift_val`
-[ -z $current_val ] && current_val=6500
+if [ $# -eq 1 ]; then
+	current_val=$1
+	if [ $current_val -eq 6500 ]; then
+		echo 6500 > /tmp/redshift_val
+		redshift -x
+		kill $$
+	fi
+else
+	current_val=`cat /tmp/redshift_val`
+fi
+[ -z "$current_val" ] && current_val=6500
 
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - -  

@@ -20,8 +20,8 @@
 #background = #6603050a
 background = #ff03060c
 background1 = #22449966
-foreground = #c1edff
-icons = #60819b
+foreground = #78e3ca
+icons = #78cae3
 alert = #fcd76f
 background-alt = #66399b91
 foreground-alt = #60819b
@@ -47,8 +47,8 @@ padding-right = 2
 module-margin-left = 2
 module-margin-right = 2
 
-font-0 = Ubuntu Condensed:pixelsize=13;1
-#font-0 = Roboto Condensed:pixelsize=12;1:weight=bold;1
+#font-0 = Ubuntu Condensed:pixelsize=13;1
+font-0 = Zekton:pixelsize=10;1:weight=bold;1
 font-1 = unifont:fontformat=truetype:size=8:antialias=true;0
 font-2 = FontAwesome:pixelsize=13;1
 font-3 = FontAwesome5:pixelsize=13;0
@@ -62,7 +62,7 @@ font-8 = "Weather Icons:size=12;1"
 ; {TX} blah ${T-}
 ; X is the 1-indexed font number from above
 
-modules-left = i3 pulseaudio backlight redshift current_song mpd
+modules-left = i3 pulseaudio backlight redshift current_song mpd 
 modules-center = popup-calendar date weather notifs
 modules-right = ram cpu xkeyboard battery powerrofi 
 ; skype icon etc.
@@ -75,7 +75,7 @@ cursor-scroll = ns-scroll
 
 [module/date]
 type = internal/date
-interval = 60
+interval = 45
 date =
 date-alt = " %a, %d %b %g, "
 time = %H:%M
@@ -95,7 +95,6 @@ click-left = ~/.config/polybar/scripts/calendar-popup.sh --popup
 [module/weather]
 type = custom/script
 exec = ~/.config/polybar/scripts/weather.sh lindau de 
-#click-left = ~/.config/polybar/scripts/weather.sh lindau de 
 exec-if = ping openweathermap.org -c 1
 interval = 600
 ;label-font = 4
@@ -125,7 +124,7 @@ label-foreground = ${colors.foreground-alt}
 interval = 500 
 exec = "echo dummy msg"
 click-left = ~/.config/polybar/scripts/screen_temp_rofi.sh
-click-right = redshift -x 
+click-right = ~/.config/polybar/scripts/screen_temp_rofi.sh 6500
 
 
 [module/xwindow]
