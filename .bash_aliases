@@ -148,7 +148,7 @@ alias cd-='cd -'
 ### Dependant on installed software
 
 
-which fzf > /dev/null 2>&1 && alias fzf="fzf | tr -d '\n' | xclip -selection c -i"
+which fzf > /dev/null 2>&1 && alias fzf='fzf | xargs realpath | tr -d "\n" | xclip -selection c -i'
 
 # Usage: sxiv *png -o | collage-hor
 # Requires: imagemagick
