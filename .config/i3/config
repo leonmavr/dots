@@ -29,6 +29,9 @@ bindsym $mod+q kill
 #bindsym $mod+d exec --no-startup-id i3-dmenu-desktop
 bindsym $mod+d exec rofi -modi "window#run#ssh#drun" -show drun -columns 2 -lines 10 -font "Oxanium 13"
 
+# bind $mod+. to pop up a list of emojis
+bindsym $mod+s exec --no-startup-id bash ~/.config/i3/scripts/emojis.sh /tmp/all_emojis.csv
+
 ########## Startup ##########
 exec_always --no-startup-id compton -b --config ~/.config/compton/config_blur > /dev/null 2>&1 
 exec --no-startup-id mpd
@@ -240,6 +243,7 @@ gaps inner 10
 gaps outer 0
 # smart gaps on
 
+########## Borders and titles ##########
 # No borders
 new_window none 
 new_float none
