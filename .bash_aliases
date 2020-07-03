@@ -21,7 +21,7 @@ grephere(){
 }
 
 mdcd() {
-    mkdir "$1" && cd "$1"
+    mkdir -p "$1" && cd "$1"
 }
 
 # credits https://serverfault.com/a/3842
@@ -126,13 +126,13 @@ alias lsmod="ls -lah --color | awk '{k=0;for(i=0;i<=8;i++)k+=((substr(\$1,i+2,1)
 # count files in directory (not hidden)
 alias n='ls -l | grep ^- | wc -l'
 
-alias mex='chmod u+x'
+alias mx='chmod u+x'
 alias mwr='chmod u+w'
-alias py='python'
+alias py='python3'
 
 alias edit='vim'
 alias vimrc='vim ~/.vimrc'
-alias bashrc='vim ~/.bashrc'
+bashrc() { vim ~/.bashrc; source ~/.bashrc; }
 alias .b='. ~/.bashrc'
 alias svim='sudo vim'
 alias v='vim'
