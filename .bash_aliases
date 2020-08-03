@@ -145,6 +145,11 @@ alias ....='cd ../../../'
 alias .....='cd ../../../..'
 alias cd-='cd -'
 
+# videos
+which ffmpeg		&& mp42gif() { ffmpeg -i $1 -vf "fps=10,scale=720:-1:flags=lanczos,split[s0][s1];[s0]palettegen[p];[s1][p]paletteuse" -loop 0 /tmp/output.gif; }
+which youtube-dl	&& alias yt='youtube-dl --user-agent "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)"'
+
+
 ### Dependant on installed software
 
 
