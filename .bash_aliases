@@ -160,7 +160,7 @@ which fzf > /dev/null 2>&1 && alias fzf='fzf | xargs realpath | tr -d "\n" | xcl
 # Usage: sxiv *png -o | collage-hor
 # Requires: imagemagick
 which convert > /dev/null 2>&1 &&\
-	collage-horrr() {
+	collage-hor() {
 		tojoin=""
 		while read frompipe; do
 			tojoin="$tojoin `echo $frompipe | tr -d '\n'`";
