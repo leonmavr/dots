@@ -187,6 +187,16 @@ which ranger > /dev/null 2>&1 &&\
 	alias r='ranger'
 
 
+which curl > /dev/null 2>&1 &&\
+which jq > /dev/null 2>&1 &&\
+	btc-price() {
+		curl -s https://api.coinbase.com/v2/prices/spot?currency=USD |\
+			jq '.data.amount' |\
+			sed -E 's/(,\"*)//' |\
+			xargs printf "$%.2f\n";
+	}
+
+
 ### Key bindings
 # Key bindings that couldn't go into .input rc
 bind '"\C-F":"fzf\n"'
