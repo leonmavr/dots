@@ -182,6 +182,10 @@ which convert > /dev/null 2>&1 &&\
 		pgrep dunst > /dev/null 2>&1 && dunstify -i /tmp/collage.png "Collage saved to /tmp/collage.png and copied to clipboard"
 		#rm out_$$.png
 	}
+	
+which ranger > /dev/null 2>&1 &&\
+	alias r='ranger'
+
 
 ### Key bindings
 # Key bindings that couldn't go into .input rc
