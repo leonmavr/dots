@@ -1,5 +1,6 @@
 -- Based on DThought's program
 -- Found here: https://github.com/DThought/conky-rings/blob/master/rings.lua
+-- Tutorial about Conky + Lua: https://stackoverflow.com/questions/45369475/how-to-implement-a-basic-lua-function-in-conky
 
 conf = {
 	bg_colour = 0xc85cd9,
@@ -10,30 +11,24 @@ conf = {
 	line_alpha = 0.85
 }
 elements = {
-	{
-		x0 = 0,
-		y0 = 84,
-		x1 = 315,
-		y1 = 84,
-		width = 2
-	},
+	-- some lines
 	{
 		x0 = 380,
-		y0 = 85,
+		y0 = 90,
 		x1 = 380,
 		y1 = 100,
 		width = 2
 	},
 	{
 		x0 = 350,
-		y0 = 85,
+		y0 = 90,
 		x1 = 350,
 		y1 = 100,
 		width = 2
 	},
 	{
 		x0 = 320,
-		y0 = 85,
+		y0 = 90,
 		x1 = 320,
 		y1 = 100,
 		width = 2
@@ -59,20 +54,22 @@ elements = {
 		arg = 'cpu1',
 		max = 100,
 		x = 400,
-		y = 85,
+		y = 90,
 		r = 65,
-		width = 10,
-		start_angle = -90,
-		end_angle = 180
+		width = 15,
+		graduation = 6,		-- deg
+		start_angle = -90,	-- deg
+		end_angle = 180,	-- deg
 	},
 	{
 		name = 'cpu',
 		arg = 'cpu2',
 		max = 100,
 		x = 400,
-		y = 85,
+		y = 90,
 		r = 50,
-		width = 10,
+		width = 15,
+		graduation = 6,
 		start_angle = -90,
 		end_angle = 180
 	},
@@ -81,9 +78,10 @@ elements = {
 		arg = 'cpu3',
 		max = 100,
 		x = 400,
-		y = 85,
+		y = 90,
 		r = 35,
-		width = 10,
+		width = 15,
+		graduation = 6,
 		start_angle = -90,
 		end_angle = 180
 	},
@@ -92,9 +90,10 @@ elements = {
 		arg = 'cpu4',
 		max = 100,
 		x = 400,
-		y = 85,
+		y = 90,
 		r = 20,
-		width = 10,
+		width = 15,
+		graduation = 6,
 		start_angle = -90,
 		end_angle = 180
 	},
@@ -103,9 +102,10 @@ elements = {
 		arg = '',
 		max = 100,
 		x = 400,
-		y = 85,
+		y = 90,
 		r = 80,
-		width = 10,
+		width = 15,
+		graduation = 6,
 		start_angle = -90,
 		end_angle = 180
 	},
@@ -114,7 +114,7 @@ elements = {
 		y0 = 239,
 		x1 = 337,
 		y1 = 239,
-		width = 2
+		width = 2 
 	},
 	{
 		name = 'memperc',
@@ -124,6 +124,7 @@ elements = {
 		y = 240,
 		r = 60,
 		width = 10,
+		graduation = 6,
 		start_angle = -90,
 		end_angle = 180
 	},
@@ -135,6 +136,7 @@ elements = {
 		y = 240,
 		r = 45,
 		width = 10,
+		graduation = 6,
 		start_angle = -90,
 		end_angle = 180
 	},
@@ -153,6 +155,7 @@ elements = {
 		y = 365,
 		r = 50,
 		width = 10,
+		graduation = 6,
 		start_angle = -90,
 		end_angle = 180
 	},
@@ -164,17 +167,20 @@ elements = {
 		y = 365,
 		r = 35,
 		width = 10,
+		graduation = 6,
 		start_angle = -90,
 		end_angle = 180
 	},
 	{
 		name = 'execi',
-		arg = "30 df -h /mnt/usb/ | tail -n 1 | awk '{ print substr($5, 1, length($5) - 1)}'",
-		max = 100,
+		arg = "600 curl -s https://api.coinbase.com/v2/prices/spot?currency=USD | jq '.data.amount' | sed -E 's/(,\"*)//' | tr -d '\"' ",
+		min = 11000,
+		max = 13000,
 		x = 400,
 		y = 365,
 		r = 20,
-		width = 10,
+		width = 15,
+		graduation = 6,
 		start_angle = -90,
 		end_angle = 180
 	},
@@ -221,20 +227,13 @@ function draw_ring(cr, val, pt)
 	local angle_f = pt['end_angle'] * math.pi / 180 - math.pi / 2
 	local angle_t = angle_0 + val / pt['max'] * (angle_f - angle_0)
 	local r = pt['r']
+	local width_tip = pt['graduation']
 
 	-- draw the static (background) arc
 	cairo_arc(cr, pt['x'], pt['y'], pt['r'], angle_0, angle_f)
 	cairo_set_source_rgba(cr, rgba(conf['bg_colour'], conf['bg_alpha']))
-	cairo_set_line_width(cr, pt['width'])
-	cairo_stroke(cr)
-
-	-- draw the circular moving arc ends
-	x_c = pt['x'] + r*math.cos(angle_t)
-	y_c = pt['y'] + r*math.sin(angle_t)
-	cairo_arc(cr, x_c, y_c, math.floor(pt['width']/2), angle_t-0.03, angle_t+math.pi+0.03 )
-	cairo_set_source_rgba(cr, rgba(conf['fg_colour'], conf['fg_alpha']))
-	cairo_fill(cr)
-	cairo_set_line_width(cr, 1)
+	--cairo_set_line_width(cr, pt['width'])
+	cairo_set_line_width(cr, 6)
 	cairo_stroke(cr)
 
 	-- draw the moving (usage) arc
@@ -242,15 +241,26 @@ function draw_ring(cr, val, pt)
 	cairo_set_source_rgba(cr, rgba(conf['fg_colour'], conf['fg_alpha']))
 	cairo_set_line_width(cr, pt['width'])
 	cairo_stroke(cr)
+
+	-- draw the tip
+	if (width_tip > 0)	
+	then
+		angle_0_tip = angle_t - width_tip/2 * math.pi / 180
+		angle_1_tip = angle_t +  width_tip/2 * math.pi / 180
+		cairo_arc(cr, pt['x'], pt['y'], pt['r'], angle_0_tip, angle_1_tip )
+		cairo_set_source_rgba(cr, rgba(conf['fg_colour'], conf['fg_alpha']))
+		cairo_set_line_width(cr, pt['width'])
+		cairo_stroke(cr)
+	end
 	
 	-- draw the outline of the static arc
-	cairo_arc(cr, pt['x'], pt['y'], pt['r'] + pt['width']/2, angle_0, angle_f)
-	cairo_set_source_rgba(cr, rgba(conf['line_colour'], conf['line_alpha']))
-	cairo_set_line_width(cr, 1)
-	cairo_stroke(cr)
+	--cairo_arc(cr, pt['x'], pt['y'], pt['r'] + pt['width']/2, angle_0, angle_f)
+	--cairo_set_source_rgba(cr, rgba(conf['line_colour'], conf['line_alpha']))
+	--cairo_set_line_width(cr, 1)
+	--cairo_stroke(cr)
 
-	cairo_arc(cr, pt['x'], pt['y'], pt['r'] - pt['width']/2, angle_0, angle_f)
-	cairo_stroke(cr)
+	--cairo_arc(cr, pt['x'], pt['y'], pt['r'] - pt['width']/2, angle_0, angle_f)
+	--cairo_stroke(cr)
 end
 
 
