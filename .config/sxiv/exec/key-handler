@@ -43,7 +43,7 @@ do
             dunstify "$file copied to clipboard"
             ;;
         "w")
-            sed -i "/feh/c\feh --bg-scale $(pwd)/$file" ~/.xinitrc;
+            sed -i "/feh/c\feh --bg-scale `abspath $file`" ~/.xinitrc;
             feh --bg-scale "$file"
             dunstify "$file set as wallpaper"
             ;;
