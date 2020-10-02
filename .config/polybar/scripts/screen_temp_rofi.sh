@@ -16,22 +16,22 @@ if [ $# -eq 1 ]; then
 else
 	current_val=`cat /tmp/redshift_val`
 fi
-[ -z "$current_val" ] && current_val=6500
+[ -z "$current_val" ] && current_val=6500 && echo 6500 > /tmp/redshift_val
 
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
-selected=`echo "6500
-6000
-5500
-5000
-4500
-4200
-4000
-3800
-3600
-3400
-3200
-3000" | sed -s "s/$current_val/$current_val   ●/g" | rofi -dmenu -p "screen temp"\
+selected=`echo "6500    ○
+6000    ○
+5500    ○
+5000    ○
+4500    ○
+4250    ○
+4000    ○
+3750    ○
+3500    ○
+3250    ○
+3000    ○"\
+	| sed -s "s/${current_val}.*/${current_val}    ●/g" | rofi -dmenu -p "screen temp"\
 	-location 1\
 	-width 16\
 	-lines 5\
@@ -39,11 +39,13 @@ selected=`echo "6500
 	-yoffset 34\
 	-xoffset $ws_width_total`
 
-temp=`echo $selected | grep -Eo [0-9]*`
+# clear the Unicode decoration
+selected=`echo $selected | grep -Eo [0-9]+`
+echo $selected > /tmp/dbg_sel
 
-if [ ! -z $temp ]; then
+if [ ! -z $selected ]; then
 	redshift -x
 	sleep 1
-	redshift -O $temp
-	echo $temp > /tmp/redshift_val
+	redshift -O $selected
+	echo $selected > /tmp/redshift_val
 fi
