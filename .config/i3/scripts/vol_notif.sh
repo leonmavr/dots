@@ -6,8 +6,8 @@
 
 
 ###Requirements
-which dunst > /dev/null 2>&1 || kill $$
-which pulseaudio > /dev/null 2>&1 || kill $$
+which dunst > /dev/null 2>&1 || exit 1 
+which pulseaudio > /dev/null 2>&1 || exit 1 
 
 
 ### Functionality
@@ -27,7 +27,7 @@ function is_mute {
 function send_notif {
 	vol=`get_volume` 
 	muted=`is_mute`
-	# my keybinds increments volume every 5% up to 150% so
+	# my keybinds increment volume every 5% up to 150% so
 	bar=`seq -s "━" $[ ${vol}/5 ] | sed 's/[0-9]//g'`
 	if [ $vol -le 40 ]; then
 		icon=audio-volume-low
@@ -40,7 +40,7 @@ function send_notif {
 		icon=audio-volume-muted
 	fi
 	# timeout (-t) in ms, -r is the ID
-	dunstify -i $icon -t 100 -r 13337 -u low " $bar"
+	dunstify -i $icon -t 300 -r 13337 -u low " $bar"
 }
 
 

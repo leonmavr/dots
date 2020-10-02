@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import re
 import subprocess
+import os
 try: 
     from BeautifulSoup import BeautifulSoup as bs
 except ImportError:
@@ -20,7 +21,7 @@ class EmojipediaFetcher:
     def register(self, html, dst = '/tmp/emojis.html'):
         assert 'http' in html,\
             "Provide an emoji sheet such as https://emojipedia.org/people/"
-        subprocess.check_output(['wget', html, '-O', dst])
+        subprocess.run(['wget', html, '-O', dst])
         self.html_files.append(dst)
 
 
@@ -38,14 +39,7 @@ class EmojipediaFetcher:
         with open(self.final_csv_file, 'a') as f:
             for emo, descr in zip(self._emojis, self._descrs):
                 f.write("%s%s\t%s\n" %(emo, self.sep, descr))
+            # add an option which opens another popup for lenny faces
+            f.write("( ͡° ͜ʖ ͡°): lenny faces...\n")
+                
 
-#subprocess.check_output(['wget', 'https://emojipedia.org/people/', '-O', '/tmp/people.html'])
-'''
-subprocess.check_output(['wget', 'https://emojipedia.org/nature/', '-O', '/tmp/nature.html'])
-subprocess.check_output(['wget', 'https://emojipedia.org/food-drink/', '-O', '/tmp/food-drink.html'])
-subprocess.check_output(['wget', 'https://emojipedia.org/activity/', '-O', '/tmp/activity.html'])
-subprocess.check_output(['wget', 'https://emojipedia.org/travel-places/', '-O', '/tmp/travel-places.html'])
-subprocess.check_output(['wget', 'https://emojipedia.org/objects/', '-O', '/tmp/objects.html'])
-subprocess.check_output(['wget', 'https://emojipedia.org/symbols/', '-O', '/tmp/symbols.html'])
-subprocess.check_output(['wget', 'https://emojipedia.org/flags/', '-O', '/tmp/flags.html'])
-'''

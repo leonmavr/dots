@@ -1,5 +1,10 @@
 #!/bin/sh
 
+_copy_to_clip() {
+	echo "$1" | tr -d '\n' | xclip -selection clipboard
+}
+
+
 if [ "$#" -eq 0 ]; then
 	echo -e "Usage:\n./<this_script> <colon_separated_file>"
 	echo -e "The color-separated file must contain an emoji on the left field of each line and its description on the right."
@@ -9,7 +14,15 @@ fi
 [ ! -f "$1" ] && python3 ~/.config/i3/scripts/get_emojis.py "$1" 
 
 selected=`cat "$1"\
-| rofi -dmenu -p "" -location 3 -width 20 -lines 10 -hide-scrollbar -font "Roboto Condensed 11" -yoffset 34 -xoffset -4`
+	| rofi -dmenu -p "" -location 3 -width 20 -lines 10 -hide-scrollbar -font "Roboto Condensed 11" -yoffset 34 -xoffset -4`
 
 emoji=`echo $selected | awk -F':' '{print $1}'`
-echo $emoji | tr -d '\n' | xclip -selection clipboard
+_copy_to_clip $emoji
+
+if [[ $selected == *"lenny"* ]]; then
+	lenny_file="/home/$USER/.config/i3/scripts/lenny_faces.csv"
+	selected=`cat "$lenny_file"\
+		| rofi -dmenu -p "" -location 3 -width -40 -lines 10 -hide-scrollbar -font "Roboto Condensed 11" -yoffset 34 -xoffset -4`
+fi
+emoji=`echo $selected | awk -F':' '{print $1}'`
+_copy_to_clip "$emoji"
