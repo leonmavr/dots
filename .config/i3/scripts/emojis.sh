@@ -2,6 +2,8 @@
 
 _copy_to_clip() {
 	echo "$1" | tr -d '\n' | xclip -selection clipboard
+	which dunst && \
+		dunstify "$1 copied to clipboard." -i /tmp/i_dont_exist.png -t 1000 -u low
 }
 
 
