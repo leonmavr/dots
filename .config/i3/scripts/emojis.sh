@@ -1,8 +1,8 @@
 #!/bin/sh
 
 _copy_to_clip() {
-	echo "$1" | tr -d '\n' | xclip -selection clipboard
-	[ ! -z "$1" ] && which dunst && \
+	echo "$@" | tr -d '\n' | xclip -selection clipboard
+	[ ! -z "$@" ] && which dunst && \
 		dunstify "$1 copied to clipboard." -i /tmp/i_dont_exist.png -t 1000 -u low
 }
 
@@ -19,7 +19,8 @@ selected=`cat "$1"\
 	| rofi -dmenu -p "" -location 3 -width 20 -lines 10 -hide-scrollbar -font "Roboto Condensed 11" -yoffset 34 -xoffset -4`
 
 emoji=`echo $selected | awk -F':' '{print $1}'`
-_copy_to_clip $emoji
+# either copy emojis or go to menu for lenny faces
+[[ $emoji != *"lenny"* ]] && _copy_to_clip "$emoji" 
 
 if [[ $selected == *"lenny"* ]]; then
 	lenny_file="/home/$USER/.config/i3/scripts/lenny_faces.csv"
