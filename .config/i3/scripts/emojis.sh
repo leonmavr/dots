@@ -20,7 +20,7 @@ selected=`cat "$1"\
 
 emoji=`echo $selected | awk -F':' '{print $1}'`
 # either copy emojis or go to menu for lenny faces
-[[ $emoji != *"lenny"* ]] && _copy_to_clip "$emoji" 
+[[ $selected != *"lenny"* ]] && _copy_to_clip "$emoji" 
 
 if [[ $selected == *"lenny"* ]]; then
 	lenny_file="/home/$USER/.config/i3/scripts/lenny_faces.csv"
