@@ -10,7 +10,7 @@
 	al = add --all
 	ba = branch -a
 	cl = clone
-        clcd = !git clone "$1" && cd  "`ls -1dt ./*/ | head -n 1`"
+        clcd = !git clone "$1" && repo=`basename $1` && cd ${repo%.*}
 	cm = commit -m
 	cma = commit --ammend
 	cmdiff = !git diff $1~ $1 # $1 is the commit hash
@@ -26,7 +26,6 @@
 	lg = log --graph --pretty=custom
 	modified = ls-files --modified
 	pl = pull
-	pname = config --local remote.origin.url|sed -n 's#.*/\([^.]*\)\.git#\1#p'
 	ps = push
 	sh = stash
 	st = status
