@@ -21,6 +21,7 @@
 	deleted = ls-files --deleted
 	f = fetch
 	fu = !git fetch `git upstream-remote`
+	fthis = reset --hard HEAD
 	l = log --pretty=custom
 	lg = log --graph --pretty=custom
 	modified = ls-files --modified
