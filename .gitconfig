@@ -30,7 +30,7 @@
 	sh = stash
 	st = status
 	staged = ls-files --staged
-	subup = submodule update --init --recursive
+	subinup = submodule update --init --recursive
 	unstage = !git reset HEAD -- $1
 	untracked = ls-files --other --exclude-standard
 [pretty]
