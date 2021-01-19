@@ -1,0 +1,86 @@
+[global_config]
+  suppress_multiple_term_dialog = True
+[keybindings]
+  go_next = None
+  go_prev = None
+  new_terminator = <Primary><Shift>m
+  new_window = <Primary><Shift>n
+  next_tab = <Primary>Tab
+  prev_tab = <Primary><Shift>Tab
+[layouts]
+  [[default]]
+    [[[child0]]]
+      fullscreen = False
+      last_active_term = fada595d-a752-4092-b041-35292f309865
+      last_active_window = True
+      maximised = False
+      order = 0
+      parent = ""
+      position = 94:27
+      size = 814, 446
+      title = /bin/bash
+      type = Window
+    [[[child2]]]
+      fullscreen = False
+      last_active_term = d934354d-5da2-4795-94b9-5ce180bdb907
+      last_active_window = False
+      maximised = False
+      order = 0
+      parent = ""
+      position = 908:27
+      size = 814, 446
+      title = /bin/bash
+      type = Window
+    [[[child4]]]
+      fullscreen = False
+      last_active_term = ede4016c-58eb-4f8f-ac15-24df24075bfd
+      last_active_window = False
+      maximised = False
+      order = 0
+      parent = ""
+      position = 94:503
+      size = 814, 482
+      title = /bin/bash
+      type = Window
+    [[[child6]]]
+      fullscreen = False
+      last_active_term = 6d35607d-567d-4230-b235-b1e51aa9fb84
+      last_active_window = False
+      maximised = False
+      order = 0
+      parent = ""
+      position = 908:503
+      size = 814, 482
+      title = /bin/bash
+      type = Window
+    [[[terminal1]]]
+      order = 0
+      parent = child0
+      profile = default
+      type = Terminal
+      uuid = fada595d-a752-4092-b041-35292f309865
+    [[[terminal3]]]
+      order = 0
+      parent = child2
+      profile = default
+      type = Terminal
+      uuid = d934354d-5da2-4795-94b9-5ce180bdb907
+    [[[terminal5]]]
+      order = 0
+      parent = child4
+      profile = default
+      type = Terminal
+      uuid = ede4016c-58eb-4f8f-ac15-24df24075bfd
+    [[[terminal7]]]
+      order = 0
+      parent = child6
+      profile = default
+      type = Terminal
+      uuid = 6d35607d-567d-4230-b235-b1e51aa9fb84
+[plugins]
+[profiles]
+  [[default]]
+    cursor_color = "#aaaaaa"
+    font = Hack 13
+    foreground_color = "#f9f0f9"
+    use_system_font = False
