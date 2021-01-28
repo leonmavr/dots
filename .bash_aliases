@@ -137,7 +137,7 @@ alias .b='. ~/.bashrc'
 alias svim='sudo vim'
 alias v='vim'
 
-alias md='mkdir'
+alias md='mkdir -p'
 
 alias ..='cd ..'
 alias ...='cd ../../'
