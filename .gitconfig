@@ -26,6 +26,7 @@
 	lg = log --graph --pretty=custom
 	modified = ls-files --modified
 	pl = pull
+	plf = !git add -A . && git stash && git pull
 	ps = push
 	rmbranch = !git push origin --delete $1
 	sh = stash
