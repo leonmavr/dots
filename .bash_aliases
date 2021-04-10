@@ -155,7 +155,10 @@ which youtube-dl > /dev/null 2>&1 &&
 ### Dependant on installed software
 
 
-which fzf > /dev/null 2>&1 && alias fzf='fzf | xargs realpath | tr -d "\n" | xclip -selection c -i'
+# Credits: https://github.com/junegunn/fzf/blob/master/ADVANCED.md
+which fzf > /dev/null 2>&1 &&\
+    alias fzf="find * | fzf --prompt 'All> '              --header 'CTRL-D: Directories / CTRL-F: Files'              --bind 'ctrl-d:change-prompt(Directories> )+reload(find * -type d)'              --bind 'ctrl-f:change-prompt(Files> )+reload(find * -type f)' | xclip -i -sel clip"
+
 
 # Usage: sxiv *png -o | collage-hor
 # Requires: imagemagick
