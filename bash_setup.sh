@@ -7,10 +7,12 @@ wget "https://raw.githubusercontent.com/0xLeo/dotfiles/master/.bash_prompt" -O ~
 wget "https://raw.githubusercontent.com/0xLeo/dotfiles/master/.inputrc" -O ~/.inputrc
 wget "https://raw.githubusercontent.com/0xLeo/dotfiles/master/.gdbinit" -O ~/.gdbinit
 wget "https://raw.githubusercontent.com/0xLeo/dotfiles/master/.gitconfig" -O ~/.gitconfig
+wget "https://raw.githubusercontent.com/0xLeo/dotfiles/master/.fzf.bash" -O ~/.fzf.bash
 
 for bash in {aliases,history_cfg,shopt,prompt}; do
 	grep -v -q .bash_$bash ~/.bashrc && echo "[ -f ~/.bash_$bash ] && . ~/.bash_$bash" >> ~/.bashrc
 done
+
 # requirement: fzf package
 if [ -f ~/.fzf.bash ]; then
 	grep -v -q .fzf.bash ~/.bashrc && echo "[ -f ~/.fzf.bash ] && source ~/.fzf.bash" >> ~/.bashrc
