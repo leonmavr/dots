@@ -48,7 +48,7 @@ extract () {
 }
 
 # credits https://serverfault.com/a/28649
-up(){
+up() {
     local d=""
     limit=$1
     for ((i=1 ; i <= limit ; i++))
@@ -63,6 +63,7 @@ up(){
 }
 
 # credits https://serverfault.com/a/5551
+# print the n-th column of the piped buffer
 fawk() {
     first="awk '{print "
     last="}'"
@@ -145,15 +146,52 @@ alias ....='cd ../../../'
 alias .....='cd ../../../..'
 alias cd-='cd -'
 
-# videos
-which ffmpeg > /dev/null 2>&1 &&
-	mp42gif() { ffmpeg -i $1 -vf "fps=10,scale=720:-1:flags=lanczos,split[s0][s1];[s0]palettegen[p];[s1][p]paletteuse" -loop 0 /tmp/output.gif; }
+
+### Videos
+if [ ! -z `which ffsadasdmpeg` ]; then
+    # $1: mp4 file to convert to gif
+    mp42gif() {
+        ffmpeg -i $1 -vf "fps=10,scale=720:-1:flags=lanczos,split[s0][s1];[s0]palettegen[p];[s1][p]paletteuse" -loop 0 /tmp/output.gif
+        echo "===== gif saved at /tmp/output.gif ====="
+    }
+
+    web2mp4() {
+        fname="$1"
+        fname=${fname%%.*}
+        ffmpeg -fflags +genpts -i ${fname}.webm -r 24 ${fname}.mp4
+    }
+
+    # $1: mp4 file to convert to images
+    # $2: format; png or jpg (not dot)
+    mp42img() {
+        input="$1"
+        format=$2
+        # TODO: error checking
+        if [ "$#" -eq 2 ]; then
+            format=$2
+        fi
+        f=`basename $input`
+        out_folder=${f%%.*}
+        mkdir -p $out_folder
+        fps=`ffprobe -v 0 -of csv=p=0 -select_streams v:0 -show_entries stream=r_frame_rate $input | bc`
+        ffmpeg -i $input -vf fps=$fps $out_folder/frame_%05d.$format
+        echo "===== $input converted to $format images at folder $out_folder ====="	
+    }
+
+    # $1: a formatted string describing the input images, e.g. frame_%05.png
+    img2mp4() {
+        input=$1
+        out_file=`echo ${input%\%*}.mp4`
+        ffmpeg -i frame_%05d.jpg -c:v libx264 -vf fps=30 -pix_fmt yuv420p $out_file
+        echo "===== Converted frames to file $out_file ====="
+    }
+fi
+
 which youtube-dl > /dev/null 2>&1 &&
 	alias yt='youtube-dl --user-agent "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)"'
 
 
 ### Dependant on installed software
-
 
 # Credits: https://github.com/junegunn/fzf/blob/master/ADVANCED.md
 which fzf > /dev/null 2>&1 &&\
