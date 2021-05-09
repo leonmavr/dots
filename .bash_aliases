@@ -148,7 +148,7 @@ alias cd-='cd -'
 
 
 ### Videos
-if [ ! -z `which ffsadasdmpeg` ]; then
+if [ ! -z `which ffmpeg` ]; then
     # $1: mp4 file to convert to gif
     mp42gif() {
         ffmpeg -i $1 -vf "fps=10,scale=720:-1:flags=lanczos,split[s0][s1];[s0]palettegen[p];[s1][p]paletteuse" -loop 0 /tmp/output.gif
