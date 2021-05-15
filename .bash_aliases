@@ -93,6 +93,10 @@ nn() {
 	cat "$1" | wc -l
 }
 
+k() {
+    kill -9 %$1
+}
+
 
 
 ### Aliases
