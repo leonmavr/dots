@@ -186,7 +186,7 @@ if [ ! -z `which ffmpeg` ]; then
     img2mp4() {
         input=$1
         out_file=`echo ${input%\%*}.mp4`
-        ffmpeg -i frame_%05d.jpg -c:v libx264 -vf fps=30 -pix_fmt yuv420p $out_file
+        ffmpeg -i $input -c:v libx264 -vf fps=30 -pix_fmt yuv420p $out_file
         echo "===== Converted frames to file $out_file ====="
     }
 fi
