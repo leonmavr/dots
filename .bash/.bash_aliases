@@ -155,6 +155,7 @@ alias cd-='cd -'
 if [ ! -z `which ffmpeg` ]; then
     # $1: mp4 file to convert to gif
     mp42gif() {
+    	# TODO: clip and convert to gif: ffmpeg -i source-video-file-name -ss 1:27 -to 3:02 -c:v copy -c:a copy output-file-name
         ffmpeg -i $1 -vf "fps=10,scale=720:-1:flags=lanczos,split[s0][s1];[s0]palettegen[p];[s1][p]paletteuse" -loop 0 /tmp/output.gif
         echo "===== gif saved at /tmp/output.gif ====="
     }
