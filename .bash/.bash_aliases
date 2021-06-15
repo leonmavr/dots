@@ -153,11 +153,50 @@ alias cd-='cd -'
 
 ### Videos
 if [ ! -z `which ffmpeg` ]; then
-    # $1: mp4 file to convert to gif
     mp42gif() {
-    	# TODO: clip and convert to gif: ffmpeg -i source-video-file-name -ss 1:27 -to 3:02 -c:v copy -c:a copy output-file-name
-        ffmpeg -i $1 -vf "fps=10,scale=720:-1:flags=lanczos,split[s0][s1];[s0]palettegen[p];[s1][p]paletteuse" -loop 0 /tmp/output.gif
+        #read cmd arguments
+        while [[ $# -gt 0 ]]; do
+            key="$1"
+            case $key in
+                -f|--from|-from)
+                    arg_from="$2"
+                    shift # past argument
+                    shift # past value
+                    ;;
+                -t|--to|-to)
+                    arg_to="$2"
+                    shift
+                    shift
+                    ;;
+                -r|--resolution|-res|--res)
+                    arg_resolution="$2"
+                    shift
+                    shift
+                    ;;
+                -fps|--fps|--frames-per-second)
+                    arg_fps="$2"
+                    shift
+                    shift
+                    ;;
+                *)
+                    # this is the file to convert
+                    arg_file_input="$1"
+                    shift
+                    ;;
+            esac
+        done
+        echo $arg_file_input $arg_resolution $arg_from
+
+        # default values
+        [ ! -x $arg_to ] && to="-to $arg_to" || to=""
+        [ ! -x $arg_from ] && from="-ss $arg_from" || from=""
+        [ ! -x $arg_resolution ] && resolution="$arg_resolution" || resolution=480
+        [ ! -x $arg_fps ] && fps="$arg_fps" || fps=10
+
+        ffmpeg -i $arg_file_input $from $to -c:v copy -c:a copy /tmp/temp.mp4 -y
+        ffmpeg -i /tmp/temp.mp4 -vf "fps=$fps,scale=$resolution:-1:flags=lanczos,split[s0][s1];[s0]palettegen[p];[s1][p]paletteuse" -loop 0 /tmp/output.gif -y
         echo "===== gif saved at /tmp/output.gif ====="
+        rm /tmp/temp.mp4
     }
 
     web2mp4() {
