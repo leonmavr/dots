@@ -267,7 +267,27 @@ which convert > /dev/null 2>&1 &&\
 		pgrep dunst > /dev/null 2>&1 && dunstify -i /tmp/collage.png "Collage saved to /tmp/collage.png and copied to clipboard"
 		#rm out_$$.png
 	}
-	
+
+
+# credits: laggardkernel @https://github.com/ranger/ranger/issues/1554#issuecomment-491650123
+if [ ! -z `which ranger` ]; then
+    function ranger {
+            local IFS=$'\t\n'
+            local tempfile="$(mktemp -t tmp.XXXXXX)"
+            local ranger_cmd=(
+                    command
+                    ranger
+                    --cmd="map Q chain shell echo %d > "$tempfile"; quitall"
+            )
+            
+            ${ranger_cmd[@]} "$@"
+            if [[ -f "$tempfile" ]] && [[ "$(cat -- "$tempfile")" != "$(echo -n `pwd`)" ]]; then
+                    cd -- "$(cat "$tempfile")" || return
+            fi
+            command rm -f -- "$tempfile" 2>/dev/null
+    }
+fi
+
 which ranger > /dev/null 2>&1 &&\
 	alias r='ranger'
 
