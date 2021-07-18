@@ -135,9 +135,10 @@ alias mx='chmod u+x'
 alias mwr='chmod u+w'
 alias py='python3'
 
+# todo: if vim installed else nvim
 alias edit='vim'
 alias vimrc='vim ~/.vimrc'
-bashrc() { vim ~/.bashrc; source ~/.bashrc; }
+bashrc() { edit ~/.bashrc; source ~/.bashrc; }
 alias .b='. ~/.bashrc'
 alias svim='sudo vim'
 alias v='vim'
