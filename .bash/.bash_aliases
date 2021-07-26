@@ -196,6 +196,7 @@ if [ ! -z `which ffmpeg` ]; then
         [ ! -x $arg_resolution ] && resolution="$arg_resolution" || resolution=480
         [ ! -x $arg_fps ] && fps="$arg_fps" || fps=10
 
+	# TODO: this is not very accurate, try (e.g. 30 fps, 5-10 sec): ffmpeg -ss 5.0 -i ski2.mp4  -c:v libx264 -c:a aac -frames:v 150 out.mp4
         ffmpeg -i $arg_file_input $from $to -c:v copy -c:a copy /tmp/temp.mp4 -y
         ffmpeg -i /tmp/temp.mp4 -vf "fps=$fps,scale=$resolution:-1:flags=lanczos,split[s0][s1];[s0]palettegen[p];[s1][p]paletteuse" -loop 0 /tmp/output.gif -y
         echo "===== gif saved at /tmp/output.gif ====="
