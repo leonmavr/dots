@@ -195,25 +195,25 @@ if [ ! -z `which ffmpeg` ]; then
                     ;;
             esac
         done
-        echo $arg_file_input $arg_resolution $arg_from
 
         # default values
         [ ! -x $arg_to ] && to="-to $arg_to" || to=""
         [ ! -x $arg_from ] && from="-ss $arg_from" || from=""
         [ ! -x $arg_resolution ] && resolution="$arg_resolution" || resolution=480
-        local fps_orig=`ffprobe $arg_file_input 2>&1  | grep -Eo "[0-9]+\.[0-9]+ fps" | grep -Eo "[0-9]+\.[0-9]+"`
-        fps_orig=${fps_orig%.*}
+        local fps_orig=`ffprobe $arg_file_input 2>&1  | grep -Eo "[0-9]+\.*[0-9]* fps" | grep -Eo "[0-9]+\.*[0-9]*"`
+        fps_orig=`printf "%.0f" $fps_orig`
         [ ! -x $arg_fps ] && fps="$arg_fps" || fps=$fps_orig
 
         local mp4_cut=/tmp/cut.mp4
         local dur_frames=`echo "(${arg_to}-${arg_from})*$fps" | bc -l`
         dur_frames=${dur_frames%.*} # convert to int
+
         # cut the video
-        ffmpeg $from -i $arg_file_input -c:v libx264 -c:a aac -frames:v $dur_frames $mp4_cut -y
+        ffmpeg $from -i $arg_file_input -c:v libx264 -c:a aac -frames:v $dur_frames ${mp4_cut} -y
         # convert cut part to mp4
         ffmpeg -i $mp4_cut -vf "fps=$fps,scale=$resolution:-1:flags=lanczos,split[s0][s1];[s0]palettegen[p];[s1][p]paletteuse" -loop 0 /tmp/output.gif -y
         echo "===== gif saved at /tmp/output.gif ====="
-        rm $mp4_cut
+        rm ${mp4_cut} 
     }
 
     web2mp4() {
