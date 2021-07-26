@@ -140,8 +140,7 @@ if [ ! -z `which nvim` ]; then
     alias vimrc='nvim ~/.config/nvim/init.vim'
     alias svim='sudo nvim'
     alias v='nvim'
-fi
-if [ ! -z `which vim` ]; then
+elif [ ! -z `which vim` ]; then
     alias edit='vim'
     alias vimrc='vim ~/.vimrc'
     alias svim='sudo vim'
@@ -202,13 +201,19 @@ if [ ! -z `which ffmpeg` ]; then
         [ ! -x $arg_to ] && to="-to $arg_to" || to=""
         [ ! -x $arg_from ] && from="-ss $arg_from" || from=""
         [ ! -x $arg_resolution ] && resolution="$arg_resolution" || resolution=480
-        [ ! -x $arg_fps ] && fps="$arg_fps" || fps=10
+        local fps_orig=`ffprobe $arg_file_input 2>&1  | grep -Eo "[0-9]+\.[0-9]+ fps" | grep -Eo "[0-9]+\.[0-9]+"`
+        fps_orig=${fps_orig%.*}
+        [ ! -x $arg_fps ] && fps="$arg_fps" || fps=$fps_orig
 
-	# TODO: this is not very accurate, try (e.g. 30 fps, 5-10 sec): ffmpeg -ss 5.0 -i ski2.mp4  -c:v libx264 -c:a aac -frames:v 150 out.mp4
-        ffmpeg -i $arg_file_input $from $to -c:v copy -c:a copy /tmp/temp.mp4 -y
-        ffmpeg -i /tmp/temp.mp4 -vf "fps=$fps,scale=$resolution:-1:flags=lanczos,split[s0][s1];[s0]palettegen[p];[s1][p]paletteuse" -loop 0 /tmp/output.gif -y
+        local mp4_cut=/tmp/cut.mp4
+        local dur_frames=`echo "(${arg_to}-${arg_from})*$fps" | bc -l`
+        dur_frames=${dur_frames%.*} # convert to int
+        # cut the video
+        ffmpeg $from -i $arg_file_input -c:v libx264 -c:a aac -frames:v $dur_frames $mp4_cut -y
+        # convert cut part to mp4
+        ffmpeg -i $mp4_cut -vf "fps=$fps,scale=$resolution:-1:flags=lanczos,split[s0][s1];[s0]palettegen[p];[s1][p]paletteuse" -loop 0 /tmp/output.gif -y
         echo "===== gif saved at /tmp/output.gif ====="
-        rm /tmp/temp.mp4
+        rm $mp4_cut
     }
 
     web2mp4() {
@@ -255,7 +260,7 @@ which youtube-dl > /dev/null 2>&1 &&
 
 
 which fzf > /dev/null 2>&1 &&\
-    [ -f ~/.fzf.bash ] && source ~/.fzf.bash
+    [ -f ~/.bash/.fzf.bash ] && source ~/.bash/.fzf.bash
     [ -f ~/fzf-bash-completion.sh ] && source ~/fzf-bash-completion.sh
     # fzf can switch between folders/files and copies selection to clipboard
     # Credits for Ctr+A/D: https://github.com/junegunn/fzf/blob/master/ADVANCED.md, the rest are mine
