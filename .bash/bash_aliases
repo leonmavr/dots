@@ -135,13 +135,21 @@ alias mx='chmod u+x'
 alias mwr='chmod u+w'
 alias py='python3'
 
-# todo: if vim installed else nvim
-alias edit='vim'
-alias vimrc='vim ~/.vimrc'
+if [ ! -z `which nvim` ]; then
+    alias edit='nvim'
+    alias vimrc='nvim ~/.config/nvim/init.vim'
+    alias svim='sudo nvim'
+    alias v='nvim'
+fi
+if [ ! -z `which vim` ]; then
+    alias edit='vim'
+    alias vimrc='vim ~/.vimrc'
+    alias svim='sudo vim'
+    alias v='vim'
+fi
+
 bashrc() { edit ~/.bashrc; source ~/.bashrc; }
 alias .b='. ~/.bashrc'
-alias svim='sudo vim'
-alias v='vim'
 
 alias g=git
 
@@ -240,6 +248,23 @@ fi
 ### Dependant on installed software
 which youtube-dl > /dev/null 2>&1 &&
 	alias yt='youtube-dl --user-agent "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)"'
+
+
+which youtube-dl > /dev/null 2>&1 &&
+    alias yt='youtube-dl --user-agent "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)"'
+
+
+which fzf > /dev/null 2>&1 &&\
+    [ -f ~/.fzf.bash ] && source ~/.fzf.bash
+    [ -f ~/fzf-bash-completion.sh ] && source ~/fzf-bash-completion.sh
+    # fzf can switch between folders/files and copies selection to clipboard
+    # Credits for Ctr+A/D: https://github.com/junegunn/fzf/blob/master/ADVANCED.md, the rest are mine
+    alias fzf="find * |\
+        fzf --prompt 'All> ' --header 'CTRL-D: Directories / CTRL-F: Files' --bind 'ctrl-d:change-prompt(Directories> )+reload(find * -type d)' --bind 'ctrl-f:change-prompt(Files> )+reload(find * -type f)'|\
+            sed 's/.*/\"&\"/g' |\
+            xargs realpath |\
+            tr -d \"\n\" |\
+            xclip -selection c -i"
 
 
 # Requires: imagemagick
