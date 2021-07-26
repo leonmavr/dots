@@ -235,18 +235,13 @@ if [ ! -z `which ffmpeg` ]; then
     }
 fi
 
+
+
+### Dependant on installed software
 which youtube-dl > /dev/null 2>&1 &&
 	alias yt='youtube-dl --user-agent "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)"'
 
 
-### Dependant on installed software
-
-# Credits: https://github.com/junegunn/fzf/blob/master/ADVANCED.md
-which fzf > /dev/null 2>&1 &&\
-    alias fzf="find * | fzf --prompt 'All> '              --header 'CTRL-D: Directories / CTRL-F: Files'              --bind 'ctrl-d:change-prompt(Directories> )+reload(find * -type d)'              --bind 'ctrl-f:change-prompt(Files> )+reload(find * -type f)' | xclip -i -sel clip"
-
-
-# Usage: sxiv *png -o | collage-hor
 # Requires: imagemagick
 which convert > /dev/null 2>&1 &&\
 	#####################################################################
