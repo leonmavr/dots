@@ -1,0 +1,106 @@
+#!/bin/bash
+
+
+#####################################################################
+# Prerequisites: imagemagick
+# About: Concatenates images in a grid formation, creating a collage.
+#        It's a wrapper around imagemagick's `montage` command
+# Usage:
+#     collage i,j,k\;l,j ->
+#     +-+-+-+
+#     |i|j|k|
+#     +-+-+-+
+#     |l|m| |
+#     +-+-+-+
+#     See also the command line arguments
+#####################################################################
+collage() {
+    # dependencies
+    [ ! -z `which imagemagick` ] && exit -1
+    #read cmd arguments
+    while [[ $# -gt 0 ]]; do
+        local key="$1"
+        case $key in
+            -f|--format)
+                # format of output file - png or jpg
+                local arg_format="$2"
+                shift
+                shift
+                ;;
+            -p|-pad|--pad|--padding)
+                # in pixels
+                local arg_pad="$2"
+                shift
+                shift
+                ;;
+            -pc|--padding-color|--padding-colour)
+                # colours can be specified e.g. as Green, green, or \#00ff00
+                local arg_pad_col="$2"
+                shift
+                shift
+                ;;
+            -b|-bor|--border)
+                # in pixels
+                local arg_border="$2"
+                shift
+                shift
+                ;;
+            -bc|--border-color|--border-colour)
+                local arg_border_col="$2"
+                shift
+                shift
+                ;;
+            -h|--height)
+                # height of each image in the collage
+                local arg_height="$2"
+                shift
+                shift
+                ;;
+            -w|--width)
+                # width of each image in the collage
+                local arg_width="$2"
+                shift
+                shift
+                ;;
+            -l|--label)
+                # if nonzero, it will label each image as (a), (b),...
+                [ ! -z "$2" ] && arg_label=1 | arg_label=0
+                shift
+                shift
+                ;;
+            *)
+                # files to process
+                # file11,...,file1m\;file21,...,file2n etc. (n<=m)
+                local arg_files_input="$1"
+                shift
+                ;;
+        esac
+    done
+    # default values
+    [ -x $arg_format ] && arg_format=png
+    [ -x $arg_pad ] && arg_pad=5
+    [ -x $arg_pad_col ] && arg_pad_col=White
+    [ -x $arg_border ] && arg_border=0
+    [ -x $arg_border_col ] && arg_border_col=White
+    [ -x $arg_width ] && arg_width=300
+    local out_file=/tmp/collage.${arg_format}
+
+    n_rows=`echo $arg_files_input | tr -cd \; | wc -c`
+    n_rows=$[ $n_rows+1 ]
+    n_cols=`echo $arg_files_input | sed 's/\;.*//g' |tr -cd , | wc -c`
+    n_cols=$[ $n_cols+1 ]
+    local input_files=`echo $arg_files_input | sed 's/[,\;]/ /g'`
+    # add label to each image
+    #convert $f -extent 40 -gravity South -gravity South -pointsize 30 -annotate +0-10 "testtt" /tmp/test.png
+    #montage null: zebra.png -tile 1x1 -geometry +0+30 -gravity South out.png
+
+    montage -border $arg_border -bordercolor $arg_border_col\
+        -geometry ${arg_width}x${arg_height}+${arg_pad}+${arg_pad}\
+        -background $arg_pad_col\
+        -tile ${n_cols}x${n_rows}\
+        $input_files $out_file
+    echo "Collage done! Output written to `realpath $out_file`"
+}
+
+
+collage $@
