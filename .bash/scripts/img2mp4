@@ -1,0 +1,12 @@
+#!/bin/bash
+
+# $1: a formatted string describing the input images, e.g. frame_%05.png
+img2mp4() {
+    input=$1
+    out_file=`echo ${input%\%*}.mp4`
+    ffmpeg -i $input -c:v libx264 -vf fps=30 -pix_fmt yuv420p $out_file
+    echo "===== Converted frames to file $out_file ====="
+}
+fi
+
+img2mp4 $@

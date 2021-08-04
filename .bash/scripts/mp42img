@@ -1,0 +1,20 @@
+#!/bin/bash
+
+# $1: mp4 file to convert to images
+# $2: format; png or jpg (not dot)
+mp42img() {
+    input="$1"
+    format=$2
+    # TODO: error checking
+    if [ "$#" -eq 2 ]; then
+        format=$2
+    fi
+    f=`basename $input`
+    out_folder=${f%%.*}
+    mkdir -p $out_folder
+    fps=`ffprobe -v 0 -of csv=p=0 -select_streams v:0 -show_entries stream=r_frame_rate $input | bc`
+    ffmpeg -i $input -vf fps=$fps $out_folder/frame_%05d.$format
+    echo "===== $input converted to $format images at folder $out_folder ====="	
+}
+
+mp42img $@

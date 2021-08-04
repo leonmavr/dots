@@ -1,15 +1,13 @@
 #!/bin/bash
 
 bash_dir=~/.bash
-mkdir $bash_dir
-wget "https://raw.githubusercontent.com/0xLeo/dotfiles/master/.bash_aliases" -O $bash_dir/.bash_aliases
-wget "https://raw.githubusercontent.com/0xLeo/dotfiles/master/.bash_history_cfg" -O $bash_dir/.bash_history_cfg
-wget "https://raw.githubusercontent.com/0xLeo/dotfiles/master/.bash_shopt" -O $bash_dir/.bash_shopt
-wget "https://raw.githubusercontent.com/0xLeo/dotfiles/master/.bash_prompt" -O $bash_dir/.bash_prompt
-wget "https://raw.githubusercontent.com/0xLeo/dotfiles/master/.inputrc" -O $bash_dir/.inputrc
-wget "https://raw.githubusercontent.com/0xLeo/dotfiles/master/.gdbinit" -O $bash_dir/.gdbinit
-wget "https://raw.githubusercontent.com/0xLeo/dotfiles/master/.gitconfig" -O $bash_dir/.gitconfig
-wget "https://raw.githubusercontent.com/0xLeo/dotfiles/master/.fzf.bash" -O $bash_dir/.fzf.bash
+cp -r .bash ~
+
+if [ -d ~/.bash/scripts ]; then
+    toadd="PATH=\${PATH}:~/.bash/scripts"
+    grep -v -q "$toadd" ~/.bashrc && echo "# Add my common scripts to the PATH so I don't have spend time sourcing them" >> ~/.bashrc
+    grep -v -q "$toadd" ~/.bashrc && echo $toadd >> ~/.bashrc
+fi
 
 for bash in {aliases,history_cfg,shopt,prompt}; do
 	grep -v -q $bash_dir/.bash_$bash ~/.bashrc && echo "[ -f $bash_dir/.bash_$bash ] && . $bash_dir/.bash_$bash" >> ~/.bashrc
