@@ -96,7 +96,7 @@ alias lsmod="ls -lah --color | awk '{k=0;for(i=0;i<=8;i++)k+=((substr(\$1,i+2,1)
 # count files in directory (not hidden)
 alias n='ls -l | grep ^- | wc -l'
 
-alias mex='chmod u+x'
+alias mx='chmod u+x'
 alias mwr='chmod u+w'
 alias py='python3'
 
