@@ -6,6 +6,8 @@ set number relativenumber
 set encoding=utf-8
 " TextEdit might fail if hidden is not set.
 set hidden
+" Dark background for syntax highlighting
+set background=dark
 " Some servers have issues with backup files, see #649.
 set nobackup
 set nowritebackup
@@ -23,11 +25,18 @@ set shiftround             " >> indents to next multiple of 'shiftwidth'.
 " ignore case when searching
 set ignorecase
 set smartcase
+set incsearch		" automatically jump to search match
 " large scrolloff to keep cursor in the middle
 set scrolloff=999
+" open file where I left off
+if has("autocmd")
+  au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
+endif
+
+set noswapfile
 
 "-------------------------------------------------------------------
-" Mappings 
+" Mappings
 "-------------------------------------------------------------------
 source $HOME/.config/nvim/mappings.vim
 
@@ -47,6 +56,7 @@ call plug#begin('~/.config/nvim/plugged')
     Plug 'jiangmiao/auto-pairs', {'branch': 'master'}
     " jedi conflicts with Coc. Therefore when opening a .py file, do :CocDisable
     Plug 'davidhalter/jedi-vim', {'branch': 'master'}
+    "Plug 'neoclide/coc-jedi', {'do': 'yarn install'}
     Plug 'sirver/UltiSnips', {'branch': 'master'}
     Plug 'vim-airline/vim-airline'
     Plug 'vim-airline/vim-airline-themes'
@@ -60,15 +70,27 @@ call plug#begin('~/.config/nvim/plugged')
     Plug 'honza/vim-snippets'
     Plug 'heavenshell/vim-pydocstring', { 'do': 'make install', 'for': 'python' }
     Plug 'cpiger/NeoDebug'
+    Plug 'mg979/vim-visual-multi', {'branch': 'master'}
+    Plug 'numirias/semshi', {'do': ':UpdateRemotePlugins'}
+    Plug 'majutsushi/tagbar'
+    Plug 'vim-scripts/DrawIt'
+    Plug 'xuhdev/vim-latex-live-preview', { 'for': 'tex' }
+    Plug 'vim-scripts/DoxygenToolkit.vim'
+    Plug 'nvie/vim-flake8'
+    Plug 'gogoprog/vim-makefile-manager'
+    Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install'  }
     " Colour schemes
     Plug 'Badacadabra/vim-archery'
     Plug 'whatyouhide/vim-gotham'
     Plug 'fcpg/vim-orbital'
+    Plug 'cocopon/iceberg.vim'
+    Plug 'shadorain/shadotheme'
+    Plug 'axvr/photon.vim'
 call plug#end()
 
 
 "-------------------------------------------------------------------
-" Plugins configs 
+" Plugins configs
 "-------------------------------------------------------------------
 " --> coc
 " language server for autocompletion
@@ -113,7 +135,73 @@ let g:neodbg_keymap_print_variable     = '<C-P>'        " view variable under th
 let g:neodbg_keymap_stop_debugging     = '<S-F5>'       " stop debugging (kill)
 let g:neodbg_keymap_toggle_console_win = '<F6>'         " toggle console window
 let g:neodbg_keymap_terminate_debugger = '<C-C>'        " terminate debugger
-"Always show the signcolumn, otherwise it would shift the text each time
+" --> Airline
+" use good old status line syntax, e.g.
+"let g:airline_section_a = 'test'
+"let g:airline_section_b = airline#section#create(['branch'])
+let g:airline#extensions#whitespace#enabled = 0 " that was section_z
+let g:airline#extensions#tabline#left_sep = ' '
+let g:airline#extensions#tabline#left_alt_sep = '|'
+" air-line
+let g:airline_powerline_fonts = 1
+
+if !exists('g:airline_symbols')
+    let g:airline_symbols = {}
+endif
+
+" unicode symbols
+"let g:airline_left_sep = '»'
+"let g:airline_left_sep = '▶'
+"let g:airline_right_sep = '«'
+"let g:airline_right_sep = '◀'
+"let g:airline_symbols.linenr = '␊'
+"let g:airline_symbols.linenr = '␤'
+"let g:airline_symbols.linenr = '¶'
+"let g:airline_symbols.branch = '⎇'
+"let g:airline_symbols.paste = 'ρ'
+"let g:airline_symbols.paste = 'Þ'
+"let g:airline_symbols.paste = '∥'
+let g:airline_symbols.whitespace = 'Ξ'
+
+" airline symbols
+let g:airline_left_sep = ''
+let g:airline_left_alt_sep = ''
+let g:airline_right_sep = ''
+let g:airline_right_alt_sep = ''
+let g:airline_symbols.branch = ''
+let g:airline_symbols.readonly = ''
+let g:airline_symbols.linenr = ''
+
+" --> markdown-preview
+let g:mkdp_auto_start = 1
+let g:mkdp_auto_close = 1
+let g:mkdp_refresh_slow = 0
+let g:mkdp_command_for_global = 0
+let g:mkdp_open_to_the_world = 0
+let g:mkdp_open_ip = ''
+let g:mkdp_browser = ''
+let g:mkdp_echo_preview_url = 0
+let g:mkdp_browserfunc = ''
+let g:mkdp_preview_options = {
+    \ 'mkit': {},
+    \ 'katex': {},
+    \ 'uml': {},
+    \ 'maid': {},
+    \ 'disable_sync_scroll': 0,
+    \ 'sync_scroll_type': 'middle',
+    \ 'hide_yaml_meta': 1,
+    \ 'sequence_diagrams': {},
+    \ 'flowchart_diagrams': {},
+    \ 'content_editable': v:false,
+    \ 'disable_filename': 0
+    \ }
+let g:mkdp_markdown_css = ''
+let g:mkdp_highlight_css = ''
+let g:mkdp_port = ''
+let g:mkdp_page_title = '「${name}」'
+let g:mkdp_filetypes = ['markdown']
+
+"  Always show the signcolumn, otherwise it would shift the text each time
 " diagnostics appear/become resolved.
 if has("nvim-0.5.0") || has("patch-8.1.1564")
   " Recently vim can merge signcolumn and number column into one
@@ -122,8 +210,23 @@ else
   set signcolumn=yes
 endif
 
+" --> vim-latex-live-preview
+" Use :LLPStartPreview
+"-------------------------------------------------------------------
+" Colours
+"-------------------------------------------------------------------
+colorscheme iceberg
 
-"-------------------------------------------------------------------
-" Colours 
-"-------------------------------------------------------------------
-colorscheme orbital
+
+" Custom commands
+"
+" credits https://stackoverflow.com/a/7205746
+command! -nargs=0 -bar Qargs execute 'args ' . QuickfixFilenames()
+function! QuickfixFilenames()
+  " Building a hash ensures we get each buffer only once
+  let buffer_numbers = {}
+  for quickfix_item in getqflist()
+    let buffer_numbers[quickfix_item['bufnr']] = bufname(quickfix_item['bufnr'])
+  endfor
+  return join(values(buffer_numbers))
+endfunction
