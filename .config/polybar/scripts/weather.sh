@@ -57,10 +57,10 @@ get_location(){
 		if [ -n "$location" ]; then
 			location_lat="$(echo "$location" | jq '.location.lat')"
 			location_lon="$(echo "$location" | jq '.location.lng')"
-			wget -q "$API/weather?appid=$KEY&lat=$location_lat&lon=$location_lon&units=$UNITS" -O $DATA_FILE 
+			wget -q "$API/weather?appid=$KEY&lat=$location_lat&lon=$location_lon&units=$UNITS" -O $DATA_FILE 1>/dev/null 2>&1
 		fi
 	else
-		wget -q "$API/weather?appid=$KEY&q=$CITY,$COUNTRY" -O $DATA_FILE 
+		wget -q "$API/weather?appid=$KEY&q=$CITY,$COUNTRY" -O $DATA_FILE  1>/dev/null 2>&1
 	fi
 }
 
