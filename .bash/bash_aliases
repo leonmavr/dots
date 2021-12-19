@@ -62,6 +62,9 @@ k() {
     kill -9 %$1
 }
 
+c() {
+    echo "scale=6; $1" | bc -l 
+}
 
 
 ### Aliases
