@@ -2,6 +2,7 @@
 
 bash_dir=~/.bash
 mkdir -p $bash_dir
+mkdir -p ~/.bash/scripts
 cp -r .bash ~
 
 if [ -d ~/.bash/scripts ]; then
