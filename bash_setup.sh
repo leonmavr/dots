@@ -12,7 +12,7 @@ if [ -d ~/.bash/scripts ]; then
 fi
 
 for bash in {aliases,history_cfg,shopt,prompt}; do
-	grep -v -q $bash_dir/.bash_$bash ~/.bashrc && echo "[ -f $bash_dir/.bash_$bash ] && . $bash_dir/.bash_$bash" >> ~/.bashrc
+	grep -v -q $bash_dir/.bash_$bash ~/.bashrc && echo "[ -f $bash_dir/bash_$bash ] && . $bash_dir/.bash_$bash" >> ~/.bashrc
 done
 
 # requirement: fzf package
