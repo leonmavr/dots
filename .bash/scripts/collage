@@ -15,8 +15,8 @@
 #     See also the command line arguments
 #####################################################################
 collage() {
-    # dependencies
-    [ ! -z `which imagemagick` ] && exit -1
+    # dependencies: imagemagick (e.g. convert)
+    [ ! -z `which convert` ] && exit -1
     #read cmd arguments
     while [[ $# -gt 0 ]]; do
         local key="$1"
