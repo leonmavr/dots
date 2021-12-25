@@ -20,5 +20,7 @@ if [ -f $bash_dir/.fzf.bash ]; then
 	grep -v -q $bash_dir/.fzf.bash ~/.bashrc && echo "[ -f $bash_dir/.fzf.bash ] && source $bash_dir/.fzf.bash" >> ~/.bashrc
 fi
 
+# other configs
 cp .gitconfig ~
 cp .inputrc ~
+cp .gdbinit ~
