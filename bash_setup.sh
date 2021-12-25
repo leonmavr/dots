@@ -1,9 +1,7 @@
 #!/bin/bash
 
 bash_dir=~/.bash
-mkdir -p $bash_dir
-mkdir -p ~/.bash/scripts
-cp -r .bash ~
+cp -r $bash_dir ~
 
 if [ -d ~/.bash/scripts ]; then
     toadd="PATH=\${PATH}:~/.bash/scripts"
