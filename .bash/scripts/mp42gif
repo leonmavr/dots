@@ -5,31 +5,31 @@ mp42gif() {
     [ -z `which ffmpeg` ] && exit -1
     #read cmd arguments
     while [[ $# -gt 0 ]]; do
-        key="$1"
+        local key="$1"
         case $key in
             -f|--from|-from)
-                arg_from="$2"
+                local arg_from="$2"
                 shift # past argument
                 shift # past value
                 ;;
             -t|--to|-to)
-                arg_to="$2"
+                local arg_to="$2"
                 shift
                 shift
                 ;;
             -r|--resolution|-res|--res)
-                arg_resolution="$2"
+                local arg_resolution="$2"
                 shift
                 shift
                 ;;
             -fps|--fps|--frames-per-second)
-                arg_fps="$2"
+                local arg_fps="$2"
                 shift
                 shift
                 ;;
             *)
                 # this is the file to convert
-                arg_file_input="$1"
+                local arg_file_input="$1"
                 shift
                 ;;
         esac
@@ -44,16 +44,8 @@ ow_format 2>&1 | sed -n 's/duration=//p'` "
     fps_orig=`printf "%.0f" $fps_orig`
     [ ! -x $arg_fps ] && fps="$arg_fps" || fps=$fps_orig
 
-    local mp4_cut=/tmp/cut.mp4
-    local dur_frames=`echo "(${arg_to}-${arg_from})*$fps" | bc -l`
-    dur_frames=${dur_frames%.*} # convert to int
-
-    # cut the video
-    ffmpeg $from -i "$arg_file_input" -c:v libx264 -c:a aac -frames:v $dur_frames $mp4_cut -y
-    # convert cut part to mp4
-    ffmpeg -i $mp4_cut -vf "fps=$fps,scale=$resolution:-1:flags=lanczos,split[s0][s1];[s0]palettegen[p];[s1][p]paletteuse" -loop 0 /tmp/output.gif -y
+    ffmpeg $from $to -i $arg_file_input -filter_complex "[0:v] fps=$fps,scale=w=$resolution:h=-1,split [a][b];[a] palettegen=stats_mode=single [p];[b][p] paletteuse=new=1" -y /tmp/output.gif
     echo "===== gif saved at /tmp/output.gif ====="
-    rm ${mp4_cut}
 }
 
 
