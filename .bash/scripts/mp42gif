@@ -36,8 +36,7 @@ mp42gif() {
     done
 
     # default values
-    [ ! -x $arg_to ] && to="-to $arg_to" || to="-to `ffprobe $arg_file_input -sh
-ow_format 2>&1 | sed -n 's/duration=//p'` "
+    [ ! -x $arg_to ] && to="-to $arg_to" || to="-to `ffprobe $arg_file_input -show_format 2>&1 | sed -n 's/duration=//p'` "
     [ ! -x $arg_from ] && from="-ss $arg_from" || from="-ss 0"
     [ ! -x $arg_resolution ] && resolution="$arg_resolution" || resolution=480
     local fps_orig=`ffprobe $arg_file_input 2>&1  | grep -Eo "[0-9]+\.*[0-9]* fps" | grep -Eo "[0-9]+\.*[0-9]*"`
