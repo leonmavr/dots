@@ -7,7 +7,7 @@ bash_extras() {
         "# Change keyboard layout\n"\
         "setxkbmap -layout gb,gr\n"\
          "setxkbmap -option 'grp:alt_shift_toggle'\n"\
-         >> /tmp/a.txt
+         >> ~/.bashrc
 }
 
 
