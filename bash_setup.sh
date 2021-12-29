@@ -1,5 +1,16 @@
 #!/bin/bash
 
+
+bash_extras() {
+    echo -e\
+        "\n"\
+        "# Change keyboard layout\n"\
+        "setxkbmap -layout gb,gr\n"\
+         "setxkbmap -option 'grp:alt_shift_toggle'\n"\
+         >> /tmp/a.txt
+}
+
+
 bash_dir=~/.bash
 cp -r .bash ~
 
@@ -24,3 +35,6 @@ fi
 cp .gitconfig ~
 cp .inputrc ~
 cp .gdbinit ~
+
+# additional bashrc commands
+bash_extras
