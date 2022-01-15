@@ -132,8 +132,8 @@ alias cd-='cd -'
 ### Videos
 
 ### Dependant on installed software
-which youtube-dl > /dev/null 2>&1 &&
-    alias yt='youtube-dl --user-agent "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)"'
+which yt-dlp > /dev/null 2>&1 &&
+    alias yt='yt-dlp --user-agent "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)"'
 
 
 which fzf > /dev/null 2>&1 &&\
