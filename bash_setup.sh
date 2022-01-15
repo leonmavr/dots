@@ -1,20 +1,9 @@
 #!/bin/bash
 
-
-bash_extras() {
-    echo -e\
-        "\n"\
-        "# Change keyboard layout\n"\
-        "setxkbmap -layout gb,gr\n"\
-         "setxkbmap -option 'grp:alt_shift_toggle'\n"\
-         >> ~/.bashrc
-}
-
-
 bash_dir=~/.bash
 cp -r .bash ~
 
-# these scripts should be added to PATH
+# these scripts (little tools) should be added to PATH
 if [ -d ~/.bash/scripts ]; then
     toadd="PATH=\${PATH}:~/.bash/scripts"
     grep -v -q "$toadd" ~/.bashrc && echo "# Add my common scripts to the PATH so I don't have spend time sourcing them" >> ~/.bashrc
@@ -31,10 +20,10 @@ if [ -f $bash_dir/.fzf.bash ]; then
 	grep -v -q $bash_dir/.fzf.bash ~/.bashrc && echo "[ -f $bash_dir/.fzf.bash ] && source $bash_dir/.fzf.bash" >> ~/.bashrc
 fi
 
+git_completion_command="[ -f ~/.git-completion.bash ] && . ~/.git-completion.bash"
+grep -v -q git-completion.bash ~/.bashrc && echo $git_completion_command >> ~/.bashrc
+
 # other configs
 cp .gitconfig ~
 cp .inputrc ~
 cp .gdbinit ~
-
-# additional bashrc commands
-bash_extras
