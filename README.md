@@ -1,5 +1,5 @@
 #### :large_orange_diamond: About
-This repo contains all (working and tested) dotfiles for my Linux setups.
+This repo contains all (working and tested) dotfiles for my Linux setups. The files in the root of this repo should correspond to your home folder.
 
 #### :large_orange_diamond: Branches
 * This is the master branch and its contents should be minimum. Master contains only files that can be used independtly of OS and desktop environment. The only such configs are vim, git, and some bash aliases. 
