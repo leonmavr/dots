@@ -40,7 +40,8 @@ fi
 
 # .local executables such as youtube-dl
 makedir -p ~/.local/bin
-PATH=${PATH}:~/.local/bin
+path_string="PATH=\${PATH}:\$HOME/.local/bin"
+grep -v -q ":\$HOME/.local/bin" ~/.bashrc && echo $path_string >> ~/.bashrc
 
 # other configs
 cp .gitconfig ~
