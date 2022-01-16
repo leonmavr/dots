@@ -64,7 +64,11 @@ font-8 = "Weather Icons:size=12;1"
 ; {TX} blah ${T-}
 ; X is the 1-indexed font number from above
 
-modules-left = i3 pulseaudio backlight redshift current_song mpd 
+
+; copy paste:
+;  
+
+modules-left = workspaces pulseaudio backlight redshift current_song mpd 
 modules-center = popup-calendar date weather notifs
 modules-right = ram xkeyboard temperature battery powerrofi 
 ; skype icon etc.
@@ -97,7 +101,7 @@ click-left = ~/.config/polybar/scripts/calendar-popup.sh --popup
 
 [module/weather]
 type = custom/script
-exec = ~/.config/polybar/scripts/weather.sh lindau de 
+exec = ~/.config/polybar/scripts/weather.sh jena de 
 exec-if = ping openweathermap.org -c 1
 interval = 600
 ;label-font = 7
@@ -159,38 +163,85 @@ label-empty-padding = 2
 
 [module/workspaces]
 type = internal/xworkspaces
-pin-workspaces = false
+
+; Only show workspaces defined on the same output as the bar
+;
+; Useful if you want to show monitor specific workspaces
+; on different bars
+;
+; Default: false
+pin-workspaces = true
+
+; Create click handler used to focus desktop
+; Default: true
 enable-click = true
+
+; Create scroll handlers used to cycle desktops
+; Default: true
 enable-scroll = true
-format-padding = 0
 
-icon-0 = 1;
-icon-1 = 2;
-icon-2 = 3;
-icon-3 = 4;
-icon-4 = 5;
-icon-5 = 6;
-icon-6 = 7;
-icon-7 = 8;
-icon-8 = 9;
-icon-default = 0 
+; icon-[0-9]+ = <desktop-name>;<icon>
+; NOTE: The desktop name needs to match the name configured by the WM
+; You can get a list of the defined desktops using:
+; $ xprop -root _NET_DESKTOP_NAMES
+icon-0 = 1;1
+icon-1 = 2;
+icon-2 = 3;
+icon-3 = 4;
+icon-4 = 5;
+icon-default = 
 
+
+; Available tags:
+;   <label-monitor>
+;   <label-state> - gets replaced with <label-(active|urgent|occupied|empty)>
+; Default: <label-state>
 format = <label-state>
-label-active = %icon%
-label-occupied = %icon%
-label-urgent = %icon%
-label-empty = %icon%
 
-label-occupied-padding = 0
-label-empty-padding = 0
-label-urgent-padding = 0
-label-active-padding = 0
+; Available tokens:
+;   %name%
+; Default: %name%
+label-monitor = %name%
+
+; Available tokens:
+;   %name%
+;   %icon%
+;   %index%
+; Default: %icon%  %name%
+label-active = %name%
+
+; Available tokens:
+;   %name%
+;   %icon%
+;   %index%
+; Default: %icon%  %name%
+label-occupied = %name%
+
+; Available tokens:
+;   %name%
+;   %icon%
+;   %index%
+; Default: %icon%  %name%
+label-urgent = 
+
+; Available tokens:
+;   %name%
+;   %icon%
+;   %index%
+; Default: %icon%  %name%
+label-empty = 
+
+label-active-padding = 1
+label-urgent-padding = 1
+label-occupied-padding = 1
+label-empty-padding = 1
 
 label-active-foreground = ${colors.primary}
 label-urgent-foreground = ${colors.alert}
 label-empty-foreground = ${colors.foreground-alt}
 label-occupied-foreground = ${colors.foreground-alt}
 
+;------------------------------------------------------------
 [module/i3]
 type = internal/i3
 format = <label-state> <label-mode>
@@ -236,7 +287,7 @@ ws-icon-5 = 6;
 ws-icon-6 = 7;7
 ws-icon-7 = 8;8
 ws-icon-8 = 9;9
-ws-icon-default = W
+ws-icon-default = W
 
 
 [module/mpd]
@@ -348,13 +399,13 @@ label-volume-foreground = ${root.foreground}
 label-muted =%{T6}   %{T-}
 label-muted-foreground = #666
 
-ramp-volume-0 =%{T6} %{T-}
-ramp-volume-1 =%{T6} %{T-}
-ramp-volume-2 =%{T6} %{T-}
-ramp-volume-3 =%{T6} %{T-}
-ramp-volume-4 =%{T6} %{T-}
-ramp-volume-5 =%{T6} %{T-}
-ramp-volume-6 =%{T6} %{T-}
+ramp-volume-0 =%{T6}%{T-}
+ramp-volume-1 =%{T6}%{T-}
+ramp-volume-2 =%{T6}%{T-}
+ramp-volume-3 =%{T6}%{T-}
+ramp-volume-4 =%{T6}%{T-}
+ramp-volume-5 =%{T6}%{T-}
+ramp-volume-6 =%{T6}%{T-}
 ramp-volume-foreground = ${colors.icons}
 
 
