@@ -14,4 +14,4 @@ source "$HOME/.fzf/shell/key-bindings.bash"
 
 # Appearance
 # ------------
-export FZF_DEFAULT_OPTS="--height=70% --layout=reverse --info=inline --border --margin=2 --padding=1"
+export FZF_DEFAULT_OPTS="--height=70% --layout=reverse --info=inline --border --margin=2"
