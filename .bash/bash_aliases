@@ -111,11 +111,17 @@ if [ ! -z `which nvim` ]; then
     alias vimrc='nvim ~/.config/nvim/init.vim'
     alias svim='sudo nvim'
     alias v='nvim'
+    EDITOR=nvim
 elif [ ! -z `which vim` ]; then
     alias edit='vim'
     alias vimrc='vim ~/.vimrc'
     alias svim='sudo vim'
     alias v='vim'
+    EDITOR=vim
+else
+    EDITOR=vi
+    alias edit=vi
+    alias v=vi
 fi
 
 bashrc() { edit ~/.bashrc; source ~/.bashrc; }
