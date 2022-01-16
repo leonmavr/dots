@@ -38,8 +38,9 @@ if [ `which nvim` ]; then
     cp -r .config/nvim ~/.config
 fi
 
-# .local executables
+# .local executables such as youtube-dl
 makedir -p ~/.local/bin
+PATH=${PATH}:~/.local/bin
 
 # other configs
 cp .gitconfig ~
