@@ -141,7 +141,7 @@ alias cd-='cd -'
 ### Videos
 
 ### Dependant on installed software
-which yt-dlp > /dev/null 2>&1 &&
+which yt-dlp > /dev/null 2>&1 &&\
     alias yt='yt-dlp --user-agent "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)"'
 
 
