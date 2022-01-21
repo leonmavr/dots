@@ -27,14 +27,16 @@ bindsym $mod+q kill
 # The (new) i3-dmenu-desktop which only displays applications
 # shipping a .desktop file. It is a wrapper around dmenu, so you need that installed.
 #bindsym $mod+d exec --no-startup-id i3-dmenu-desktop
-bindsym $mod+d exec rofi -modi "window#run#ssh#drun" -show drun -columns 2 -lines 10 -font "Oxanium 13"
+bindsym $mod+d exec rofi -modi "window#run#ssh#drun" -show drun -columns 2 -lines 10 -font "Oxanium 14"
 
 # bind $mod+. to pop up a list of emojis
-bindsym $mod+s exec --no-startup-id bash ~/.config/i3/scripts/emojis.sh /tmp/all_emojis.csv
+bindsym $mod+s exec ~/.config/i3/scripts/emojis.sh /tmp/all_emojis.html
 
 ########## Startup ##########
-exec_always --no-startup-id compton -b --config ~/.config/compton/config_blur > /dev/null 2>&1 
+exec_always --no-startup-id compton -b --config ~/.config/compton/config4
 exec --no-startup-id mpd
+# TODO: dunst doesn't start with systemctl enable :(
+exec_always --no-startup-id dunst
 exec_always --no-startup-id setxkbmap -layout gb,gr
 exec_always --no-startup-id setxkbmap -option 'grp:alt_shift_toggle'
 #exec --no-startup-id killall polybar > /dev/null 2>&1 
@@ -140,6 +142,9 @@ bindsym $mod+Tab workspace next
 bindsym Shift+$mod+Tab workspace previous 
 workspace_auto_back_and_forth yes
 
+# Create new workspace
+bindsym $mod+n exec ~/.config/i3/scripts/new_workspace.sh
+
 
 ########## Reload/ restart/ exit ##########
 # reload the configuration file
@@ -204,7 +209,6 @@ mode "resize" {
     bindsym $mod+r mode "default"
 }
 
-
 ######
 bindsym $alt+t mode "terminals"
 mode "terminals" {
@@ -232,10 +236,8 @@ mode "apps" {
 
 ########## Send apps to specific workspaces ##########
 # do `xprop` to find out class name
-assign [class="firefox*"] $ws2
-assign [class="Thunar"] $ws3
-assign [class="Skype"] $ws4
-for_window [title="^Spotify*"] move to workspace $ws3
+#assign [class="Thunar"] $ws3
+#for_window [title="^Spotify*"] move to workspace $ws3
 
 ########## Window style ##########
 # Gaps around windows
@@ -246,7 +248,7 @@ gaps outer 0
 ########## Borders and titles ##########
 # No borders
 new_window none 
-new_float none
+new_float none 
 #border_radius 30
 
 ########## Hotkeys ##########
