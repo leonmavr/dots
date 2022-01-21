@@ -1,3 +1,5 @@
+/* IMPORTANT NOTICE: Works with version 1.6.0. Breaks with newest versions!*/
+
 configuration {
 /*	modi: "window,run,ssh";*/
 /*	width: 50;*/
