@@ -208,7 +208,10 @@ endif
 "-------------------------------------------------------------------
 " Colours
 "-------------------------------------------------------------------
-colorscheme iceberg
+colorscheme archery 
+let g:airline_theme='iceberg'
+" transparent background
+hi Normal guibg=NONE ctermbg=NONE
 
 
 " Custom commands
