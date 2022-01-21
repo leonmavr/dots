@@ -39,7 +39,8 @@ class EmojipediaFetcher:
         with open(self.final_csv_file, 'a') as f:
             for emo, descr in zip(self._emojis, self._descrs):
                 f.write("%s%s\t%s\n" %(emo, self.sep, descr))
-            # add an option which opens another popup for lenny faces
+            # add an option which opens another popup for additional
             f.write("( ͡° ͜ʖ ͡°): lenny faces...\n")
+            f.write("<(￣︶￣)>: kawaii faces...\n")
                 
 
