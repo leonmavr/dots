@@ -1,4 +1,4 @@
-#### :large_orange_diamond: About
+### :large_orange_diamond: About
 This repo contains all (working and tested) dotfiles for my Linux setups. The files in the root of this repo should correspond to your home folder. For example, the `.bash` directory should correspond to `~/.bash` in your machine.
 
 ### :large_orange_diamond: Managing the dotfiles
