@@ -11,48 +11,47 @@ W='#880000bb'  # wrong
 V='#ffa44f88'  # verifying
 
 i3lock \
---insidevercolor=$B   \
---ringvercolor=$V     \
+--insidever-color=$B     \
+--ringver-color=$V     \
 \
---insidewrongcolor=$C \
---ringwrongcolor=$W   \
+--insidewrong-color=$C \
+--ringwrong-color=$W   \
 \
---insidecolor=$E      \
---ringcolor=$D        \
---linecolor=$B        \
---separatorcolor=$B   \
+--inside-color=$E      \
+--ring-color=$D        \
+--line-color=$B        \
+--separator-color=$B   \
 \
---verifcolor=$T        \
---wrongcolor=$T        \
---timecolor=$T        \
---datecolor=$T        \
---layoutcolor=$T      \
---keyhlcolor=$W       \
---bshlcolor=$W        \
+--verif-color=$T        \
+--wrong-color=$T        \
+--time-color=$T        \
+--date-color=$T        \
+--layout-color=$T      \
+--keyhl-color=$W       \
+--bshl-color=$W        \
 \
 --screen 1            \
 --blur 10              \
 --clock               \
 --indicator           \
---timestr="%H:%M:%S"  \
---datestr="$USER, %A %d/%m" \
+--time-str="%H:%M"  \
+--date-str="$USER, %A %d/%m" \
 --keylayout 2         \
 \
 --ring-width 6.0      \
 --radius 140          \
 --time-font "Roboto"  \
---timesize 41  \
+--time-size 41  \
 --date-font "Roboto"  \
---datesize 19  \
+--date-size 19  \
 --verif-font "Roboto"  \
 --wrong-font "Roboto"  \
 --layout-font "Roboto"  \
---layoutsize 15  \
-
-# --veriftext="Drinking verification can..."
-# --wrongtext="Nope!"
+--layout-size 15 \
+\
+--verif-text="FBI, $USER is in!" \
+--wrong-text="Nope!"
 # --textsize=20
 # --modsize=10
 # --datefont=monofur
 # etc
-
