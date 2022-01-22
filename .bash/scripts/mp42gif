@@ -1,0 +1,51 @@
+#!/bin/bash
+
+mp42gif() {
+    # dependencies
+    [ -z `which ffmpeg` ] && exit -1
+    #read cmd arguments
+    while [[ $# -gt 0 ]]; do
+        local key="$1"
+        case $key in
+            -f|--from|-from)
+                local arg_from="$2"
+                shift # past argument
+                shift # past value
+                ;;
+            -t|--to|-to)
+                local arg_to="$2"
+                shift
+                shift
+                ;;
+            -r|--resolution|-res|--res)
+                local arg_resolution="$2"
+                shift
+                shift
+                ;;
+            -fps|--fps|--frames-per-second)
+                local arg_fps="$2"
+                shift
+                shift
+                ;;
+            *)
+                # this is the file to convert
+                local arg_file_input="$1"
+                shift
+                ;;
+        esac
+    done
+
+    # default values
+    [ ! -x $arg_to ] && to="-to $arg_to" || to="-to `ffprobe $arg_file_input -show_format 2>&1 | sed -n 's/duration=//p'` "
+    [ ! -x $arg_from ] && from="-ss $arg_from" || from="-ss 0"
+    [ ! -x $arg_resolution ] && resolution="$arg_resolution" || resolution=480
+    local fps_orig=`ffprobe $arg_file_input 2>&1  | grep -Eo "[0-9]+\.*[0-9]* fps" | grep -Eo "[0-9]+\.*[0-9]*"`
+    fps_orig=`printf "%.0f" $fps_orig`
+    [ ! -x $arg_fps ] && fps="$arg_fps" || fps=$fps_orig
+
+    ffmpeg $from $to -i $arg_file_input -filter_complex "[0:v] fps=$fps,scale=w=$resolution:h=-1,split [a][b];[a] palettegen=stats_mode=single [p];[b][p] paletteuse=new=1" -y /tmp/output.gif
+    echo "===== gif saved at /tmp/output.gif ====="
+}
+
+
+mp42gif $@
