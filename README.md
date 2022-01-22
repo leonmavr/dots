@@ -15,7 +15,7 @@ sudo apt-get install stow
 1. Clone your dotfiles in some location (to a workspace)
 2. Use stow to create symlinks from your workspace to `~`
 3. When you edit your dotfiles in the workspace, those in `~` will be symlinked to your workspace.
-4. When you're done with editing the file in the workspace and you've tested them, you're read to commit on git!
+4. When you're done with editing the files in the workspace and you've tested them, you're read to commit on git!
 
 ```
 cd ~/Documents
