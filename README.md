@@ -13,13 +13,13 @@ sudo apt-get install stow
 ```
 `stow`'s workflow is:
 1. Clone your dotfiles in some location (to a workspace)
-2. Use stow to create symlinks from your workspace to `~`
+2. Use stow to create symlinks from your workspace (e.g. `~/Documents`) to `~`
 3. When you edit your dotfiles in the workspace, those in `~` will be symlinked to your workspace.
 4. When you're done with editing the files in the workspace and you've tested them, you're ready to commit on git!
 
 ```
 cd ~/Documents
-git cl git@github.com:leonmavr/dotfiles.git
+git clone git@github.com:leonmavr/dotfiles.git
 # or:
 # https://github.com/leonmavr/dotfiles.git
 ```
