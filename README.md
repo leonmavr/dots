@@ -20,6 +20,7 @@ sudo apt-get install stow
 ```
 cd ~/Documents
 git clone git@github.com:leonmavr/dotfiles.git
+cd dotfiles
 # or:
 # https://github.com/leonmavr/dotfiles.git
 ```
