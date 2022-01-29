@@ -42,5 +42,5 @@ bash_aliases -> ../Documents/dotfiles/.bash/bash_aliases
 
 ### :large_orange_diamond: Managing the branches
 * This is the master branch and its contents should be minimum. Master contains only files that can be used independtly of OS and desktop environment, e.g. bash and vim configs.
-* Other branches include self-contained dotfiles for specific operating systems.
+* Other branches include standalone dotfiles for specific operating systems, mainly for Arch.
 * It's there recommended to merge the master into the other branches every once in a while.
