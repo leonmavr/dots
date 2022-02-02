@@ -30,7 +30,7 @@ ps1_string="PS1='\n\[\e[0;38;5;195m\]╭─\[\e[0;38;5;234m\]\[\e[0;38;5;50;4
 grep -v -q  ~/.bashrc && echo $ps1_string >> ~/.bashrc
 
 # configs
-cp -r ~/.config/* ~/.config
+cp -r .config/* ~/.config
 
 # nvim config
 if [ `which nvim` ]; then
@@ -39,7 +39,7 @@ if [ `which nvim` ]; then
 fi
 
 # .local executables such as youtube-dl
-makedir -p ~/.local/bin
+mkdir -p ~/.local/bin
 path_string="PATH=\${PATH}:\$HOME/.local/bin"
 grep -v -q ":\$HOME/.local/bin" ~/.bashrc && echo $path_string >> ~/.bashrc
 
