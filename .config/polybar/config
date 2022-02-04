@@ -70,7 +70,7 @@ font-8 = "Weather Icons:size=12;1"
 
 modules-left = workspaces pulseaudio backlight redshift current_song mpd 
 modules-center = popup-calendar date weather notifs
-modules-right = ram xkeyboard temperature battery powerrofi 
+modules-right = ram xkeyboard temperature_custom battery powerrofi 
 ; skype icon etc.
 tray-position = right
 
@@ -461,6 +461,15 @@ format-prefix-foreground = ${colors.foreground-alt}
 interval = 60
 exec = echo " " 
 click-left = ~/.config/polybar/scripts/powerrofi.sh
+
+
+[module/temperature_custom]
+type = custom/script
+format-prefix= 
+format-prefix-foreground = ${colors.foreground-alt}
+interval = 5
+exec =  sensors | grep "ACPI interface" -A1 | grep temp | awk {'print $2'} | grep -Eo [0-9]+ | head -1
+#click-left = ~/.config/polybar/scripts/powerrofi.sh
 
 
 [settings]
