@@ -1,0 +1,4 @@
+#!/bin/bash
+
+which sensors > /dev/null 2>&1 &&\
+    echo `sensors | grep "ACPI interface" -A1 | grep temp | awk {'print $2'} | grep -Eo [0-9]+ | head -1`
