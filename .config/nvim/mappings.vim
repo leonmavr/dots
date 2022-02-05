@@ -108,10 +108,6 @@ set nofoldenable
 " <Leader>b = breakpoint, <Leader>B deletes them all
 autocmd Filetype python nnoremap <Leader>b oimport pdb; pdb.set_trace()<Esc>j
 autocmd Filetype python nnoremap <Leader>B :g/pdb.set_trace/d<cr>
-" TODO: <Leader>B = delete all breakpoints
-"" vimrc  o n l y
-"auto-source upon saving
-autocmd! bufwritepost .vimrc source %
 "" Tex
 autocmd FileType tex inoremap $$ $$<Left>
 autocmd FileType tex inoremap \[ \[<esc>o<esc>o<bs>\]<esc>ki<tab>
@@ -133,4 +129,3 @@ autocmd Filetype sh set expandtab
 ""Exceptions
 autocmd FileType * if &ft != 'py'| imap "" ""<Left>
 autocmd FileType * if &ft != 'py'| imap '' ''<Left>
-
