@@ -21,6 +21,7 @@ set shortmess+=c
 set expandtab              " Use spaces instead of tabs.
 set softtabstop=4          " Tab key indents by 4 spaces.
 set shiftwidth=4           " >> indents by 4 spaces.
+set tabstop=4
 set shiftround             " >> indents to next multiple of 'shiftwidth'.
 " ignore case when searching
 set ignorecase
@@ -51,9 +52,11 @@ source $HOME/.config/nvim/mappings.vim
 "    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 " Needs also pynvim - install as:
 " python3 -m pip install --user --upgrade pynvim
+" For syntax checking in C/C++ install ccls and read:
+" https://github.com/MaskRay/ccls/wiki/Project-Setup#example-b
 call plug#begin('~/.config/nvim/plugged')
     " Once you install coc, e.g for json, python, C/C++ support:
-    " :CocInstall coc-json coc-python coc-clangd
+    " :CocInstall coc-json coc-python
     Plug 'neoclide/coc.nvim', {'branch': 'release'}
     Plug 'jiangmiao/auto-pairs', {'branch': 'master'}
     " jedi conflicts with Coc. Therefore when opening a .py file, do :CocDisable
@@ -171,8 +174,8 @@ let g:mkdp_auto_close = 1
 let g:mkdp_refresh_slow = 0
 let g:mkdp_command_for_global = 0
 let g:mkdp_open_to_the_world = 0
-let g:mkdp_open_ip = ''
-let g:mkdp_browser = ''
+let g:mkdp_open_ip = '127.0.0.1'
+let g:mkdp_browser = 'Brave'
 let g:mkdp_echo_preview_url = 0
 let g:mkdp_browserfunc = ''
 let g:mkdp_preview_options = {
@@ -208,10 +211,10 @@ endif
 "-------------------------------------------------------------------
 " Colours
 "-------------------------------------------------------------------
-colorscheme archery 
-let g:airline_theme='iceberg'
+colorscheme pixelmuerto 
 " transparent background
 hi Normal guibg=NONE ctermbg=NONE
+let g:airline_theme='iceberg'
 
 
 " Custom commands
