@@ -1,15 +1,16 @@
 http://reddit.com/r/worldnews.rss "Reddit - world news"
 https://www.reddit.com/r/privacy.rss "Reddit - privacy"
-https://news.ycombinator.com/rss
+https://news.ycombinator.com/rss "Hackernews"
 http://feeds.bbci.co.uk/news/world/rss.xml "BBC worls news"
 http://feeds.nature.com/nature/rss/current "nature"
 http://feeds.feedburner.com/ConservationInternationalBlog.rss
 http://feeds.feedburner.com/ConservationInternationalBlog/ClimateChange
-https://www.rt.com/rss/
-https://www.rt.com/rss/news/
+https://www.rt.com/rss/ "Reuters"
+https://www.rt.com/rss/news/ "Reuters news"
 https://tvxs.gr/feeds/2/feed.xml
-https://physicsworld.com/feed/
-http://www.bloomberg.com/feeds/podcasts/view.xml
-http://feeds.washingtonpost.com/rss/world
-https://www.theguardian.com/world/rss
+https://physicsworld.com/feed/ "Physics World"
+http://www.bloomberg.com/feeds/podcasts/view.xml "Bloomberg"
+http://feeds.washingtonpost.com/rss/world "Washington Post"
+https://www.theguardian.com/world/rss "The Guardian"
 http://www.bloomberg.com/feeds/podcasts/advantage.xml
+https://www.newmoney.gr/category/roh/feed/

@@ -5,8 +5,8 @@
 auto-reload yes
 download-retries 5
 download-timeout 20
-max-items 30
-keep-articles-days 10
+max-items 35
+keep-articles-days 7
 
 # behaviour
 external-url-viewer "urlview"
@@ -14,6 +14,7 @@ refresh-on-startup yes
 player mplayer
 download-full-page yes
 browser "lynx -vikeys -editor=vim -accept_all_cookies %u"
+scrolloff 5
 
 # ignore ads
 ignore-article "*" "title =~ \"Sponsor\""
@@ -42,13 +43,17 @@ confirm-exit no
 cleanup-on-quit yes 
 
 # test
-highlight feedlist    "^  *[0-9]+  *N  "                    magenta  magenta
-highlight articlelist "^  *[0-9]+  *N  "                    magenta  magenta
+#highlight feedlist    "^  *[0-9]+  *N  "                    magenta  magenta
+#highlight articlelist "^  *[0-9]+  *N  "                    magenta  magenta
+##
+#color background                                            default   default
+#color listnormal                                            default   default
+#color listfocus                                             magenta   default
+#color info                                                  blue      black
+#color article                                               default   default
+#color listnormal_unread                                     white     default
+#color listfocus_unread                                      color255  default 
 
-color background                                            default   default
-color listnormal                                            default   default
-color listfocus                                             magenta   default
-color info                                                  blue      black
-color article                                               default   default
-color listnormal_unread                                     white     default
-color listfocus_unread                                      color255  default 
+# macros
+# hit ,m to use it
+macro m set browser "mpv --ytdl --ontop --no-border --force-window --autofit=960x540 --geometry=-20-50 %u > /dev/null &"; open-in-browser ; set browser "$BROWSER %u"
