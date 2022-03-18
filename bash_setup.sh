@@ -47,3 +47,10 @@ grep -v -q ":\$HOME/.local/bin" ~/.bashrc && echo $path_string >> ~/.bashrc
 cp .gitconfig ~
 cp .inputrc ~
 cp .gdbinit ~
+
+# ranger config
+if [ `which ranger` ]; then
+	# see https://github.com/alexanderjeurissen/ranger_devicons
+	git clone https://github.com/alexanderjeurissen/ranger_devicons ~/.config/ranger/plugins/ranger_devicons
+	echo "default_linemode devicons" >> $HOME/.config/ranger/rc.conf
+fi
