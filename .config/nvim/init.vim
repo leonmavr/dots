@@ -13,7 +13,7 @@ set nobackup
 set nowritebackup
 " Give more space for displaying messages.
 set cmdheight=2
-set updatetime=300
+set updatetime=250
 " Don't pass messages to |ins-completion-menu|.
 set shortmess+=c
 " Tab options
@@ -23,6 +23,7 @@ set softtabstop=4          " Tab key indents by 4 spaces.
 set shiftwidth=4           " >> indents by 4 spaces.
 set tabstop=4
 set shiftround             " >> indents to next multiple of 'shiftwidth'.
+setl cino+=(0              " indent multi-line function arguments
 " ignore case when searching
 set ignorecase
 set smartcase
