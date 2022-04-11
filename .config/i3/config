@@ -272,15 +272,9 @@ bindsym $Mod+XF86AudioPrev exec dbus-send --print-reply --dest=org.mpris.MediaPl
 
 # XF86WebCam = Fn+F6 on my Thinkpad
 # Take screenshot of the whole screen and save to clipboard
-bindsym XF86WebCam exec rm -f /tmp/screenshot.png &&\
-	scrot /tmp/screenshot.png &&\
-	xclip -selection clipboard -t image/png -i /tmp/screenshot.png &&\
-	dunstify -u low -i /tmp/screenshot.png "screenshot to clipboard"
+bindsym XF86WebCam exec  ~/.bash/scripts/screenshot full
 # Take screenshot of an area and save to clipboard
-bindsym $Mod+XF86WebCam exec rm -f /tmp/screenshot.png &&\
-	import /tmp/screenshot.png &&\
-	xclip -selection clipboard -t image/png -i /tmp/screenshot.png&&\
-	dunstify -u low -i /tmp/screenshot.png "screenshot to clipboard"
+bindsym $Mod+XF86WebCam exec ~/.bash/scripts/screenshot crop _is $RANDOM
 # Fn+F3 => lock 
 bindsym XF86ScreenSaver exec ~/.config/i3lock-color/lock.sh
 # F2 => toggle touchpad - useful when I write
