@@ -1,4 +1,14 @@
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+### Functions
+
+# Brief: check whether a program is installed
+#        explanation of which this is the recommended way to check:
+#        https://stackoverflow.com/a/677212 
+# $1:    The name command to check
+function has() {
+    command -v $1 &> /dev/null
+}
+
 ### Commands
 ping() {
     if [[ $# -eq 0 ]] ; then
@@ -106,14 +116,14 @@ alias mx='chmod u+x'
 alias mwr='chmod u+w'
 alias py='python3'
 
-if [ ! -z `which nvim` ]; then
+if has nvim; then
     alias edit='nvim'
     alias vimrc='nvim ~/.config/nvim/init.vim'
     alias svim='sudo nvim'
     alias v='nvim'
     alias vim='nvim'
     EDITOR=nvim
-elif [ ! -z `which vim` ]; then
+elif has vim; then
     alias edit='vim'
     alias vimrc='vim ~/.vimrc'
     alias svim='sudo vim'
@@ -142,11 +152,11 @@ alias cd-='cd -'
 ### Videos
 
 ### Dependant on installed software
-which yt-dlp > /dev/null 2>&1 &&\
+has yt-dlp &&\
     alias yt='yt-dlp --user-agent "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)"'
 
 
-which fzf > /dev/null 2>&1 &&\
+has fzf &&\
     [ -f ~/.bash/.fzf.bash ] && source ~/.bash/.fzf.bash
     [ -f ~/fzf-bash-completion.sh ] && source ~/fzf-bash-completion.sh
     # fzf can switch between folders/files and copies selection to clipboard
@@ -160,7 +170,7 @@ which fzf > /dev/null 2>&1 &&\
 
 
 # credits: laggardkernel @https://github.com/ranger/ranger/issues/1554#issuecomment-491650123
-if [ ! -z `which ranger` ]; then
+if has ranger; then
     function ranger {
             local IFS=$'\t\n'
             local tempfile="$(mktemp -t tmp.XXXXXX)"
@@ -178,20 +188,20 @@ if [ ! -z `which ranger` ]; then
     }
 fi
 
-which ranger > /dev/null 2>&1 &&\
+has ranger &&\
 	alias r='ranger'
 
-which zathura > /dev/null 2>&1 &&\
+has zathura &&\
 	alias z='zathura'
 
-which curl > /dev/null 2>&1 &&\
-which jq > /dev/null 2>&1 &&\
+if has curl && has jq; then
 	btc-price() {
 		curl -s https://api.coinbase.com/v2/prices/spot?currency=USD |\
 			jq '.data.amount' |\
 			sed -E 's/(,\"*)//' |\
 			xargs printf "$%.2f\n";
 	}
+fi
 
 
 ### Key bindings
