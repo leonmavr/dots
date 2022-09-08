@@ -1,5 +1,15 @@
 #!/bin/bash
 
+### Requirements:
+# xclip
+
+### Installations
+cd /tmp
+git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+~/.fzf/install
+cd -
+
+### Configs
 bash_dir=~/.bash
 cp -r .bash ~
 
@@ -30,7 +40,6 @@ ps1_string="PS1='\n\[\e[0;38;5;195m\]╭─\[\e[0;38;5;234m\]\[\e[0;38;5;50;4
 grep -v -q  ~/.bashrc && echo $ps1_string >> ~/.bashrc
 
 # configs
-
 cp -r .config/* ~
 
 # nvim config
