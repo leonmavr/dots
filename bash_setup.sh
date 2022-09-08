@@ -30,7 +30,8 @@ ps1_string="PS1='\n\[\e[0;38;5;195m\]╭─\[\e[0;38;5;234m\]\[\e[0;38;5;50;4
 grep -v -q  ~/.bashrc && echo $ps1_string >> ~/.bashrc
 
 # configs
-cp -r .config/* ~/.config
+
+cp -r .config/* ~
 
 # nvim config
 if [ `which nvim` ]; then
