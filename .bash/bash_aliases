@@ -32,6 +32,13 @@ grephere(){
 	grep -rnw . -e "$1"
 }
 
+# recurively find text and replace
+# Usage
+# rrp text_to_find text_to_replace_it_with
+rrp() {
+    grep -rl $1 . | xargs sed -i "s/$1/$2/g"
+}
+
 mdcd() {
     mkdir -p "$1" && cd "$1"
 }
