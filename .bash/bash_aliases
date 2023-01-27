@@ -201,15 +201,6 @@ has ranger &&\
 has zathura &&\
 	alias z='zathura'
 
-if has curl && has jq; then
-	btc-price() {
-		curl -s https://api.coinbase.com/v2/prices/spot?currency=USD |\
-			jq '.data.amount' |\
-			sed -E 's/(,\"*)//' |\
-			xargs printf "$%.2f\n";
-	}
-fi
-
 
 ### Key bindings
 # Key bindings that couldn't go into .input rc
