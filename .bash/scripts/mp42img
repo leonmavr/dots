@@ -1,5 +1,8 @@
 #!/bin/bash
 
+### Requirements
+# ffmpeg
+
 # $1: mp4 file to convert to images
 # $2: format; png or jpg (not dot)
 mp42img() {

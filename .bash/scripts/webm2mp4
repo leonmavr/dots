@@ -1,5 +1,8 @@
 #!/bin/bash
 
+### Requirements
+# ffmpeg
+
 web2mp4() {
     fname="$1"
     fname=${fname%%.*}

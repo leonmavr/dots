@@ -8,7 +8,7 @@
 
 
 # Take screenshot of an area and save to clipboard
-sshot() {
+_sshot() {
     rm -f /tmp/screenshot.png
     local prefix=$2
     local postfix=$3
@@ -22,4 +22,4 @@ sshot() {
     which dunst && dunstify -u low -i $sshot_file "screenshot to clipboard"
 }
 
-sshot $@
+_sshot $@

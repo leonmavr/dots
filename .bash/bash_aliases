@@ -5,7 +5,7 @@
 #        explanation of which this is the recommended way to check:
 #        https://stackoverflow.com/a/677212 
 # $1:    The name command to check
-function has() {
+function _has() {
     command -v $1 &> /dev/null
 }
 
@@ -123,14 +123,14 @@ alias mx='chmod u+x'
 alias mwr='chmod u+w'
 alias py='python3'
 
-if has nvim; then
+if _has nvim; then
     alias edit='nvim'
     alias vimrc='nvim ~/.config/nvim/init.vim'
     alias svim='sudo nvim'
     alias v='nvim'
     alias vim='nvim'
     EDITOR=nvim
-elif has vim; then
+elif _has vim; then
     alias edit='vim'
     alias vimrc='vim ~/.vimrc'
     alias svim='sudo vim'
@@ -159,11 +159,11 @@ alias cd-='cd -'
 ### Videos
 
 ### Dependant on installed software
-has yt-dlp &&\
+_has yt-dlp &&\
     alias yt='yt-dlp --user-agent "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)"'
 
 
-has fzf &&\
+_has fzf &&\
     [ -f ~/.bash/.fzf.bash ] && source ~/.bash/.fzf.bash
     [ -f ~/fzf-bash-completion.sh ] && source ~/fzf-bash-completion.sh
     # fzf can switch between folders/files and copies selection to clipboard
@@ -177,7 +177,7 @@ has fzf &&\
 
 
 # credits: laggardkernel @https://github.com/ranger/ranger/issues/1554#issuecomment-491650123
-if has ranger; then
+if _has ranger; then
     function ranger {
             local IFS=$'\t\n'
             local tempfile="$(mktemp -t tmp.XXXXXX)"
@@ -195,10 +195,10 @@ if has ranger; then
     }
 fi
 
-has ranger &&\
+_has ranger &&\
 	alias r='ranger'
 
-has zathura &&\
+_has zathura &&\
 	alias z='zathura'
 
 
