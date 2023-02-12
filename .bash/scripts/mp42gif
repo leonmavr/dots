@@ -1,5 +1,8 @@
 #!/bin/bash
 
+### Requirements
+# ffmpeg
+
 mp42gif() {
     # dependencies
     [ -z `which ffmpeg` ] && exit -1

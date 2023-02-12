@@ -1,5 +1,8 @@
 #!/bin/bash
 
+### Requirements
+# ffmpeg
+
 # $1: a formatted string describing the input images, e.g. frame_%05.png
 img2mp4() {
     input=$1
