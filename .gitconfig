@@ -27,6 +27,7 @@
         pl = pull
         plf = !git add -A . && git stash && git pull
         ps = push
+	psf = !repo=`git config --get remote.origin.url` && branch=`git rev-parse --abbrev-ref HEAD` && git push -f $repo $branch
         rmbranch = !git push origin --delete $1
         sh = stash
         st = status
