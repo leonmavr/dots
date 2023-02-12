@@ -26,6 +26,7 @@
         modified = ls-files --modified
         pl = pull
         plf = !git add -A . && git stash && git pull
+        pltr = !branch=`git rev-parse --abbrev-ref HEAD` && git pull origin $branch
         ps = push
 	psf = !repo=`git config --get remote.origin.url` && branch=`git rev-parse --abbrev-ref HEAD` && git push -f $repo $branch
         rmbranch = !git push origin --delete $1
