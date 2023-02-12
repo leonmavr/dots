@@ -4,8 +4,8 @@
 # jq
 # curl
 
-btc_price() {
+_btc_price() {
     echo scale=3\;`curl -s https://api.coindesk.com/v1/bpi/currentprice.json | jq .bpi.USD.rate_float | sed -s 's/\..*//g'`/1000 | bc -l | xargs printf "%.3f k USD\n";
 }
 
-btc_price $@
+_btc_price $@
