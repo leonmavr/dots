@@ -14,7 +14,7 @@
 #     +-+-+-+
 #     See also the command line arguments
 #####################################################################
-collage() {
+_collage() {
     # dependencies: imagemagick (e.g. convert)
     [ ! -z `which convert` ] && exit -1
     #read cmd arguments
@@ -103,4 +103,4 @@ collage() {
 }
 
 
-collage $@
+_collage $@

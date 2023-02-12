@@ -3,10 +3,10 @@
 ### Requirements
 # ffmpeg
 
-web2mp4() {
+_web2mp4() {
     fname="$1"
     fname=${fname%%.*}
     ffmpeg -fflags +genpts -i ${fname}.webm -r 24 ${fname}.mp4
 }
 
-web2mp4 $@
+_web2mp4 $@

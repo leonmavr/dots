@@ -3,7 +3,7 @@
 ### Requirements
 # ffmpeg
 
-mp42gif() {
+_mp42gif() {
     # dependencies
     [ -z `which ffmpeg` ] && exit -1
     #read cmd arguments
@@ -51,4 +51,4 @@ mp42gif() {
 }
 
 
-mp42gif $@
+_mp42gif $@
