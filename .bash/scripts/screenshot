@@ -2,7 +2,6 @@
 
 ### Requirements:
 # imagemagick
-# bash >= 4.3
 # xclip (optional)
 # dunst | notify-send (optional)
 
@@ -29,7 +28,8 @@ function _help() {
 ### Parameters:
 # Run _sshot -h to view them
 function _sshot() {
-    local _out_dir=/tmp/
+    local _out_dir=/home/$USER/Pictures/screenshots/
+    mkdir -p $_out_dir
     local _prefix=screenshot_
     local _sshot_paths=(`ls $_out_dir$_prefix*`)
     local _len_sshot_paths=${#_sshot_paths[@]}
@@ -41,15 +41,15 @@ function _sshot() {
         for i in `seq $[$_len_sshot_paths-1] 1`; do
             cp ${_sshot_paths[i-1]} ${_sshot_paths[i]} 
         done
-        newfile=${_sshot_paths[0]}
+        local _newfile=${_sshot_paths[0]}
     else
         # else append to the end
-        newfile=$_out_dir$_prefix`printf "%02d.png" "$_len_sshot_paths"`
-        _sshot_paths+=($newfile)
+        local _newfile=$_out_dir$_prefix`printf "%02d.png" "$_len_sshot_paths"`
+        _sshot_paths+=($_newfile)
     fi
     
     # parameters to read from user - default values
-    local _cmd="import $newfile"
+    local _cmd="import $_newfile"
     local _delay_sec=0
     # parse arguments
     while [[ $# -gt 0 ]]; do
@@ -64,7 +64,7 @@ function _sshot() {
                 shift # past value
                 ;;
             -f|--full)
-                _cmd="import -window root $newfile"
+                _cmd="import -window root $_newfile"
                 shift
                 ;;
             -p|--purge)
@@ -72,7 +72,7 @@ function _sshot() {
                 exit 0
                 ;;
             --default)
-                _cmd="import $newfile"
+                _cmd="import $_newfile"
                 shift # past argument
                 ;;
             -*|--*)
@@ -91,11 +91,11 @@ function _sshot() {
     sleep $_delay_sec
     # screenshot command
     eval $_cmd
-    has xclip && xclip -selection clipboard -t image/png -i ${newfile}
+    has xclip && xclip -selection clipboard -t image/png -i ${_newfile}
     if has dunst; then
-        dunstify -u low -i $newfile "Screenshot at $newfile copied to clipboard!"
+        dunstify -u low -i $_newfile "Screenshot at $_newfile copied to clipboard!"
     elif has notify-send; then
-        notify-send $newfile "Screenshot at $newfile copied!"
+        notify-send $_newfile "Screenshot at $_newfile copied to clipboard!"
     fi
 }
 
