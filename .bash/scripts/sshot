@@ -30,8 +30,9 @@ function _help() {
 function _sshot() {
     local out_dir=/home/$USER/Pictures/screenshots/
     mkdir -p $out_dir
-    local prefix=screenshot_
-    local sshot_paths=(`ls $out_dir$prefix*`)
+    local common_prefix=sshot_
+    local prefix=$common_prefix`date +%d_%m_%Y_%H:%m`__
+    local sshot_paths=(`ls $out_dir$common_prefix*`)
     local len_sshot_paths=${#sshot_paths[@]}
     local max_sshots=15
     
@@ -68,7 +69,7 @@ function _sshot() {
                 shift
                 ;;
             -p|--purge)
-                rm $out_dir${prefix}*
+                rm $out_dir${common_prefix}*
                 exit 0
                 ;;
             --default)
@@ -95,6 +96,7 @@ function _sshot() {
     has xclip && xclip -selection clipboard -t image/png -i ${newfile} \
               && xclip_message="copied to clipboard!"
     if has dunst; then
+        dunstctl close all
         dunstify -u low -i $newfile "Screenshot at $newfile $xclip_message"
     elif has notify-send; then
         notify-send --expire-time=3000 -i $newfile $newfile "Screenshot at $newfile $xclip_message"
