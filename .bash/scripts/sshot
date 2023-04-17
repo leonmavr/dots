@@ -22,35 +22,35 @@ function _help() {
     echo     "Notes:"
     echo -e  "~~~~~~"
     echo     "    Automatically copies the screenshot to clipboard if xclip is installed."
-    echo     "    Stores the last $_max_sshots screenshots as $_out_dir${_prefix}XX.png"
+    echo     "    Stores the last $max_sshots screenshots as $out_dir${prefix}XX.png"
 }
 
 ### Parameters:
 # Run _sshot -h to view them
 function _sshot() {
-    local _out_dir=/home/$USER/Pictures/screenshots/
-    mkdir -p $_out_dir
-    local _prefix=screenshot_
-    local _sshot_paths=(`ls $_out_dir$_prefix*`)
-    local _len_sshot_paths=${#_sshot_paths[@]}
-    local _max_sshots=15
+    local out_dir=/home/$USER/Pictures/screenshots/
+    mkdir -p $out_dir
+    local prefix=screenshot_
+    local sshot_paths=(`ls $out_dir$prefix*`)
+    local len_sshot_paths=${#sshot_paths[@]}
+    local max_sshots=15
     
     # hold up to 15 screenshot files
-    if [ $_len_sshot_paths -gt $[$_max_sshots-1] ]; then
+    if [ $len_sshot_paths -gt $[$max_sshots-1] ]; then
         # shift all indexed files to the right to make space for new file
-        for i in `seq $[$_len_sshot_paths-1] 1`; do
-            mv ${_sshot_paths[i-1]} ${_sshot_paths[i]} 
+        for i in `seq $[$len_sshot_paths-1] 1`; do
+            mv ${sshot_paths[i-1]} ${sshot_paths[i]} 
         done
-        local _newfile=${_sshot_paths[0]}
+        local newfile=${sshot_paths[0]}
     else
         # else append to the end
-        local _newfile=$_out_dir$_prefix`printf "%02d.png" "$_len_sshot_paths"`
-        _sshot_paths+=($_newfile)
+        local newfile=$out_dir$prefix`printf "%02d.png" "$len_sshot_paths"`
+        sshot_paths+=($newfile)
     fi
     
     # parameters to read from user - default values
-    local _cmd="import $_newfile"
-    local _delay_sec=0
+    local cmd="import $newfile"
+    local delay_sec=0
     # parse arguments
     while [[ $# -gt 0 ]]; do
         case $1 in
@@ -59,20 +59,20 @@ function _sshot() {
                 exit 0
                 ;;
             -d|--delay)
-                local _delay_sec=$2
+                local delay_sec=$2
                 shift # past argument
                 shift # past value
                 ;;
             -f|--full)
-                _cmd="import -window root $_newfile"
+                cmd="import -window root $newfile"
                 shift
                 ;;
             -p|--purge)
-                rm $_out_dir${_prefix}*
+                rm $out_dir${prefix}*
                 exit 0
                 ;;
             --default)
-                _cmd="import $_newfile"
+                cmd="import $newfile"
                 shift # past argument
                 ;;
             -*|--*)
@@ -88,16 +88,16 @@ function _sshot() {
 
     set -- "${POSITIONAL_ARGS[@]}" # restore positional parameters
     # wait if necessary
-    sleep $_delay_sec
+    sleep $delay_sec
     # screenshot command
-    eval $_cmd
-    local _xclip_message=""
-    has xclip && xclip -selection clipboard -t image/png -i ${_newfile} \
-              && _xclip_message="copied to clipboard!"
+    eval $cmd
+    local xclip_message=""
+    has xclip && xclip -selection clipboard -t image/png -i ${newfile} \
+              && xclip_message="copied to clipboard!"
     if has dunst; then
-        dunstify -u low -i $_newfile "Screenshot at $_newfile $_xclip_message"
+        dunstify -u low -i $newfile "Screenshot at $newfile $xclip_message"
     elif has notify-send; then
-        notify-send --expire-time=3000 -i $_newfile $_newfile "Screenshot at $_newfile $_xclip_message"
+        notify-send --expire-time=3000 -i $newfile $newfile "Screenshot at $newfile $xclip_message"
     fi
 }
 
