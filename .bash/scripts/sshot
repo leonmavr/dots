@@ -97,7 +97,7 @@ function _sshot() {
     if has dunst; then
         dunstify -u low -i $_newfile "Screenshot at $_newfile $_xclip_message"
     elif has notify-send; then
-        notify-send $_newfile "Screenshot at $_newfile $_xclip_message"
+        notify-send --expire-time=3000 -i $_newfile $_newfile "Screenshot at $_newfile $_xclip_message"
     fi
 }
 
