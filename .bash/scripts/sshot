@@ -39,7 +39,7 @@ function _sshot() {
     if [ $_len_sshot_paths -gt $[$_max_sshots-1] ]; then
         # shift all indexed files to the right to make space for new file
         for i in `seq $[$_len_sshot_paths-1] 1`; do
-            cp ${_sshot_paths[i-1]} ${_sshot_paths[i]} 
+            mv ${_sshot_paths[i-1]} ${_sshot_paths[i]} 
         done
         local _newfile=${_sshot_paths[0]}
     else
