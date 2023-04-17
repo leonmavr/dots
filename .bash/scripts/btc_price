@@ -3,9 +3,19 @@
 ### Requirements:
 # jq
 # curl
+# dunst | notify-send (optional)
 
 _btc_price() {
-    echo scale=3\;`curl -s https://api.coindesk.com/v1/bpi/currentprice.json | jq .bpi.USD.rate_float | sed -s 's/\..*//g'`/1000 | bc -l | xargs printf "%.3f k USD\n";
+    local price_usd=`curl -s https://api.coindesk.com/v1/bpi/currentprice.json | jq .bpi.USD.rate_float | sed -s 's/\..*//g'`
+    local price_usd=`curl -s https://api.coindesk.com/v1/bpi/currentprice.json | jq .bpi.USD.rate_float | sed -s 's/\..*//g'`
+    local price_k_usd=`echo scale=3\;${price_usd}/1000 | bc -l | xargs printf "%.2f\n"`
+    local _final_message="1₿ = ${price_k_usd}k USD"
+    echo $_final_message
+    if has dunst; then
+        dunstify -u low "$_final_message" 
+    elif has notify-send; then
+        notify-send --expire-time=3000 "$_final_message" 
+    fi
 }
 
 _btc_price $@
