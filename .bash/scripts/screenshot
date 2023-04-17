@@ -1,25 +1,102 @@
 #!/bin/bash
 
 ### Requirements:
-# xclip
 # imagemagick
-# scrot
-# dunst (optional)
+# bash >= 4.3
+# xclip (optional)
+# dunst | notify-send (optional)
 
-
-# Take screenshot of an area and save to clipboard
-_sshot() {
-    rm -f /tmp/screenshot.png
-    local prefix=$2
-    local postfix=$3
-    local sshot_file=/tmp/${prefix}screenshot${postfix}.png
-    if [[ "$1" == *"full"* ]]; then
-        scrot $sshot_file
-    else
-        import ${sshot_file}
-    fi
-    xclip -selection clipboard -t image/png -i ${sshot_file}
-    which dunst && dunstify -u low -i $sshot_file "screenshot to clipboard"
+function _help() {
+    echo     "Usage:"
+    echo -e  "~~~~~~\n"
+    echo -e  "$ screenshot [-f|--full] [-d|--delay N] [-p|--purge] [-h|--help]\n"
+    echo     "No arguments:"
+    echo -e  "    User draws a rectangle and the screenshot of that region is taken\n"
+    echo     "[-f|--full]"
+    echo -e  "    Takes a screenshot of the entire screen\n"
+    echo     "[-d|--delay N]"
+    echo -e  "    Wait N sec before doing anything\n"
+    echo     "[-p|--purge]"
+    echo -e  "    Clear all saved screenshots\n"
+    echo     "[-h|--help]"
+    echo -e  "    Print this help menu and exit\n"
+    echo     "Notes:"
+    echo -e  "~~~~~~"
+    echo     "    Automatically copies the screenshot to clipboard if xclip is installed."
+    echo     "    Stores the last $_max_sshots screenshots as $_out_dir${_prefix}XX.png"
 }
 
-_sshot $@
+### Parameters:
+# Run _sshot -h to view them
+function _sshot() {
+    local _out_dir=/tmp/
+    local _prefix=screenshot_
+    local _sshot_paths=(`ls $_out_dir$_prefix*`)
+    local _len_sshot_paths=${#_sshot_paths[@]}
+    local _max_sshots=15
+    
+    # hold up to 15 screenshot files
+    if [ $_len_sshot_paths -gt $[$_max_sshots-1] ]; then
+        # shift all indexed files to the right to make space for new file
+        for i in `seq $[$_len_sshot_paths-1] 1`; do
+            cp ${_sshot_paths[i-1]} ${_sshot_paths[i]} 
+        done
+        newfile=${_sshot_paths[0]}
+    else
+        # else append to the end
+        newfile=$_out_dir$_prefix`printf "%02d.png" "$_len_sshot_paths"`
+        _sshot_paths+=($newfile)
+    fi
+    
+    # parameters to read from user - default values
+    local _cmd="import $newfile"
+    local _delay_sec=0
+    # parse arguments
+    while [[ $# -gt 0 ]]; do
+        case $1 in
+            -h|--help)
+                _help
+                exit 0
+                ;;
+            -d|--delay)
+                local _delay_sec=$2
+                shift # past argument
+                shift # past value
+                ;;
+            -f|--full)
+                _cmd="import -window root $newfile"
+                shift
+                ;;
+            -p|--purge)
+                rm $_out_dir${_prefix}*
+                exit 0
+                ;;
+            --default)
+                _cmd="import $newfile"
+                shift # past argument
+                ;;
+            -*|--*)
+                echo "Unknown option $1"
+                _help
+                exit 1
+                ;;
+            *)
+                shift # past argument
+                ;;
+        esac
+    done
+
+    set -- "${POSITIONAL_ARGS[@]}" # restore positional parameters
+    # wait if necessary
+    sleep $_delay_sec
+    # screenshot command
+    eval $_cmd
+    has xclip && xclip -selection clipboard -t image/png -i ${newfile}
+    if has dunst; then
+        dunstify -u low -i $newfile "Screenshot at $newfile copied to clipboard!"
+    elif has notify-send; then
+        notify-send $newfile "Screenshot at $newfile copied!"
+    fi
+}
+
+_sshot $@ &
