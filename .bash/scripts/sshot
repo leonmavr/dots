@@ -91,11 +91,13 @@ function _sshot() {
     sleep $_delay_sec
     # screenshot command
     eval $_cmd
-    has xclip && xclip -selection clipboard -t image/png -i ${_newfile}
+    local _xclip_message=""
+    has xclip && xclip -selection clipboard -t image/png -i ${_newfile} \
+              && _xclip_message="copied to clipboard!"
     if has dunst; then
-        dunstify -u low -i $_newfile "Screenshot at $_newfile copied to clipboard!"
+        dunstify -u low -i $_newfile "Screenshot at $_newfile $_xclip_message"
     elif has notify-send; then
-        notify-send $_newfile "Screenshot at $_newfile copied to clipboard!"
+        notify-send $_newfile "Screenshot at $_newfile $_xclip_message"
     fi
 }
 
