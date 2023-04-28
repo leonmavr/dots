@@ -213,8 +213,7 @@ endif
 "-------------------------------------------------------------------
 " Colours
 "-------------------------------------------------------------------
-colorscheme archery 
-hi Normal guibg=NONE ctermbg=NONE
+colorscheme pixelmuerto 
 let g:airline_theme='iceberg'
 " remove background set by the colorscheme
 hi Normal ctermbg=None
