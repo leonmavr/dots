@@ -198,6 +198,7 @@ let g:mkdp_port = ''
 let g:mkdp_page_title = '「${name}」'
 let g:mkdp_filetypes = ['markdown']
 
+
 "  Always show the signcolumn, otherwise it would shift the text each time
 " diagnostics appear/become resolved.
 if has("nvim-0.5.0") || has("patch-8.1.1564")
@@ -212,10 +213,11 @@ endif
 "-------------------------------------------------------------------
 " Colours
 "-------------------------------------------------------------------
-colorscheme pixelmuerto 
-" transparent background
+colorscheme archery 
 hi Normal guibg=NONE ctermbg=NONE
 let g:airline_theme='iceberg'
+" remove background set by the colorscheme
+hi Normal ctermbg=None
 
 
 " Custom commands
