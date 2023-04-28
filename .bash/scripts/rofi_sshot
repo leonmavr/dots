@@ -8,12 +8,12 @@
 # It selects some basic parameters via the list and feeds them
 # to the script.
 function _rofi_menu() {
-    local menu_text=`echo -e "    🖵     Entire screen
-     ✀     Region 
-     🯳      In 3 seconds
-     🯵      In 5 seconds
-    🯱 🯰   In 10 seconds
-     ✖       Cancel" | rofi -dmenu -i -p "Screenshot" -location 3 -width 20 -hide-scrollbar -font "Roboto Condensed 11" -yoffset 34 -xoffset`
+    local menu_text=`echo -e "🖵     Entire screen
+✀     Region 
+🖵     In 3 seconds
+🖵     In 5 seconds
+🖵     In 10 seconds
+✖     Cancel" | rofi -dmenu -i -p "Screenshot" -location 3 -width 20 -lines 6 -hide-scrollbar -font "Roboto Condensed 11" -yoffset 34 -xoffset`
     local mode=""
     local delay=0
     if [[ $menu_text == *[E\|e]ntire* ]]; then
@@ -29,6 +29,8 @@ function _rofi_menu() {
     elif [[ $menu_text == *10* ]]; then
         delay=10
         mode="-f"
+    elif [[ $menu_text == *[C\|c]ancel* ]]; then
+        exit 1
     fi
     sshot $mode -d $delay
 }
