@@ -1,0 +1,3 @@
+[submodule ".config/nvim/plugged/vim-archery"]
+	path = .config/nvim/plugged/vim-archery
+	url = https://github.com/Badacadabra/vim-archery.git
