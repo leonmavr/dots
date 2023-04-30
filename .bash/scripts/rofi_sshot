@@ -9,7 +9,13 @@
 # to the script.
 function _rofi_menu() {
     # close previous notifications if they are shown
-    dunstctl close all
+    if has dunst; then
+        dunstctl close all
+    elif has notify-send; then
+        # NOTE: untested, hopefully works
+        pkill notify-osd
+    fi
+
     local menu_text=`echo -e "🖵     Entire screen
 ✀     Region 
 🖵     In 3 seconds
@@ -21,7 +27,7 @@ function _rofi_menu() {
     if [[ $menu_text == *[E\|e]ntire* ]]; then
         mode="-f"
     elif [[ $menu_text == *[R\|r]egion* ]]; then
-        echo
+        mode=""
     elif [[ $menu_text == *3* ]]; then
         delay=3
         mode="-f"
