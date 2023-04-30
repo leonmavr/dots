@@ -9,7 +9,8 @@ function _help() {
     local filename=`basename $0`
     echo     "Usage:"
     echo -e  "~~~~~~\n"
-    echo -e  "$ ${filename%.*} [-f|--full] [-d|--delay N] [-p|--purge] [-o|--output-file] [-h|--help]\n"
+    echo -n  "$ ${filename%.*} [-f|--full] [-d|--delay N] [-p|--purge] [-o|--output-file] "
+    echo -e  "[-s|--silent] [-h|--help]\n"
     echo     "No arguments:"
     echo -e  "    User draws a rectangle and the screenshot of that region is taken\n"
     echo     "[-f|--full]"
@@ -25,7 +26,7 @@ function _help() {
     echo     "Notes:"
     echo -e  "~~~~~~"
     echo     "    Automatically copies the screenshot to clipboard if xclip is installed."
-    echo     "    Stores the last $max_sshots screenshots as $out_dir${common_prefix}<date>__XX.png"
+    echo     "    Stores the last $max_sshots screenshots as $out_dir${common_prefix}<date>.png"
 }
 
 ### Parameters:
@@ -79,6 +80,10 @@ function _sshot() {
                 newfile=$1
                 shift # past value
                 ;;
+            -s|--silent)
+                local silent=""
+                shift
+                ;;
             --default)
                 cmd="import $newfile"
                 shift # past argument
@@ -119,11 +124,13 @@ function _sshot() {
     local xclip_message=""
     has xclip && xclip -selection clipboard -t image/png -i ${newfile} \
               && xclip_message="copied to clipboard!"
-    if has dunst; then
-        dunstctl close all
-        dunstify -u low -i $newfile "Screenshot at $newfile $xclip_message"
-    elif has notify-send; then
-        notify-send --expire-time=3000 -i $newfile "Screenshot at $newfile $xclip_message"
+    if [ -z ${silent+x} ]; then
+        if has dunst; then
+            dunstctl close all
+            dunstify -u low -i $newfile "Screenshot at $newfile $xclip_message"
+        elif has notify-send; then
+            notify-send --expire-time=3000 -i $newfile "Screenshot at $newfile $xclip_message"
+        fi
     fi
 }
 
