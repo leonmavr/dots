@@ -20,6 +20,7 @@ function _rofi_menu() {
         mode="-f"
     elif [[ $menu_text == *[R\|r]egion* ]]; then
         echo
+        sshot -f -o /tmp/test.png
     elif [[ $menu_text == *3* ]]; then
         delay=3
         mode="-f"

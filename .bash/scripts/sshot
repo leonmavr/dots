@@ -9,7 +9,7 @@ function _help() {
     local filename=`basename $0`
     echo     "Usage:"
     echo -e  "~~~~~~\n"
-    echo -e  "$ ${filename%.*} [-f|--full] [-d|--delay N] [-p|--purge] [-h|--help]\n"
+    echo -e  "$ ${filename%.*} [-f|--full] [-d|--delay N] [-p|--purge] [-o|--output-file] [-h|--help]\n"
     echo     "No arguments:"
     echo -e  "    User draws a rectangle and the screenshot of that region is taken\n"
     echo     "[-f|--full]"
@@ -18,6 +18,8 @@ function _help() {
     echo -e  "    Wait N sec before doing anything\n"
     echo     "[-p|--purge]"
     echo -e  "    Clear all saved screenshots\n"
+    echo     "[-o|--output-file out_file]"
+    echo -e  "    Save to output file <out_file>\n"
     echo     "[-h|--help]"
     echo -e  "    Print this help menu and exit\n"
     echo     "Notes:"
@@ -29,11 +31,11 @@ function _help() {
 ### Parameters:
 # Run _sshot -h to view them
 function _sshot() {
+    ### set up file paths, file prefixes and number of screenshots to store
     local out_dir=/home/$USER/Pictures/screenshots/
     mkdir -p $out_dir
     local common_prefix=sshot_
     local prefix=$common_prefix`date +%d_%m_%Y_%H:%M:%S`
-    echo $prefix
     local sshot_paths=(`ls $out_dir$common_prefix*`)
     #declare -p sshot_paths
     # where to write the newly taken screenshot
@@ -42,18 +44,10 @@ function _sshot() {
     # hold up to 15 screenshot files
     local max_sshots=15
     
-    # if there's already 15 screenshots, pop the last one and push in front 
-    if [ $len_sshot_paths -gt $[$max_sshots-1] ]; then
-        rm ${sshot_paths[0]}
-        unset 'sshot_paths[0]'
-        sshot_paths=($newfile ${sshot_paths[@]})
-    else
-        # else append to the end
-        sshot_paths+=($newfile)
-    fi
-    
+    ### grab command line parameters  
     # parameters to read from user - default values
-    local cmd="import $newfile"
+    # empty arguments in import command result in screenshot of region
+    local import_cmd_args=""
     local delay_sec=0
     # parse arguments
     while [[ $# -gt 0 ]]; do
@@ -68,7 +62,7 @@ function _sshot() {
                 shift # past value
                 ;;
             -f|--full)
-                cmd="import -window root $newfile"
+                import_cmd_args="-window root"
                 shift
                 ;;
             -p|--purge)
@@ -79,6 +73,11 @@ function _sshot() {
                     notify-send --expire-time=3000 "All screenshots deleted!" 
                 fi
                 exit 0
+                ;;
+            -o|--output-file)
+                shift # past argument
+                newfile=$1
+                shift # past value
                 ;;
             --default)
                 cmd="import $newfile"
@@ -94,11 +93,28 @@ function _sshot() {
                 ;;
         esac
     done
-
     set -- "${POSITIONAL_ARGS[@]}" # restore positional parameters
+
+    ### make sure to only store the last `max_sshots` screenshots
+    if [[ $filename == *$prefix* ]]; then
+        # if there's already `max_sshots` screenshots, pop the last one and push in front 
+        if [ $len_sshot_paths -gt $[$max_sshots-1] ]; then
+            rm ${sshot_paths[0]}
+            unset 'sshot_paths[0]'
+            sshot_paths=($newfile ${sshot_paths[@]})
+        else
+            # else append to the end
+            sshot_paths+=($newfile)
+        fi
+    fi
+    # else user has overwriten the name of the screenshot 
+    # so don't check the list of stored one
+ 
+
     # wait if necessary
     sleep $delay_sec
     # screenshot command
+    local cmd="import $import_cmd_args $newfile"
     eval $cmd
     local xclip_message=""
     has xclip && xclip -selection clipboard -t image/png -i ${newfile} \
