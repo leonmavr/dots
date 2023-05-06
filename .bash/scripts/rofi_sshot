@@ -21,7 +21,8 @@ function _rofi_menu() {
 🖵     In 3 seconds
 🖵     In 5 seconds
 🖵     In 10 seconds
-✖     Cancel" | rofi -dmenu -i -p "Screenshot" -location 3 -width 20 -lines 6 -hide-scrollbar -font "Roboto Condensed 11" -yoffset 34 -xoffset`
+🗑    Clear screenshots
+X      Cancel" | rofi -dmenu -i -p "Screenshot" -location 3 -width 20 -lines 7 -hide-scrollbar -font "Roboto Condensed 11" -yoffset 34 -xoffset`
     local mode=""
     local delay=0
     if [[ $menu_text == *[E\|e]ntire* ]]; then
@@ -37,14 +38,22 @@ function _rofi_menu() {
     elif [[ $menu_text == *10* ]]; then
         delay=10
         mode="-f"
+    elif [[ $menu_text == *[C\|c]lear* ]]; then
+        mode="--purge"
     elif [[ $menu_text == *[C\|c]ancel* ]]; then
         exit 1
+    else
+        exit 0
     fi
+
     # silently stall a bit for rofi to close
     sshot -s -f -o /tmp/test.png
     sleep 0.1
     # then take the actual screenshot
+    echo $PATH > /tmp/path.txt
     sshot $mode -d $delay
 }
 
+. ~/.bash/scripts/add_dir_to_path.sh
+echo $PATH > /tmp/path.txt
 _rofi_menu $@
