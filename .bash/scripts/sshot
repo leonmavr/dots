@@ -114,7 +114,6 @@ function _sshot() {
     fi
     # else user has overwriten the name of the screenshot 
     # so don't check the list of stored one
- 
 
     # wait if necessary
     sleep $delay_sec
@@ -122,8 +121,8 @@ function _sshot() {
     local cmd="import $import_cmd_args $newfile"
     eval $cmd
     local xclip_message=""
-    has xclip && xclip -selection clipboard -t image/png -i ${newfile} \
-              && xclip_message="copied to clipboard!"
+    /has xclip && xclip -selection clipboard -t image/png -i ${newfile} \
+               && xclip_message="copied to clipboard!"
     if [ -z ${silent+x} ]; then
         if has dunst; then
             dunstctl close all
@@ -134,4 +133,6 @@ function _sshot() {
     fi
 }
 
+
+. ~/.bash/scripts/add_dir_to_path.sh
 _sshot $@ &
