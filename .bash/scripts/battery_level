@@ -1,0 +1,30 @@
+#!/bin/bash
+
+### Requirements
+# dunst|notify-send
+
+### Description
+# This script checks the battery level (percentage) and status (charging/not charging)
+# If the battery level is below a certain percentage and the status is not charging, post a notification via the notification manager
+
+### Parameters
+# $1: maximum critical battery level - below this, this function posts a battery level warning notification
+function _check_battery_level() {
+    # battery stuff
+    local level=`cat /sys/class/power_supply/BAT0/capacity`
+    local status=`cat /sys/class/power_supply/BAT0/status`
+    # notification stuff
+    local notif_command=""
+    local icon=~/.local/icons/battery/battery-level-10-symbolic.symbolic.png
+    local timeout_sec=15
+    local msg="Charger is disconnected and battery ${level}% full"
+    local notif_command=""
+    has dunst && notif_command="dunstify -u critical -i $icon -t `echo $timeout_sec*1000 | bc` '$msg'" \
+              || notif_command="notify-send --expire-time=`echo $timeout_sec*1000 | bc` -i $icon '$msg'"
+    if [[ ! $status == [C\|c]harg* ]] && [ $level -lt $1 ]; then
+        eval $notif_command
+    fi
+}
+
+. ~/.bash/scripts/add_dir_to_path.sh
+_check_battery_level 16
