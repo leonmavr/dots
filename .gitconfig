@@ -6,40 +6,40 @@
 [core]
 	editor = nvim
 [alias]
-        a = add -A
-        al = add --all
-        ba = branch -a
-        cl = clone
-        cm = commit -m
-        cma = commit --amend
-        cmdiff = !git diff $1~ $1 # $1 is the commit hash
-        co = checkout
-        cob = checkout -b
-        d = diff
-        dc = diff --cached
-        deleted = ls-files --deleted
-        f = fetch
-        fu = !git fetch `git upstream-remote`
-        fthis = reset --hard HEAD
-        l = log --pretty=custom
-        lg = log --graph --pretty=custom
-        modified = ls-files --modified
-        pl = pull
-        plf = !git add -A . && git stash && git pull
-        pltr = !branch=`git rev-parse --abbrev-ref HEAD` && git pull origin $branch
-        ps = push
-	psf = !repo=`git config --get remote.origin.url` && branch=`git rev-parse --abbrev-ref HEAD` && git push -f $repo $branch
-        rmbranch = !git push origin --delete $1
-        sh = stash
-        st = status
-        staged = ls-files --staged
-        subinup = submodule update --init --recursive
-        unstage = !git reset HEAD -- $1
-        untracked = ls-files --other --exclude-standard
+    a = add -A
+    al = add --all
+    ba = branch -a
+    cl = clone
+    cm = commit -m
+    cma = commit --amend
+    cmdiff = !git diff $1~ $1 # $1 is the commit hash
+    co = checkout
+    cob = checkout -b
+    d = diff
+    dc = diff --cached
+    deleted = ls-files --deleted
+    f = fetch
+    fu = !git fetch `git upstream-remote`
+    fthis = reset --hard HEAD
+    l = log --pretty=custom
+    lg = log --graph --pretty=custom
+    modified = ls-files --modified
+    pl = pull
+    plf = !git add -A . && git stash && git pull
+    pltr = !branch=`git rev-parse --abbrev-ref HEAD` && git pull origin $branch
+    ps = push
+    psf = !repo=`git config --get remote.origin.url` && branch=`git rev-parse --abbrev-ref HEAD` && git push -f $repo $branch
+    rmbranch = !git push -d origin $1 && git branch -D $1
+    sh = stash
+    st = status
+    staged = ls-files --staged
+    subinup = submodule update --init --recursive
+    unstage = !git reset HEAD -- $1
+    untracked = ls-files --other --exclude-standard
 [pretty]
-        custom = "%C(magenta)%h%C(red)%d %C(yellow)%ar %C(green)%s %C(yellow)(%an)"
+    custom = "%C(magenta)%h%C(red)%d %C(yellow)%ar %C(green)%s %C(yellow)(%an)"
 [branch "*"]
-        rebase = true
+    rebase = true
 [diff]
     tool = vimdiff
 [merge]
