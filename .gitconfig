@@ -1,10 +1,10 @@
 [user]
-	email = 0xleo.git@gmail.com
-	name = leonmavr
+    email = 0xleo.git@gmail.com
+    name = leonmavr
 [push]
-	default = current
+    default = current
 [core]
-	editor = nvim
+    editor = nvim
 [alias]
     a = add -A
     al = add --all
@@ -44,4 +44,4 @@
     tool = vimdiff
 [merge]
     tool = vimdiff
-    conflictstyle = diff3
+    conflictstyle = zdiff3
