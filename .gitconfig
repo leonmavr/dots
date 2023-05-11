@@ -34,7 +34,7 @@
     st = status
     staged = ls-files --staged
     subinup = submodule update --init --recursive
-    unstage = !git reset HEAD -- $1
+    unstage = !git restore --staged $1
     untracked = ls-files --other --exclude-standard
 [pretty]
     custom = "%C(magenta)%h%C(red)%d %C(yellow)%ar %C(green)%s %C(yellow)(%an)"
