@@ -20,15 +20,20 @@
     deleted = ls-files --deleted
     f = fetch
     fu = !git fetch `git upstream-remote`
+    # f this - undo all changes roll back to last commit's state` 
     fthis = reset --hard HEAD
     l = log --pretty=custom
     lg = log --graph --pretty=custom
     modified = ls-files --modified
     pl = pull
+    # stash all changes and pull (force pull)
     plf = !git add -A . && git stash && git pull
+    # if there's no tracking info; set tracking info and pull 
     pltr = !branch=`git rev-parse --abbrev-ref HEAD` && git pull origin $branch
     ps = push
+    # force pull
     psf = !repo=`git config --get remote.origin.url` && branch=`git rev-parse --abbrev-ref HEAD` && git push -f $repo $branch
+    # remove branch locally and remotely
     rmbranch = !git push -d origin $1 && git branch -D $1
     sh = stash
     st = status
@@ -44,4 +49,4 @@
     tool = vimdiff
 [merge]
     tool = vimdiff
-    conflictstyle = zdiff3
+    conflictstyle = diff3
