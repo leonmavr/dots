@@ -33,6 +33,8 @@
     ps = push
     # force pull
     psf = !repo=`git config --get remote.origin.url` && branch=`git rev-parse --abbrev-ref HEAD` && git push -f $repo $branch
+    # push from detached head directly into branch
+    pshead = git push origin HEAD:$1 -f
     # remove branch locally and remotely
     rmbranch = !git push -d origin $1 && git branch -D $1
     sh = stash
