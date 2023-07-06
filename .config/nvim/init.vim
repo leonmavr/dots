@@ -1,3 +1,8 @@
+" Requirements for plugins:
+" * nodejs
+" * ctags
+" * pynvim
+
 "-------------------------------------------------------------------
 " Basic behaviour
 "-------------------------------------------------------------------
@@ -213,7 +218,8 @@ endif
 "-------------------------------------------------------------------
 " Colours
 "-------------------------------------------------------------------
-colorscheme pixelmuerto 
+colorscheme archery 
+hi Normal guibg=NONE ctermbg=NONE
 let g:airline_theme='iceberg'
 " remove background set by the colorscheme
 hi Normal ctermbg=None
