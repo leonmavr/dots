@@ -7,7 +7,15 @@
 # This script checks the battery level (percentage) and status (charging/not charging)
 # If the battery level is below a certain percentage and the status is not charging, post a notification via the notification manager
 
-### Parameters
+###
+# Brief:
+#     Echoes the battery level (percentage) of Thinkpad T430S.
+#     If the status is "critical" (i.e. battery level below a
+#     threshold and discharging), use the notification manager
+#     to pop up a critical notification. The threshold has a
+#     default value - see function below or can be set from
+#     the arguments.
+# Parameters:
 # (optional) $1: maximum critical battery level - below this,
 #                this function posts a battery level warning
 #                notification
@@ -17,6 +25,7 @@ function _check_battery_level() {
     # battery stuff
     local level=`cat /sys/class/power_supply/BAT0/capacity`
     local status=`cat /sys/class/power_supply/BAT0/status`
+    echo $level $status
     # notification stuff
     local notif_command=""
     local icon=~/.local/icons/battery/battery-level-10-symbolic.symbolic.png
