@@ -1,43 +1,21 @@
 #!/bin/bash
 
-### Requirements
-# dunst|notify-send
+### Requirements:
+# jq
+# curl
+# dunst | notify-send (optional)
 
-### Description
-# This script checks the battery level (percentage) and status (charging/not charging)
-# If the battery level is below a certain percentage and the status is not charging, post a notification via the notification manager
-
-###
-# Brief:
-#     Echoes the battery level (percentage) of Thinkpad T430S.
-#     If the status is "critical" (i.e. battery level below a
-#     threshold and discharging), use the notification manager
-#     to pop up a critical notification. The threshold has a
-#     default value - see function below or can be set from
-#     the arguments.
-# Parameters:
-# (optional) $1: maximum critical battery level - below this,
-#                this function posts a battery level warning
-#                notification
-function _check_battery_level() {
-    # below the threshold we display a warning
-    [ -z "$1" ] && local threshold=16 || local threshold=$1
-    # battery stuff
-    local level=`cat /sys/class/power_supply/BAT0/capacity`
-    local status=`cat /sys/class/power_supply/BAT0/status`
-    echo $level $status
-    # notification stuff
-    local notif_command=""
-    local icon=~/.local/icons/battery/battery-level-10-symbolic.symbolic.png
-    local timeout_sec=15
-    local msg="Charger is disconnected and battery ${level}% full"
-    local notif_command=""
-    has dunst && notif_command="dunstify -u critical -i $icon -t `echo $timeout_sec*1000 | bc` '$msg'" \
-              || notif_command="notify-send --expire-time=`echo $timeout_sec*1000 | bc` -i $icon '$msg'"
-    if [[ $status == [D\|d]ischarg* ]] && [ $level -lt $threshold ]; then
-        eval $notif_command
+_btc_price() {
+    local price_usd=`curl -s https://api.coindesk.com/v1/bpi/currentprice.json | jq .bpi.USD.rate_float | sed -s 's/\..*//g'`
+    local price_usd=`curl -s https://api.coindesk.com/v1/bpi/currentprice.json | jq .bpi.USD.rate_float | sed -s 's/\..*//g'`
+    local price_k_usd=`echo scale=3\;${price_usd}/1000 | bc -l | xargs printf "%.2f\n"`
+    local final_message="1₿ = ${price_k_usd}k USD"
+    echo $final_message
+    if has dunst; then
+        dunstify -r 813 -u low "$final_message" 
+    elif has notify-send; then
+        notify-send --expire-time=3000 "$final_message" 
     fi
 }
 
-. ~/.bash/scripts/add_dir_to_path.sh
-_check_battery_level $@
+_btc_price $@
