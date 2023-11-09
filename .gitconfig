@@ -16,6 +16,8 @@
     co = checkout
     cob = checkout -b
     d = diff
+    # date of current commit if not args or if arg if passed
+    date = !git show -s --date=format:'%Y/%m/%d-%H:%M' --format=%cd $1
     dc = diff --cached
     deleted = ls-files --deleted
     f = fetch
