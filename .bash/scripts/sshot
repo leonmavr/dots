@@ -36,14 +36,14 @@ function _sshot() {
     local out_dir=/home/$USER/Pictures/screenshots/
     mkdir -p $out_dir
     local common_prefix=sshot_
-    local prefix=$common_prefix`date +%d_%m_%Y_%H:%M:%S`
+    local prefix=$common_prefix`date +%Y_%m_%d-%H:%M:%S`
     local sshot_paths=(`ls $out_dir$common_prefix*`)
     #declare -p sshot_paths
     # where to write the newly taken screenshot
     local newfile=$out_dir${prefix}.png
     local len_sshot_paths=${#sshot_paths[@]}
-    # hold up to 15 screenshot files
-    local max_sshots=15
+    # hold up to this number of screenshot files
+    local max_sshots=60
     
     ### grab command line parameters  
     # parameters to read from user - default values
@@ -112,8 +112,6 @@ function _sshot() {
             sshot_paths+=($newfile)
         fi
     fi
-    # else user has overwriten the name of the screenshot 
-    # so don't check the list of stored one
 
     # wait if necessary
     sleep $delay_sec
@@ -134,5 +132,5 @@ function _sshot() {
 }
 
 
-. ~/.bash/scripts/add_dir_to_path.sh
+[ -f ~/.bash/scripts/add_dir_to_path.sh ] && . ~/.bash/scripts/add_dir_to_path.sh 
 _sshot $@ &
