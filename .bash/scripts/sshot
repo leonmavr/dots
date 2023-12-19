@@ -121,7 +121,7 @@ function _sshot() {
     local cmd="import $import_cmd_args $newfile"
     eval $cmd
     local xclip_message=""
-    /has xclip && xclip -selection clipboard -t image/png -i ${newfile} \
+    has xclip && xclip -selection clipboard -t image/png -i ${newfile} \
                && xclip_message="copied to clipboard!"
     if [ -z ${silent+x} ]; then
         if has dunst; then
