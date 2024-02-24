@@ -7,6 +7,8 @@ set show-all-if-ambiguous on
 
 # Flip through autocompletion matches with Shift-Tab.
 "\e[Z": menu-complete
+# cd command menu completion with Tab
+"\C-i": menu-complete
 
 # Filtered history search
 "\e[A": history-search-backward
