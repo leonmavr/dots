@@ -1,0 +1,26 @@
+#!/bin/bash
+
+### Requirements:
+# ffcast
+# xrectsel
+# dunst | notify-send (optional)
+### Credits:
+# based on robinp's script: https://gist.github.com/robinp/ef5975ff7463ce5b423220b0263a0dca/
+
+function _region2gif() {
+    # ffcast lets you select a region with the mouse, then stream it
+    # to ffmpeg. Args are magic (taken from SO), but allegedly it
+    # saves as lossless.
+    ffcast -s % ffmpeg -f x11grab -show_region 1 -framerate 20 -video_size %s -i %D+%c -codec:v huffyuv -vf crop="iw-mod(iw\\,2):ih-mod(ih\\,2)" -y /tmp/out.avi
+    convert -set delay 5 -layers Optimize /tmp/out.avi /tmp/out.gif
+    msg="Recording saved as /tmp/out.gif"
+    if has dunst; then
+        dunstify -r 109824 -u low "$msg" 
+    elif has notify-send; then
+        notify-send --expire-time=3000 "$msg" 
+    fi
+    rm out.avi
+}
+
+. ~/.bash/scripts/add_dir_to_path.sh
+_region2gif
