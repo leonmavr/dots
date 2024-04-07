@@ -66,7 +66,7 @@ call plug#begin('~/.config/nvim/plugged')
     Plug 'neoclide/coc.nvim', {'branch': 'release'}
     Plug 'jiangmiao/auto-pairs', {'branch': 'master'}
     " jedi conflicts with Coc. Therefore when opening a .py file, do :CocDisable
-    Plug 'davidhalter/jedi-vim', {'branch': 'master'}
+    "Plug 'davidhalter/jedi-vim', {'branch': 'master'}
     "Plug 'neoclide/coc-jedi', {'do': 'yarn install'}
     Plug 'sirver/UltiSnips', {'branch': 'master'}
     Plug 'vim-airline/vim-airline'
@@ -97,6 +97,7 @@ call plug#begin('~/.config/nvim/plugged')
     Plug 'cocopon/iceberg.vim'
     Plug 'shadorain/shadotheme'
     Plug 'axvr/photon.vim'
+    Plug 'vimwiki/vimwiki'
 call plug#end()
 
 
@@ -114,7 +115,7 @@ let g:jedi#use_tabs_not_buffers = 1
 "jedi for splits
 let g:jedi#use_splits_not_buffers = "left"
 " disable Coc on Python file startup because it conflicts with Jedi
-au BufEnter *.py CocDisable
+"au BufEnter *.py CocDisable
 " --> UltiSnips
 let g:UltiSnipsExpandTrigger="<c-e>"
 let g:UltiSnipsJumpForwardTrigger="<c-b>"
@@ -181,7 +182,7 @@ let g:mkdp_refresh_slow = 0
 let g:mkdp_command_for_global = 0
 let g:mkdp_open_to_the_world = 0
 let g:mkdp_open_ip = '127.0.0.1'
-let g:mkdp_browser = 'Brave'
+let g:mkdp_browser = 'brave'
 let g:mkdp_echo_preview_url = 0
 let g:mkdp_browserfunc = ''
 let g:mkdp_preview_options = {
@@ -218,11 +219,11 @@ endif
 "-------------------------------------------------------------------
 " Colours
 "-------------------------------------------------------------------
-colorscheme archery 
-hi Normal guibg=NONE ctermbg=NONE
-let g:airline_theme='iceberg'
+colorscheme orbital
+"hi Normal guibg=NONE ctermbg=NONE
+let g:airline_theme='orbital'
 " remove background set by the colorscheme
-hi Normal ctermbg=None
+"hi Normal ctermbg=None
 
 
 " Custom commands
