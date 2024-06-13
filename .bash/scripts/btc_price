@@ -17,4 +17,5 @@ _btc_price() {
     fi
 }
 
+[ -f ~/.bash/scripts/add_dir_to_path.sh ] && . ~/.bash/scripts/add_dir_to_path.sh 
 _btc_price $@

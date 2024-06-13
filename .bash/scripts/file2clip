@@ -1,0 +1,18 @@
+#!/bin/bash
+
+### Requirements
+# xclip
+
+### Description
+# Copies contents of file to clipboard
+_file2clip() {
+  [[ ! -f "$1" ]] && exit 1
+  mime_type=$(file --mime-type -b "$1")
+  [[ $mime_type == image/* ]] && \
+    xclip -selection clipboard -t image/png -i "$1" || \
+    xclip -selection clipboard -t "$mime_type" -in < "$1"
+}
+
+[ -f ~/.bash/scripts/add_dir_to_path.sh ] && . ~/.bash/scripts/add_dir_to_path.sh 
+_file2clip $@ 
+
