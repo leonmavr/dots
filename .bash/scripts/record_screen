@@ -11,8 +11,8 @@ function _record_screen() {
     ffmpeg -f x11grab -r 30 -s \
         `xrandr | grep '\*' | grep -oP '\d{3,5}x\d{3,5}' \
         | tail -n1` -i :0.0 -c:v libx264 -preset ultrafast -qp 0 -y "$output_file"
-    has dunst && dunstify -u low "Recording saved as $output_file" || \
-    has notify-send && notify-send --expire-time=3000 "Recording saved as $output_file"
+    ./has dunst && dunstify -u low "Recording saved as $output_file" || \
+    { ./has notify-send && notify-send --expire-time=3000 "Recording saved as $output_file"; }
 }
 
 [ -f ~/.bash/scripts/add_dir_to_path.sh ] && . ~/.bash/scripts/add_dir_to_path.sh 
