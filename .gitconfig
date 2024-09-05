@@ -4,7 +4,7 @@
 [push]
     default = current
 [core]
-    editor = nvim
+    editor = vim
 [alias]
     a = add -A
     al = add --all
@@ -49,8 +49,15 @@
     custom = "%C(magenta)%h%C(red)%d %C(yellow)%ar %C(green)%s %C(yellow)(%an)"
 [branch "*"]
     rebase = true
+[pull]
+    rebase = true
 [diff]
     tool = vimdiff
 [merge]
     tool = vimdiff
     conflictstyle = diff3
+[filter "lfs"]
+        smudge = git-lfs smudge -- %f
+        process = git-lfs filter-process
+        required = true
+        clean = git-lfs clean -- %f
