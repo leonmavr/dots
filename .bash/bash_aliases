@@ -154,6 +154,8 @@ alias ...='cd ../../'
 alias ....='cd ../../../'
 alias .....='cd ../../../..'
 alias cd-='cd -'
+# expand user aliases
+alias sudo='sudo '
 
 
 ### Videos
