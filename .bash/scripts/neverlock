@@ -1,0 +1,11 @@
+#!/usr/bin/env python
+
+import pyautogui
+import time
+
+while True:
+    pyautogui.move((1,0), duration=0.1)
+    pyautogui.move((-1,0), duration=0.1)
+    pyautogui.press('scroll lock')
+    time.sleep(60)
+
