@@ -1,13 +1,23 @@
-bg_color = [0.1176 0.11 0.121];
-axes_color = [1.0 0.960 0.89];
+% Unified dark grey background 
+bg_color = [0.1 0.1 0.1];
+
+% Global appearance settings
 set(0, 'DefaultFigureColor', bg_color);
 set(0, 'DefaultAxesColor', bg_color);
-set(0, 'DefaultAxesXColor', axes_color);
-set(0, 'DefaultAxesYColor', axes_color);
-set(0, 'DefaultAxesGridColor', [0.4 0.4 0.4]);
+set(0, 'DefaultAxesXColor', [1 1 1]);
+set(0, 'DefaultAxesYColor', [1 1 1]);
+set(0, 'DefaultAxesGridColor', [0.6 0.6 0.6]);
 set(0, 'DefaultAxesFontSize', 12);
-set(0, 'DefaultAxesLineWidth', 1.0);
+set(0, 'DefaultAxesLineWidth', 1.5);
 set(0, 'DefaultAxesBox', 'on');
 
+% Set default text color to white for all text-related objects
+set(0, 'DefaultTextColor', [1 1 1]);         % for text(), titles, axis labels
+
 set(0, 'DefaultLineLineWidth', 2);
-set(0, 'DefaultLineColor', [0.98 0.066 0.478]);
+set(0, 'DefaultLineColor', [1 0 1]);
+
+function h = legend(varargin)
+  h = builtin("legend", varargin{:});
+  set(h, "textcolor", [1 1 1]);  % Set text color to white
+end
