@@ -9,15 +9,6 @@ function _has() {
     command -v $1 &> /dev/null
 }
 
-### Commands
-ping() {
-    if [[ $# -eq 0 ]] ; then
-        command ping -c 4 8.8.8.8
-    else
-        command ping "$@"
-    fi
-}
-
 find() {
     command find "$@" 2>&1 | grep -v "Permission denied"
 }
@@ -33,7 +24,7 @@ grephere(){
 }
 
 # recurively find text and replace
-# Usage
+# Usage:
 # rrp text_to_find text_to_replace_it_with
 rrp() {
     grep -rl $1 . | xargs sed -i "s/$1/$2/g"
@@ -71,16 +62,33 @@ cd() {
     builtin cd "$@" && ls -lAh
 }
 
+# number of lines
 nn() {
 	cat "$1" | wc -l
 }
 
+# quick kill
 k() {
     kill -9 %$1
 }
 
+# calculate
 c() {
     echo "scale=6; $1" | bc -l 
+}
+
+#####################################
+# Description:
+#   List a range of lines of a file  
+# Usage:
+#   catl <file> <line_from> <line_to>
+#####################################
+catl() {
+    [ "$#" -ne 3 ] && return 0
+    local file="$1"
+    local start="$2"
+    local end="$3"
+    sed -n "${start},${end}p" "$file"
 }
 
 # make less more friendly for non-text input files, see lesspipe(1)
