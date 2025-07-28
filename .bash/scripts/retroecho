@@ -1,0 +1,44 @@
+#!/bin/bash
+
+sleep_random_delay() {
+    local r=$(( RANDOM % 100 ))
+    if (( r < 20 )); then
+        delay=0
+    elif (( r < 60 )); then
+        delay=0.04
+    elif (( r < 90 )); then
+        delay=0.065
+    elif (( r < 98 )); then
+        delay=0.13
+    else
+        delay=0.375
+    fi
+    sleep $delay
+}
+
+retro_print() {
+    # disable history expansion (to print !)
+    set +o histexpand
+    local str="$@"
+    local i=0
+    local len=${#str}
+    
+    while [ $i -lt $((len + 1)) ]; do
+        current_char="${str:$i:1}"
+        # [7m: "reverse video" mode (swap fg and bg), [0m: normal mode
+        printf '\e[7m%s\e[0m' "$current_char"
+        # for a smoother typing effect
+        sleep 0.03 
+        # move cursor to beginning of line
+        echo -ne "\r"
+        # print this and next character (0 to i+0)
+        printf '%s' "${str:0:$((i+0))}"
+        i=$((i + 1))
+        sleep_random_delay
+    done
+    echo
+    # re-enable history expansion
+    set -o histexpand
+}
+
+retro_print "$@"
