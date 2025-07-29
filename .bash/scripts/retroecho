@@ -1,25 +1,63 @@
 #!/bin/bash
 
+### Description:
+# Prints text in "80s style"
+### Requirements:
+# bc
+
+# default command line arguments
+# CPM (characters per minute)
+DEFAULT_CPM=1500
+CPM=$DEFAULT_CPM
+# text to print
+TEXT=""
+
+usage() {
+    echo "Usage: $0 [--cpm CHARACTERS_PER_MINUTE] \"text to print\""
+    echo "       $0 --cpm 300 \"Hello World\""
+    echo "Default CPM: $DEFAULT_CPM"
+    exit 1
+}
+
 sleep_random_delay() {
+    local random_delay_portion=$1
     local r=$(( RANDOM % 100 ))
     if (( r < 20 )); then
         delay=0
     elif (( r < 60 )); then
-        delay=0.04
+        delay=$(echo "$random_delay_portion * 0.04 / 0.0555" | bc -l)
     elif (( r < 90 )); then
-        delay=0.065
+        delay=$(echo "$random_delay_portion * 0.065 / 0.0555" | bc -l)
     elif (( r < 98 )); then
-        delay=0.13
+        delay=$(echo "$random_delay_portion * 0.13 / 0.0555" | bc -l)
     else
-        delay=0.375
+        delay=$(echo "$random_delay_portion * 0.375 / 0.0555" | bc -l)
     fi
     sleep $delay
 }
 
 retro_print() {
+    local cpm=$1
+    shift
+    local text="$@"
+    
+    # total delay per character = 60 / CPM, CPM = character per minute
+    local total_delay_per_char=$(echo "60 / $cpm" | bc -l)
+    
+    # for every character:
+    # fixed delay = 0.03 sec
+    # average random delay = 0.2*0 + 0.4*0.04 + 0.3*0.065 + 0.08*0.13 + 0.02*0.375
+    #                      = 0.0555 sec
+    # total (unscaled) delay per chacter = 0.03 + 0.0555 = 0.0855 sec
+    
+    # scale both so they add up to CPM
+    local scale_factor=$(echo "$total_delay_per_char / 0.0855" | bc -l)
+    local fixed_delay=$(echo "0.03 * $scale_factor" | bc -l)
+    local random_delay_portion=$(echo "0.0555 * $scale_factor" | bc -l)
+    
     # disable history expansion (to print !)
     set +o histexpand
-    local str="$@"
+    local str="$text"
     local i=0
     local len=${#str}
     
@@ -28,17 +66,51 @@ retro_print() {
         # [7m: "reverse video" mode (swap fg and bg), [0m: normal mode
         printf '\e[7m%s\e[0m' "$current_char"
         # for a smoother typing effect
-        sleep 0.03 
+        sleep $fixed_delay
         # move cursor to beginning of line
         echo -ne "\r"
-        # print this and next character (0 to i+0)
-        printf '%s' "${str:0:$((i+0))}"
+        # print this and next character
+        printf '%s' "${str:0:${i}}"
         i=$((i + 1))
-        sleep_random_delay
+        sleep_random_delay $random_delay_portion
     done
     echo
     # re-enable history expansion
     set -o histexpand
 }
 
-retro_print "$@"
+
+parse_cmd_args() {
+    CPM=$DEFAULT_CPM
+    TEXT=""
+    while [[ $# -gt 0 ]]; do
+        case $1 in
+            --cpm)
+                CPM="$2"
+                if ! [[ "$CPM" =~ ^[0-9]+$ ]] || [ "$CPM" -eq 0 ]; then
+                    echo "Error: CPM must be a positive integer"
+                    usage
+                fi
+                shift 2
+                ;;
+            -h|--help)
+                usage
+                ;;
+            *)
+                TEXT="$*"
+                break
+                ;;
+        esac
+    done
+
+    [ -z "$TEXT" ] && echo "ERROR: No text provided" && usage
+}
+
+if ! command -v bc &> /dev/null; then
+    echo "ERROR: 'bc' calculator is required for this script."
+    echo "Please install it and try again."
+    exit 1
+fi
+
+parse_cmd_args "$@"
+retro_print "$CPM" "$TEXT"
