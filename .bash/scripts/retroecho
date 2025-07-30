@@ -1,20 +1,28 @@
 #!/bin/bash
 
 ### Description:
-# Prints text in "80s style"
+# Prints text in "80s style" - supports both direct text input and file reading
 ### Requirements:
 # bc
 
 # default command line arguments
 # CPM (characters per minute)
-DEFAULT_CPM=1500
+DEFAULT_CPM=2000
 CPM=$DEFAULT_CPM
 # text to print
 TEXT=""
+# file to read
+FILE=""
 
 usage() {
     echo "Usage: $0 [--cpm CHARACTERS_PER_MINUTE] \"text to print\""
+    echo "       $0 [--cpm CHARACTERS_PER_MINUTE] --file filename.txt"
+    echo ""
+    echo "Examples:"
     echo "       $0 --cpm 300 \"Hello World\""
+    echo "       $0 --file my_document.txt"
+    echo "       $0 --cpm 800 --file story.txt"
+    echo ""
     echo "Default CPM: $DEFAULT_CPM"
     exit 1
 }
@@ -79,16 +87,42 @@ retro_print() {
     set -o histexpand
 }
 
+retro_print_file() {
+    local cpm=$1
+    local filename=$2
+    
+    if [[ ! -f "$filename" ]]; then
+        echo "ERROR: File '$filename' does not exist or is not readable"
+        exit 1
+    fi
+    
+    local line_count=0
+    while IFS= read -r line; do
+        line_count=$((line_count + 1))
+        retro_print "$cpm" "$line"
+    done < "$filename"
+    
+    echo "Finished reading $line_count lines from '$filename'"
+}
 
 parse_cmd_args() {
     CPM=$DEFAULT_CPM
     TEXT=""
+    FILE=""
     while [[ $# -gt 0 ]]; do
         case $1 in
-            --cpm)
+            -c|--cpm)
                 CPM="$2"
                 if ! [[ "$CPM" =~ ^[0-9]+$ ]] || [ "$CPM" -eq 0 ]; then
                     echo "Error: CPM must be a positive integer"
+                    usage
+                fi
+                shift 2
+                ;;
+            -f|--file)
+                FILE="$2"
+                if [[ -z "$FILE" ]]; then
+                    echo "Error: --file option requires a filename"
                     usage
                 fi
                 shift 2
@@ -97,13 +131,23 @@ parse_cmd_args() {
                 usage
                 ;;
             *)
+                if [[ -n "$FILE" ]]; then
+                    echo "Error: Cannot specify both --file and direct text"
+                    usage
+                fi
                 TEXT="$*"
                 break
                 ;;
         esac
     done
-
-    [ -z "$TEXT" ] && echo "ERROR: No text provided" && usage
+    if [[ -z "$TEXT" && -z "$FILE" ]]; then
+        echo "ERROR: No text or file provided"
+        usage
+    fi
+    if [[ -n "$TEXT" && -n "$FILE" ]]; then
+        echo "ERROR: Cannot specify both direct text and file (-f/--file) option"
+        usage
+    fi
 }
 
 if ! command -v bc &> /dev/null; then
@@ -113,4 +157,9 @@ if ! command -v bc &> /dev/null; then
 fi
 
 parse_cmd_args "$@"
-retro_print "$CPM" "$TEXT"
+
+if [[ -n "$FILE" ]]; then
+    retro_print_file "$CPM" "$FILE"
+else
+    retro_print "$CPM" "$TEXT"
+fi
