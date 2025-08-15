@@ -7,8 +7,9 @@
 # Source this script
 
 function _add_dir_to_path() {
+    current_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
     # directories in PATH are delimited with :my/dir: so we match this way
-    [[ ":$PATH:" == *":$(pwd):"* ]] || export PATH="$PATH:$(pwd)"
+    [[ ":$PATH:" == *":${current_dir}:"* ]] || export PATH="$PATH:${current_dir}"
 }
 
 _add_dir_to_path
