@@ -84,6 +84,10 @@ catl() {
     sed -n "${start},${end}p" "$file"
 }
 
+### Description:
+# ccat (coding cat) - lists file contents with syntax highlighting
+alias ccat='pygmentize -g -O style=colorful,linenos=1'
+
 # make less more friendly for non-text input files, see lesspipe(1)
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 
