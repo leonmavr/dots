@@ -6,8 +6,8 @@
 _rrp() {
     local find_text="$1"
     local replace_text="$2"
-    # count and store the number of substitutions - p flag in sed = print w/o replacing
-    count=$(grep -rl "$find_text" . | xargs -I {} sh -c "sed -n 's/$find_text/$replace_text/gp' {} | wc -l")
+     # count and store the number of substitutions - p flag in sed = print w/o replacing
+    count=$(grep -rl "$find_text" . | xargs -I {} sh -c "sed -n 's/$find_text/$replace_text/gp' {} | wc -l" | awk '{sum += $1} END {print sum}')
     grep -rl "$find_text" . | xargs sed -i "s/$find_text/$replace_text/g"
     echo "=== $count occurrences took place. ==="
 }
