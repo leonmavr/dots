@@ -48,6 +48,8 @@ end, { expr = true, noremap = true })
 vim.keymap.set('i', '}}', function()
   return '{}<Left>'
 end, { expr = true, noremap = true })
+-- { <enter = { <newline> <tab> <cursor> }
+vim.api.nvim_set_keymap("i", "{<CR>", "{<CR>}<Esc>O", { noremap = true })
 
 -- Ensure packer is installed - if not, install it
 local ensure_packer = function()
