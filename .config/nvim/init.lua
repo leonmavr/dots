@@ -29,42 +29,62 @@ vim.api.nvim_create_autocmd("FileType", {
 vim.opt.number = true
 vim.opt.relativenumber = true
 
+-- Key maps
+vim.keymap.set('i', '((', function()
+  return '()<Left>'
+end, { expr = true, noremap = true })
+vim.keymap.set('i', '))', function()
+  return '()<Left>'
+end, { expr = true, noremap = true })
+vim.keymap.set('i', '[[', function()
+  return '[]<Left>'
+end, { expr = true, noremap = true })
+vim.keymap.set('i', ']]', function()
+  return '[]<Left>'
+end, { expr = true, noremap = true })
+vim.keymap.set('i', '{{', function()
+  return '{}<Left>'
+end, { expr = true, noremap = true })
+vim.keymap.set('i', '}}', function()
+  return '{}<Left>'
+end, { expr = true, noremap = true })
 
--- Ensure packer is installed
-vim.cmd [[packadd packer.nvim]]
+-- Ensure packer is installed - if not, install it
+local ensure_packer = function()
+  local fn = vim.fn
+  local install_path = fn.stdpath('data')..'/site/pack/packer/start/packer.nvim'
+  if fn.empty(fn.glob(install_path)) > 0 then
+    fn.system({'git', 'clone', '--depth', '1',
+      'https://github.com/wbthomason/packer.nvim', install_path})
+    vim.cmd [[packadd packer.nvim]]
+    return true
+  end
+  return false
+end
 
-require('packer').startup(function()
-  use 'wbthomason/packer.nvim' -- Package manager
-  use 'neovim/nvim-lspconfig' -- LSP support
-  use 'hrsh7th/nvim-cmp' -- Completion framework
-  use 'hrsh7th/cmp-nvim-lsp' -- LSP completions
-  use 'L3MON4D3/LuaSnip' -- Snippet engine
-  use 'saadparwaiz1/cmp_luasnip' -- Snippet completions
+local packer_bootstrap = ensure_packer()
+
+require('packer').startup(function(use)
+  use 'wbthomason/packer.nvim'       -- Package manager
+  use 'neovim/nvim-lspconfig'        -- LSP support
+  use 'hrsh7th/nvim-cmp'             -- Completion framework
+  use 'hrsh7th/cmp-nvim-lsp'         -- LSP completions
+  use 'L3MON4D3/LuaSnip'             -- Snippet engine
+  use 'saadparwaiz1/cmp_luasnip'     -- Snippet completions
   use { 'nvim-treesitter/nvim-treesitter', run = ':TSUpdate' }
-  use 'nvim-lua/plenary.nvim' -- Dependency for many plugins
+  use 'nvim-lua/plenary.nvim'        -- Dependency for many plugins
   use {
     'nvim-telescope/telescope.nvim',
     requires = { 'nvim-lua/plenary.nvim' }
   }
-  use 'nvim-lualine/lualine.nvim' -- Statusline
-  use 'preservim/nerdtree' -- File explorer
-  use 'dense-analysis/ale' -- Asynchronous linting
-  use 'tpope/vim-fugitive' -- Git integration
-  use 'hrsh7th/cmp-buffer'          -- Buffer source for nvim-cmp
-  use 'hrsh7th/cmp-path'            -- Path completion
-  use 'hrsh7th/cmp-cmdline'         -- Command-line completion
-  use 'saadparwaiz1/cmp_luasnip'    -- Snippet completion
-  use 'L3MON4D3/LuaSnip'            -- Snippet engine
+  use 'nvim-lualine/lualine.nvim'    -- Statusline
+  use 'preservim/nerdtree'           -- File explorer
+  use 'dense-analysis/ale'           -- Asynchronous linting
+  use 'tpope/vim-fugitive'           -- Git integration
+  use 'hrsh7th/cmp-buffer'           -- Buffer source for nvim-cmp
+  use 'hrsh7th/cmp-path'             -- Path completion
+  use 'hrsh7th/cmp-cmdline'          -- Command-line completion
   use 'rafamadriz/friendly-snippets' -- Predefined snippets for common languages
-  use({
-    "kylechui/nvim-surround",
-    tag = "*", -- Use for stability; omit to use `main` branch for the latest features
-    config = function()
-        require("nvim-surround").setup({
-            -- Configuration here, or leave empty to use defaults
-        })
-  end
-})
 end)
 
 -------------------------------------------------------------------------
@@ -310,15 +330,6 @@ require('packer').startup(function()
   use 'hrsh7th/cmp-path'             -- Path completion
   use 'hrsh7th/cmp-cmdline'          -- Command-line completion
   use 'rafamadriz/friendly-snippets' -- Predefined snippets for common languages
-  use({
-    "kylechui/nvim-surround",
-    tag = "*", -- Use for stability; omit to use `main` branch for the latest features
-    config = function()
-        require("nvim-surround").setup({
-            -- Configuration here, or leave empty to use defaults
-        })
-  end
-})
 end)
 
 -------------------------------------------------------------------------
