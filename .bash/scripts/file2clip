@@ -2,17 +2,26 @@
 
 ### Requirements
 # xclip
-
 ### Description
 # Copies contents of file to clipboard
+
 _file2clip() {
-  [[ ! -f "$1" ]] && exit 1
+  [[ ! -f "$1" ]] && { echo "ERROR: File '$1' does not exist" >&2; exit 1; }
+  
   mime_type=$(file --mime-type -b "$1")
-  [[ $mime_type == image/* ]] && \
-    xclip -selection clipboard -t image/png -i "$1" || \
-    xclip -selection clipboard -t "$mime_type" -in < "$1"
+  if [[ $mime_type == image/* ]]; then
+    # each image type needs to be handled differently
+    case "$mime_type" in
+      image/png) xclip -selection clipboard -t image/png -i "$1" ;;
+      image/jpeg) xclip -selection clipboard -t image/jpeg -i "$1" ;;
+      image/gif) xclip -selection clipboard -t image/gif -i "$1" ;;
+      *) xclip -selection clipboard -t image/png -i "$1" ;; # fallback
+    esac
+  else
+    # otherwise xclip can handle it without a type
+    xclip -selection clipboard -in < "$1"
+  fi
 }
 
 [ -f ~/.bash/scripts/add_dir_to_path.sh ] && . ~/.bash/scripts/add_dir_to_path.sh 
-_file2clip $@ 
-
+_file2clip "$@"
