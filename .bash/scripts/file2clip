@@ -21,6 +21,9 @@ _file2clip() {
     # otherwise xclip can handle it without a type
     xclip -selection clipboard -in < "$1"
   fi
+  local msg="File $1 copied to clipboard!"
+  has dunst && dunstify -u low "$msg" || \
+      { has notify-send && notify-send --expire-time=3000 "$msg"; }
 }
 
 [ -f ~/.bash/scripts/add_dir_to_path.sh ] && . ~/.bash/scripts/add_dir_to_path.sh 
