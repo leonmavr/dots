@@ -1,3 +1,6 @@
+-------------------------------------------------------------------------------
+-- Behavior 
+-------------------------------------------------------------------------------
 vim.g.mapleader = " "  -- Set the leader key to space
 vim.g.maplocalleader = " "  -- Set the local leader key to space
 
@@ -29,6 +32,15 @@ vim.api.nvim_create_autocmd("FileType", {
 vim.opt.number = true
 vim.opt.relativenumber = true
 
+-- Text wrapping at 80 characters
+vim.opt.textwidth = 80
+vim.opt.colorcolumn = "80"
+-- Auto wrap while typing in insert mode
+vim.opt.formatoptions:append { "t" }
+
+-------------------------------------------------------------------------------
+-- Maps 
+-------------------------------------------------------------------------------
 -- Key maps
 vim.keymap.set('i', '((', function()
   return '()<Left>'
@@ -51,6 +63,10 @@ end, { expr = true, noremap = true })
 -- { <enter = { <newline> <tab> <cursor> }
 vim.api.nvim_set_keymap("i", "{<CR>", "{<CR>}<Esc>O", { noremap = true })
 
+
+-------------------------------------------------------------------------------
+-- Plugins
+-------------------------------------------------------------------------------
 -- Ensure packer is installed - if not, install it
 local ensure_packer = function()
   local fn = vim.fn
