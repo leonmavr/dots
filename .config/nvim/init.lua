@@ -28,6 +28,9 @@ vim.api.nvim_create_autocmd("FileType", {
     end,
 })
 
+-- completely disable the mouse
+vim.opt.mouse = ""
+
 -- Hybrid absolute and relative line numbering
 vim.opt.number = true
 vim.opt.relativenumber = true
