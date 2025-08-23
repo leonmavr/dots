@@ -4,6 +4,18 @@ My setup uses Xorg so note that if you're using Wayland.
 The files in the root of this repo should correspond to your home folder.  
 For example, the `.bash` directory should correspond to `~/.bash` in your machine.
 
+### :large_orange_diamond: Programs to install 
+
+* ranger
+
+Then do:
+
+```
+ranger --copy-config=all
+```
+
+* fzf
+
 ### :large_orange_diamond: Managing the dotfiles
 
 It's recommended to manage them with the `stow` package. `stow` manages and creates symlinks. By using `stow` you won't have to copy your local dotfiles to your git repository every time you want to make changes. To install `stow`:
