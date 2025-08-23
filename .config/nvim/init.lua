@@ -288,10 +288,6 @@ vim.api.nvim_set_keymap('i', '{{', '{}<Left>', { noremap = true, silent = true }
 vim.api.nvim_set_keymap('i', '[[', '[]<Left>', { noremap = true, silent = true })
 print("Config loaded!")  -- Add this at the top of your init.lua
 
-[leo@maverick tmp]$ vim /tmp/erwkerjew.cpp
-[leo@maverick tmp]$ vim ~/.config/nvim/init.lua 
-[leo@maverick tmp]$ cat !$
-cat ~/.config/nvim/init.lua
 vim.g.mapleader = " "  -- Set the leader key to space
 vim.g.maplocalleader = " "  -- Set the local leader key to space
 
