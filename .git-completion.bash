@@ -3243,11 +3243,26 @@ __git_complete ()
 		|| complete -o default -o nospace -F $wrapper $1
 }
 
+_git_changed_files() {
+    # List modified, staged, or untracked files in the working directory
+    git status --porcelain | grep -E '^[ MDU]+' | awk '{print $2}'
+}
+
 # wrapper for backwards compatibility
 _git ()
 {
 	__git_wrap__git_main
+    local cur=${COMP_WORDS[COMP_CWORD]}
+    if [[ $cur == /* ]]; then
+        # if the user starts the path with '/', limit completion to changed files
+        COMPREPLY=( $(compgen -W "$(_git_changed_files)" -- $cur) )
+    else
+        # fallback to default git completion for other cases
+        COMPREPLY=( $(compgen -W "$(git ls-files)" -- $cur) )
+    fi
 }
+
+complete -F _git git
 
 # wrapper for backwards compatibility
 _gitk ()
