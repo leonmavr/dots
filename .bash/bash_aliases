@@ -84,6 +84,11 @@ catl() {
     sed -n "${start},${end}p" "$file"
 }
 
+# interactive make - if successful, show a popup window
+imake() {
+    make "$@" && dunstify "Build successful!"
+}
+
 ### Description:
 # ccat (coding cat) - lists file contents with syntax highlighting
 alias ccat='pygmentize -g -O style=colorful,linenos=1'
