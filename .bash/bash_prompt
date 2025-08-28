@@ -1,27 +1,99 @@
-# Requirements (for proper rendering):
-# * material icons
-# * powerline fonts
+# Source this script for its changes to take place.
+# This will configure 3 "pill" sections in your top row and
+# a command section in the bottom row:
+#
+# +-- <user> : <path> : <branch>
+# +->
+#
+# user, path, branch will be padded so that the background
+# is in a gradient that darkens as we move further towards
+# the edge of the padding 
 
-
-# with the aid of https://scriptim.github.io/bash-prompt-generator/
-_os_icon=
-_default_ps1='\n\[\e[0;38;5;195m\]╭─\[\e[0;38;5;234m\]\[\e[0;38;5;50;48;5;234m\]$OS_ICON \[\e[0;38;5;195;48;5;234m\]\u\[\e[0;38;5;234;48;5;236m\]\[\e[0;38;5;195;48;5;236m\]: \w\[\e[0;38;5;236;48;5;239m\]\[\e[0;38;5;195;48;5;239m\]: `git rev-parse --abbrev-ref HEAD 2>/dev/null`\[\e[0;38;5;239m\]\[\e[m\]\n\[\e[0;38;5;195m\]╰▻ \[\e[m\]'
-PS1=$_default_ps1
-
-# changes the style of the prompt
-chps() {
-        clear
-        if [ ! -f /tmp/bash_prompt_style ]; then
-                PS1=$_default_ps1
-                echo 1 > /tmp/bash_prompt_style
-        elif [ `cat /tmp/bash_prompt_style` -eq 1 ]; then
-                PS1='\[\033[38;5;195m\] \u@\h:\[$(tput bold)\]\w\[$(tput sgr0)\]\[\033[38;5;195m\] :\[$(tput bold)\]`git rev-parse --abbrev-ref HEAD 2>/dev/null`\n⤷ \[$(tput sgr0)\]\[$(tput sgr0)\]'
-                echo 2 > /tmp/bash_prompt_style
-        elif [ `cat /tmp/bash_prompt_style` -eq 2 ]; then
-                PS1="\[$(tput bold)\]\[\033[38;5;195m\] \[$(tput sgr0)\]"
-                echo 3 > /tmp/bash_prompt_style
-        else
-                PS1=$_default_ps1
-                echo 1 > /tmp/bash_prompt_style
-        fi
+################################################################
+# Text processing 
+################################################################
+parse_git_info() {
+  branch=$(git branch 2>/dev/null | sed -n '/\* /s///p')
+  if [[ -z "$branch" ]]; then
+    echo "none"
+  else
+    repo_path=$(git rev-parse --show-toplevel 2>/dev/null)
+    repo_name=$(basename "$repo_path")
+    echo "${branch}@${repo_name}"
+  fi
 }
+
+
+shorten_path() {
+    local path=$(pwd)
+    local max_len=50
+    [ "${#path}" -le "$max_len" ] && echo "$path" && return
+
+    # if the math is longer than `max_len`, keep the last 2
+    # dirs and hope for the best
+    
+    path="${path%/}"          # remove training slash if any
+    local last_dir="${path##*/}"    # last dir
+    local rest="${path%/*}"         # everything before last dir
+    local second_last="${rest##*/}" # second last dir
+    echo ".../$second_last/$last_dir"
+}
+
+################################################################
+# Appearance
+################################################################
+# convert hex to ANSI escape for foreground
+hex_fg() {
+  local hex=${1#"#"}  # Remove leading #
+  local r=$((16#${hex:0:2}))
+  local g=$((16#${hex:2:2}))
+  local b=$((16#${hex:4:2}))
+  echo "\[\e[38;2;${r};${g};${b}m\]"
+}
+
+# convert hex to ANSI escape for background
+hex_bg() {
+  local hex=${1#"#"}
+  local r=$((16#${hex:0:2}))
+  local g=$((16#${hex:2:2}))
+  local b=$((16#${hex:4:2}))
+  echo "\[\e[48;2;${r};${g};${b}m\]"
+}
+
+BOLD="\[\e[1m\]"
+RESET="\[\e[0m\]"
+
+# <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+# select your colors below. they will be printed as:
+# |COL3|COL2|COL1|BG|COL1|COL2|COL3|
+USER_COL1="#09605D"
+USER_COL2="#0D918C"
+USER_COL3="#11C2BB"
+USER_BG="#16F5EA"
+USER_FG="#000000"
+
+DIR_COL1="#6C083B"
+DIR_COL2="#930B52"
+DIR_COL3="#C40E6C"
+DIR_BG="#F51187"
+DIR_FG="#000000"
+
+GIT_COL1="#1E565F"
+GIT_COL2="#2E8192"
+GIT_COL3="#3DABC4"
+GIT_BG="#4CDEF5"
+GIT_FG="#000000"
+# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+PS1="\
+$(hex_fg "$USER_BG")╭─$RESET\
+$(hex_fg "$USER_COL1")▇$(hex_fg "$USER_COL2")█$(hex_fg "$USER_COL3")█\
+${BOLD}$(hex_bg "$USER_BG")$(hex_fg "$USER_FG") \u $RESET\
+$(hex_fg "$USER_COL3")█$(hex_fg "$USER_COL2")█$(hex_fg "$USER_COL1")▇$RESET : \
+$(hex_fg "$DIR_COL1")▇$(hex_fg "$DIR_COL2")█$(hex_fg "$DIR_COL3")█\
+${BOLD}$(hex_bg "$DIR_BG")$(hex_fg "$DIR_FG") \$(shorten_path) $RESET\
+$(hex_fg "$DIR_COL3")█$(hex_fg "$DIR_COL2")█$(hex_fg "$DIR_COL1")▇$RESET : \
+$(hex_fg "$GIT_COL1")▇$(hex_fg "$GIT_COL2")█$(hex_fg "$GIT_COL3")█\
+${BOLD}$(hex_bg "$GIT_BG")$(hex_fg "$GIT_FG") \$(parse_git_info) $RESET\
+$(hex_fg "$GIT_COL3")█$(hex_fg "$GIT_COL2")█$(hex_fg "$GIT_COL1")▇$RESET\n\
+$(hex_fg "$USER_BG")╰❱ $RESET"
