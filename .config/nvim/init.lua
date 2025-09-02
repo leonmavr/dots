@@ -65,6 +65,10 @@ vim.keymap.set('i', '}}', function()
 end, { expr = true, noremap = true })
 -- { <enter = { <newline> <tab> <cursor> }
 vim.api.nvim_set_keymap("i", "{<CR>", "{<CR>}<Esc>O", { noremap = true })
+-- Interact with clipboard
+-- <Leader>Y = copy (visual mode), <Leader>P = paste (any mode)
+vim.keymap.set("v", "<Leader>Y", '"+y', { noremap = true, silent = true })
+vim.keymap.set({ "n", "v" }, "<Leader>P", '"+p', { noremap = true, silent = true })
 
 
 -------------------------------------------------------------------------------
@@ -106,6 +110,9 @@ require('packer').startup(function(use)
   use 'hrsh7th/cmp-path'             -- Path completion
   use 'hrsh7th/cmp-cmdline'          -- Command-line completion
   use 'rafamadriz/friendly-snippets' -- Predefined snippets for common languages
+  if packer_bootstrap then
+    require('packer').sync()
+  end
 end)
 
 -------------------------------------------------------------------------
