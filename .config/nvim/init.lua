@@ -3,6 +3,19 @@
 -------------------------------------------------------------------------------
 vim.g.mapleader = " "  -- Set the leader key to space
 vim.g.maplocalleader = " "  -- Set the local leader key to space
+vim.o.swapfile = false
+
+-- when re-opening a file, open from last edit location
+vim.o.undofile = true
+vim.o.shada = "'1000,f1,h"
+vim.api.nvim_create_autocmd("BufReadPost", {
+  pattern = "*",
+  callback = function()
+    if vim.fn.line("'\"") > 0 and vim.fn.line("'\"") <= vim.fn.line("$") then
+      vim.cmd("normal! g`\"")
+    end
+  end
+})
 
 -- Tabs to 4 spaces
 vim.opt.expandtab = true
