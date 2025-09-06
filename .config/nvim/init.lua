@@ -117,7 +117,6 @@ require('packer').startup(function(use)
     requires = { 'nvim-lua/plenary.nvim' }
   }
   use 'preservim/nerdtree'           -- File explorer
-  -- use 'dense-analysis/ale'           -- Asynchronous linting
   use 'tpope/vim-fugitive'           -- Git integration
   use 'hrsh7th/cmp-buffer'           -- Buffer source for nvim-cmp
   use 'hrsh7th/cmp-path'             -- Path completion
@@ -304,7 +303,8 @@ vim.g.ale_fix_on_save = 0
 -- Format on save (LSP)
 vim.api.nvim_create_autocmd("BufWritePre", {
   pattern = { "*.c", "*.cpp" },
-  callback = function() vim.lsp.buf.format() end,
+  -- callback = function() vim.lsp.buf.format() end,
+  callback = function() end,  -- empty function, does nothing
 })
 
 -- Debugging
