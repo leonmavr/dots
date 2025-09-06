@@ -709,3 +709,38 @@ end
 
 vim.keymap.set("n", "<C-d>", function() smooth_scroll("down") end, { noremap = true, silent = true })
 vim.keymap.set("n", "<C-u>", function() smooth_scroll("up") end, { noremap = true, silent = true })
+
+---- Print all mappings (<Leader>m)
+
+-- List all normal mode mappings in a scratch buffer
+vim.keymap.set('n', '<Leader>m', function()
+    local buf = vim.api.nvim_create_buf(false, true)  -- scratch buffer
+    local lines = {}
+
+    -- Get all normal mode mappings
+    local maps = vim.api.nvim_get_keymap('n')
+    for _, m in ipairs(maps) do
+        table.insert(lines, string.format("%-10s -> %s", m.lhs, m.desc or m.rhs or "<no rhs>"))
+    end
+
+    -- Set lines and options
+    vim.api.nvim_buf_set_lines(buf, 0, -1, false, lines)
+    vim.api.nvim_buf_set_option(buf, 'buftype', 'nofile')
+    vim.api.nvim_buf_set_option(buf, 'bufhidden', 'wipe')
+    vim.api.nvim_buf_set_option(buf, 'modifiable', false)
+
+    -- Open in a new floating window
+    local width = math.floor(vim.o.columns * 0.6)
+    local height = math.floor(vim.o.lines * 0.6)
+    local row = math.floor((vim.o.lines - height) / 2)
+    local col = math.floor((vim.o.columns - width) / 2)
+    vim.api.nvim_open_win(buf, true, {
+        relative = 'editor',
+        width = width,
+        height = height,
+        row = row,
+        col = col,
+        style = 'minimal',
+        border = 'rounded',
+    })
+end, { noremap = true, silent = true })
