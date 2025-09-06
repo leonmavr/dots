@@ -134,6 +134,11 @@ require('packer').startup(function(use)
   use 'stevearc/conform.nvim'        -- Formatting
   use 'jose-elias-alvarez/null-ls.nvim' -- Extra linting/formatting (optional)
   use 'ray-x/lsp_signature.nvim'     -- Python function signatures
+  use {
+      'heavenshell/vim-pydocstring',
+      ft = 'python',
+      run = 'make install'
+  }
 
   if packer_bootstrap then
     require('packer').sync()
@@ -222,7 +227,11 @@ require("lsp_signature").setup({
     always_trigger = true,
 })
 
+-- Set the docstring formatter to numpy
+vim.g.pydocstring_formatter = 'numpy'
 
+-- Map <Leader>d in normal mode to trigger pydocstring
+vim.keymap.set('n', '<Leader>_', '<Plug>(pydocstring)', { noremap = false, silent = true })
 
 -------------------------------------------------------------------------
 -- For C/C++ development
