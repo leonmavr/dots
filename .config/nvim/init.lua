@@ -11,7 +11,7 @@
 -------------------------------------------------------------------------------
 -- Behavior 
 -------------------------------------------------------------------------------
-vim.g.mapleader = " "  -- Set the leader key to space
+vim.g.mapleader = " "       -- Set the leader key to space
 vim.g.maplocalleader = " "  -- Set the local leader key to space
 vim.o.swapfile = false
 
@@ -134,7 +134,7 @@ require('packer').startup(function(use)
   use 'jose-elias-alvarez/null-ls.nvim' -- Extra linting/formatting (optional)
   use 'ray-x/lsp_signature.nvim'     -- Python function signatures
   use {
-      'heavenshell/vim-pydocstring',
+      'heavenshell/vim-pydocstring', -- Docstring generation for Python
       ft = 'python',
       run = 'make install'
   }
@@ -261,13 +261,20 @@ api.nvim_create_autocmd('BufNewFile', {
 -- LSP clangd
 local lspconfig = require('lspconfig')
 lspconfig.clangd.setup {
-  cmd = { "clangd" },
+  cmd = { "clangd", "--background-index", "--clang-tidy", "--completion-style=detailed" },
   on_attach = function(_, bufnr)
-    local opts = { noremap=true, silent=true, buffer=bufnr }
-    vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
-    vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
-    vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, opts)
-    vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action, opts)
+      local opts = { noremap=true, silent=true, buffer=bufnr }
+
+      -- Existing keymaps
+      vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
+      vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
+      vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, opts)
+      vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action, opts)
+
+      -- Enable inlay hints
+      if vim.lsp.buf.inlay_hint then
+          vim.lsp.buf.inlay_hint(bufnr, true)
+      end
   end,
 }
 
