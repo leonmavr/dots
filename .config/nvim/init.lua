@@ -81,9 +81,21 @@ vim.keymap.set('i', '}}', function() return '{}<Left>' end, { expr = true, norem
 -- { <enter = { <newline> <tab> <cursor> }
 vim.api.nvim_set_keymap("i", "{<CR>", "{<CR>}<Esc>O", { noremap = true })
 
+---- For nvim-dap (debugging)
 -- Interact with clipboard
 vim.keymap.set("v", "<Leader>Y", '"+y', { noremap = true, silent = true })
 vim.keymap.set({ "n", "v" }, "<Leader>P", '"+p', { noremap = true, silent = true })
+
+vim.keymap.set('n', '<Leader>9', function() require'dap'.toggle_breakpoint() end)
+vim.keymap.set('n', '<Leader>5', function() require'dap'.continue() end)
+vim.keymap.set('n', '<Leader>1', function() require'dap'.step_over() end)
+vim.keymap.set('n', '<Leader>2', function() require'dap'.step_into() end)
+vim.keymap.set('n', '<Leader>3', function() require'dap'.step_out() end)
+
+-- quickly switch between source/header
+vim.keymap.set('n', '<Leader>o', ':ClangdSwitchSourceHeader<CR>', { noremap=true, silent=true })
+
+
 
 -------------------------------------------------------------------------------
 -- Plugins
@@ -122,13 +134,16 @@ require('packer').startup(function(use)
   use 'hrsh7th/cmp-path'             -- Path completion
   use 'hrsh7th/cmp-cmdline'          -- Command-line completion
   use 'rafamadriz/friendly-snippets' -- Predefined snippets for common languages
+
   use {
-    "mfussenegger/nvim-dap",         -- Debug adapter protocol
+    "mfussenegger/nvim-dap",         -- Debugging
     requires = {
-      "rcarriga/nvim-dap-ui",        -- Debug UI
-      "mfussenegger/nvim-dap-python" -- Python DAP support
+      "rcarriga/nvim-dap-ui",
+      "mfussenegger/nvim-dap-python",
+      "nvim-neotest/nvim-nio"        -- REQUIRED by nvim-dap-ui
     }
   }
+ 
   use 'mfussenegger/nvim-lint'       -- Modern linting
   use 'stevearc/conform.nvim'        -- Formatting
   use 'jose-elias-alvarez/null-ls.nvim' -- Extra linting/formatting (optional)
@@ -137,6 +152,13 @@ require('packer').startup(function(use)
       'heavenshell/vim-pydocstring', -- Docstring generation for Python
       ft = 'python',
       run = 'make install'
+  }
+  use {
+    'akinsho/toggleterm.nvim',
+    tag = '*',
+    config = function()
+      require("toggleterm").setup()
+    end
   }
 
   if packer_bootstrap then
@@ -167,6 +189,21 @@ lspconfig.pyright.setup {
     },
   },
 }
+
+-- Enhanced rename with optional switch to source/header
+vim.keymap.set('n', '<leader>rn', function()
+    local bufnr = vim.api.nvim_get_current_buf()
+    -- Trigger LSP rename
+    vim.lsp.buf.rename()
+    -- After rename, offer to switch to source/header
+    vim.defer_fn(function()
+        local choice = vim.fn.input("Switch to source/header? (y/N): ")
+        if choice:lower() == 'y' then
+            vim.cmd("ClangdSwitchSourceHeader")
+        end
+    end, 100)  -- delay slightly to wait for rename to finish
+end, { noremap = true, silent = true })
+
 
 -- Capabilities for nvim-cmp
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
@@ -258,6 +295,7 @@ api.nvim_create_autocmd('BufNewFile', {
   end,
 })
 
+---- LSP clangd
 -- LSP clangd
 local lspconfig = require('lspconfig')
 lspconfig.clangd.setup {
@@ -268,23 +306,27 @@ lspconfig.clangd.setup {
       -- Existing keymaps
       vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
       vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
-      vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, opts)
-      vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action, opts)
+      vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, opts)        -- rename
+      vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action, opts)   -- code actions
 
-      -- Enable inlay hints
+      -- clangd specific
+      vim.keymap.set('n', '<leader>sh', ':ClangdSwitchSourceHeader<CR>', opts)  -- switch source/header
+      vim.keymap.set('n', '<leader>ih', ':ClangdToggleInlayHints<CR>', opts)    -- toggle inlay hints
+
+      -- Enable inlay hints initially
       if vim.lsp.buf.inlay_hint then
           vim.lsp.buf.inlay_hint(bufnr, true)
       end
   end,
 }
 
--- Treesitter
+---- Treesitter
 require('nvim-treesitter.configs').setup {
   ensure_installed = { "c", "cpp", "python" },
   highlight = { enable = true },
 }
 
--- Completion
+---- Completion (cmp)
 local cmp = require'cmp'
 cmp.setup({
   snippet = { expand = function(args) require('luasnip').lsp_expand(args.body) end },
@@ -301,7 +343,7 @@ cmp.setup({
   }, { { name = 'buffer' } })
 })
 
--- ALE (linters, formatters)
+---- ALE (linters, formatters)
 vim.g.ale_linters = { ['c'] = { 'clang' }, ['cpp'] = { 'clang' } }
 vim.g.ale_fixers = { ['c'] = {}, ['cpp'] = {} } -- Disabled clang-format
 vim.g.ale_cpp_clangformat_executable = ''
@@ -314,7 +356,7 @@ vim.api.nvim_create_autocmd("BufWritePre", {
   callback = function() end,  -- empty function, does nothing
 })
 
--- Debugging
+---- Debugging (dap)
 local dap = require('dap')
 dap.adapters.cppdbg = {
   type = 'executable',
@@ -337,12 +379,20 @@ dap.configurations.cpp = {
   },
 }
 
--- Telescope mappings
+require("dapui").setup()
+
+local dap, dapui = require("dap"), require("dapui")
+dap.listeners.after.event_initialized["dapui_config"] = function() dapui.open() end
+dap.listeners.before.event_terminated["dapui_config"] = function() dapui.close() end
+dap.listeners.before.event_exited["dapui_config"] = function() dapui.close() end
+
+
+---- Telescope mappings
 require('telescope').setup{}
 vim.keymap.set('n', '<leader>ff', '<cmd>Telescope find_files<cr>', { noremap = true })
 vim.keymap.set('n', '<leader>fg', '<cmd>Telescope live_grep<cr>', { noremap = true })
 
--- Snippets
+---- Snippets
 local luasnip = require('luasnip')
 require('luasnip.loaders.from_vscode').lazy_load()
 vim.keymap.set({ "i", "s" }, "<C-e>", function()
@@ -351,6 +401,23 @@ end, { silent = true })
 vim.keymap.set({ "i", "s" }, "<S-C-e>", function()
     if luasnip.jumpable(-1) then luasnip.jump(-1) end
 end, { silent = true })
+
+---- toggleterm plugin options
+
+require("toggleterm").setup {
+  size = 10,
+  open_mapping = [[<C-t>]],  -- now Ctrl+T toggles the terminal
+  hide_numbers = true,
+  shade_filetypes = {},
+  shade_terminals = true,
+  shading_factor = 2,
+  start_in_insert = true,
+  insert_mappings = true,
+  terminal_mappings = true,
+  persist_size = true,
+  direction = 'horizontal',  -- or 'vertical' | 'tab'
+}
+
 
 ---- Toggleable status line with the error
 -- Store the current toggle state
