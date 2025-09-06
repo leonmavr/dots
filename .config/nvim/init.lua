@@ -107,7 +107,7 @@ require('packer').startup(function(use)
     requires = { 'nvim-lua/plenary.nvim' }
   }
   use 'preservim/nerdtree'           -- File explorer
-  use 'dense-analysis/ale'           -- Asynchronous linting
+  -- use 'dense-analysis/ale'           -- Asynchronous linting
   use 'tpope/vim-fugitive'           -- Git integration
   use 'hrsh7th/cmp-buffer'           -- Buffer source for nvim-cmp
   use 'hrsh7th/cmp-path'             -- Path completion
@@ -120,11 +120,99 @@ require('packer').startup(function(use)
       "mfussenegger/nvim-dap-python" -- Python DAP support
     }
   }
+  use 'mfussenegger/nvim-lint'       -- Modern linting
+  use 'stevearc/conform.nvim'        -- Formatting
+  use 'jose-elias-alvarez/null-ls.nvim' -- Extra linting/formatting (optional)
+  use 'ray-x/lsp_signature.nvim'     -- Python function signatures
 
   if packer_bootstrap then
     require('packer').sync()
   end
 end)
+
+-------------------------------------------------------------------------
+-- Python development
+-------------------------------------------------------------------------
+-- Python LSP (Pyright)
+local lspconfig = require('lspconfig')
+
+lspconfig.pyright.setup {
+  on_attach = function(_, bufnr)
+    local opts = { noremap=true, silent=true, buffer=bufnr }
+    vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
+    vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
+    vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, opts)
+    vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action, opts)
+  end,
+  settings = {
+    python = {
+      analysis = {
+        typeCheckingMode = "basic",   -- or "strict" for more errors
+        autoImportCompletions = true,
+      },
+    },
+  },
+}
+
+-- Capabilities for nvim-cmp
+local capabilities = require('cmp_nvim_lsp').default_capabilities()
+
+-- Apply to pyright
+lspconfig.pyright.setup {
+  capabilities = capabilities,
+  on_attach = function(_, bufnr)
+    local opts = { noremap=true, silent=true, buffer=bufnr }
+    vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
+    vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
+    vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, opts)
+    vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action, opts)
+  end,
+  settings = {
+    python = {
+      analysis = {
+        typeCheckingMode = "basic",
+        autoImportCompletions = true,
+      },
+    },
+  },
+}
+
+require('lint').linters_by_ft = {
+  python = { 'flake8' },  -- or 'pylint'
+}
+
+vim.api.nvim_create_autocmd({ "BufWritePost", "InsertLeave" }, {
+  callback = function()
+    require("lint").try_lint()
+  end,
+})
+
+require("conform").setup({
+  formatters_by_ft = {
+    python = { "black" },
+  },
+})
+
+-- Auto-format Python on save
+vim.api.nvim_create_autocmd("BufWritePre", {
+  pattern = { "*.py" },
+  callback = function() require("conform").format() end,
+})
+
+-- Show signature help in insert mode (C^h)
+vim.keymap.set('i', '<C-h>', function()
+    vim.lsp.buf.signature_help()
+end, { noremap = true, silent = true })
+
+require("lsp_signature").setup({
+    bind = true, -- mandatory
+    floating_window = true,
+    hint_prefix = "💡 ",
+    handler_opts = { border = "rounded" },
+    always_trigger = true,
+})
+
+
 
 -------------------------------------------------------------------------
 -- For C/C++ development
@@ -167,8 +255,8 @@ lspconfig.clangd.setup {
 
 -- Treesitter
 require('nvim-treesitter.configs').setup {
-  ensure_installed = { "c", "cpp" },
-  highlight = { enable = true, additional_vim_regex_highlighting = false },
+  ensure_installed = { "c", "cpp", "python" },
+  highlight = { enable = true },
 }
 
 -- Completion
@@ -319,8 +407,6 @@ local function blockright(text)
     "%#Normal#"
   })
 end
-
-
 
 -- Git branch for the file's directory
 local function get_git_branch_for_file()
