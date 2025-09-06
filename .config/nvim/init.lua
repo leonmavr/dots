@@ -326,6 +326,38 @@ vim.keymap.set({ "i", "s" }, "<S-C-e>", function()
     if luasnip.jumpable(-1) then luasnip.jump(-1) end
 end, { silent = true })
 
+---- Toggleable status line with the error
+-- Store the current toggle state
+local error_line_visible = false
+local last_error_msg = ""
+
+-- Function to get the first LSP diagnostic for current line
+local function get_current_line_error()
+    local bufnr = vim.api.nvim_get_current_buf()
+    local line = vim.api.nvim_win_get_cursor(0)[1] - 1 -- zero-indexed
+    local diagnostics = vim.diagnostic.get(bufnr, {lnum = line})
+    if diagnostics[1] then
+        return diagnostics[1].message
+    end
+    return ""
+end
+
+-- Toggle error line
+local function toggle_error_line()
+    if error_line_visible then
+        vim.api.nvim_echo({{"", "Normal"}}, false, {})
+        error_line_visible = false
+    else
+        last_error_msg = get_current_line_error()
+        if last_error_msg ~= "" then
+            vim.api.nvim_echo({{last_error_msg, "ErrorMsg"}}, false, {})
+            error_line_visible = true
+        end
+    end
+end
+
+-- Map <C-h> in normal mode to toggle error line
+vim.keymap.set("n", "<C-h>", toggle_error_line, { noremap = true, silent = true })
 
 -------------------------------------------------------------------------
 -- Status line
