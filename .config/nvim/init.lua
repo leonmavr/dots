@@ -361,22 +361,52 @@ local function get_current_line_error()
     return ""
 end
 
--- Toggle error line
-local function toggle_error_line()
-    if error_line_visible then
-        vim.api.nvim_echo({{"", "Normal"}}, false, {})
-        error_line_visible = false
-    else
-        last_error_msg = get_current_line_error()
-        if last_error_msg ~= "" then
-            vim.api.nvim_echo({{last_error_msg, "ErrorMsg"}}, false, {})
-            error_line_visible = true
-        end
+---- Toggleable floating window for LSP diagnostics (syntax errors etc.)
+local float_win = nil
+local float_buf = nil
+
+local function toggle_lsp_float()
+    local bufnr = vim.api.nvim_get_current_buf()
+    local cursor = vim.api.nvim_win_get_cursor(0)
+    local line = cursor[1] - 1
+    local col = cursor[2]
+
+    -- If window already exists, close it
+    if float_win and vim.api.nvim_win_is_valid(float_win) then
+        vim.api.nvim_win_close(float_win, true)
+        float_win = nil
+        float_buf = nil
+        return
     end
+
+    local diagnostics = vim.diagnostic.get(bufnr, { lnum = line })
+    if not diagnostics[1] then return end
+
+    local msg = diagnostics[1].message
+
+    -- Create buffer
+    float_buf = vim.api.nvim_create_buf(false, true)
+    vim.api.nvim_buf_set_lines(float_buf, 0, -1, false, vim.split(msg, "\n"))
+
+    -- Floating window options
+    local width = math.min(60, math.max(20, #msg))
+    local height = #vim.split(msg, "\n")
+    local opts = {
+        relative = "cursor",
+        row = 1,
+        col = 2,
+        width = width,
+        height = height,
+        style = "minimal",
+        border = "rounded",
+    }
+
+    float_win = vim.api.nvim_open_win(float_buf, false, opts)
+    vim.api.nvim_win_set_option(float_win, "winhl", "Normal:ErrorMsg")
 end
 
--- Map <C-h> in normal mode to toggle error line
-vim.keymap.set("n", "<C-h>", toggle_error_line, { noremap = true, silent = true })
+-- Map C^h to a popup window showing warnings/errors
+vim.keymap.set("n", "<C-h>", toggle_lsp_float, { noremap = true, silent = true })
 
 -------------------------------------------------------------------------
 -- Status line
