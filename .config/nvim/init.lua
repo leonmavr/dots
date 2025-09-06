@@ -439,13 +439,31 @@ end
 local float_win = nil
 local float_buf = nil
 
+local function wrap_text(text, max_width)
+    local lines = {}
+    for _, line in ipairs(vim.split(text, "\n")) do
+        while #line > max_width do
+            -- find last space within max_width
+            local wrap_at = max_width
+            for i = max_width, 1, -1 do
+                if line:sub(i,i) == " " then
+                    wrap_at = i
+                    break
+                end
+            end
+            table.insert(lines, line:sub(1, wrap_at))
+            line = line:sub(wrap_at+1):gsub("^%s+", "") -- remove leading spaces
+        end
+        table.insert(lines, line)
+    end
+    return lines
+end
+
 local function toggle_lsp_float()
     local bufnr = vim.api.nvim_get_current_buf()
     local cursor = vim.api.nvim_win_get_cursor(0)
     local line = cursor[1] - 1
-    local col = cursor[2]
 
-    -- If window already exists, close it
     if float_win and vim.api.nvim_win_is_valid(float_win) then
         vim.api.nvim_win_close(float_win, true)
         float_win = nil
@@ -457,20 +475,17 @@ local function toggle_lsp_float()
     if not diagnostics[1] then return end
 
     local msg = diagnostics[1].message
+    local wrapped = wrap_text(msg, 60)  -- max width 60 columns
 
-    -- Create buffer
     float_buf = vim.api.nvim_create_buf(false, true)
-    vim.api.nvim_buf_set_lines(float_buf, 0, -1, false, vim.split(msg, "\n"))
+    vim.api.nvim_buf_set_lines(float_buf, 0, -1, false, wrapped)
 
-    -- Floating window options
-    local width = math.min(60, math.max(20, #msg))
-    local height = #vim.split(msg, "\n")
     local opts = {
         relative = "cursor",
         row = 1,
         col = 2,
-        width = width,
-        height = height,
+        width = math.min(60, math.max(20, vim.fn.max(vim.tbl_map(function(l) return #l end, wrapped)))),
+        height = #wrapped,
         style = "minimal",
         border = "rounded",
     }
@@ -478,6 +493,21 @@ local function toggle_lsp_float()
     float_win = vim.api.nvim_open_win(float_buf, false, opts)
     vim.api.nvim_win_set_option(float_win, "winhl", "Normal:ErrorMsg")
 end
+
+
+-- Function to close the LSP float
+local function close_lsp_float()
+    if float_win and vim.api.nvim_win_is_valid(float_win) then
+        vim.api.nvim_win_close(float_win, true)
+        float_win = nil
+        float_buf = nil
+    end
+end
+
+-- Auto-close on cursor move in normal and insert modes
+vim.api.nvim_create_autocmd({"CursorMoved", "CursorMovedI"}, {
+    callback = close_lsp_float
+})
 
 -- Map C^h to a popup window showing warnings/errors
 vim.keymap.set("n", "<C-h>", toggle_lsp_float, { noremap = true, silent = true })
