@@ -70,13 +70,15 @@ vim.opt.formatoptions:append { "t" }
 -------------------------------------------------------------------------------
 -- Maps 
 -------------------------------------------------------------------------------
--- Bracket autocompletion
+-- Bracket/quote autocompletion
 vim.keymap.set('i', '((', function() return '()<Left>' end, { expr = true, noremap = true })
 vim.keymap.set('i', '))', function() return '()<Left>' end, { expr = true, noremap = true })
 vim.keymap.set('i', '[[', function() return '[]<Left>' end, { expr = true, noremap = true })
 vim.keymap.set('i', ']]', function() return '[]<Left>' end, { expr = true, noremap = true })
 vim.keymap.set('i', '{{', function() return '{}<Left>' end, { expr = true, noremap = true })
 vim.keymap.set('i', '}}', function() return '{}<Left>' end, { expr = true, noremap = true })
+vim.keymap.set('i', '""', function() return '""<Left>' end, { expr = true, noremap = true })
+vim.keymap.set('i', "''", function() return "''<Left>" end, { expr = true, noremap = true })
 
 -- { <enter = { <newline> <tab> <cursor> }
 vim.api.nvim_set_keymap("i", "{<CR>", "{<CR>}<Esc>O", { noremap = true })
@@ -94,6 +96,21 @@ vim.keymap.set('n', '<Leader>3', function() require'dap'.step_out() end)
 
 -- quickly switch between source/header
 vim.keymap.set('n', '<Leader>o', ':ClangdSwitchSourceHeader<CR>', { noremap=true, silent=true })
+
+-- nagivate across long wrapped lines
+vim.keymap.set('n', 'j', 'gj', { noremap = true })
+vim.keymap.set('n', 'k', 'gk', { noremap = true })
+
+-- quickly escape
+vim.api.nvim_set_keymap('i', 'kkk', '<Esc>', { noremap = true })
+
+-- <Leader>w = save
+vim.keymap.set('n', '<Leader>w', ':w<CR>', { noremap = true })
+vim.keymap.set('i', '<Leader>w', '<Esc>:w<CR>', { noremap = true })
+
+-- <Leader>q = quit without saving
+vim.keymap.set('n', '<Leader>q', ':q!<CR>', { noremap = true })
+vim.keymap.set('i', '<Leader>q', '<Esc>:q!<CR>', { noremap = true })
 
 
 
@@ -154,12 +171,17 @@ require('packer').startup(function(use)
       run = 'make install'
   }
   use {
-    'akinsho/toggleterm.nvim',
+    'akinsho/toggleterm.nvim',       -- Toggle the terminal
     tag = '*',
     config = function()
       require("toggleterm").setup()
     end
   }
+
+  use({
+    "iamcco/markdown-preview.nvim",  -- Preview markdown docs
+    run = function() vim.fn["mkdp#util#install"]() end,
+  })
 
   if packer_bootstrap then
     require('packer').sync()
@@ -172,9 +194,15 @@ end)
 -- Python LSP (Pyright)
 local lspconfig = require('lspconfig')
 
+-- Capabilities for nvim-cmp
+local capabilities = require('cmp_nvim_lsp').default_capabilities()
+
 lspconfig.pyright.setup {
+  capabilities = capabilities,
   on_attach = function(_, bufnr)
     local opts = { noremap=true, silent=true, buffer=bufnr }
+
+    -- LSP keymaps
     vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
     vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
     vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, opts)
@@ -190,43 +218,6 @@ lspconfig.pyright.setup {
   },
 }
 
--- Enhanced rename with optional switch to source/header
-vim.keymap.set('n', '<leader>rn', function()
-    local bufnr = vim.api.nvim_get_current_buf()
-    -- Trigger LSP rename
-    vim.lsp.buf.rename()
-    -- After rename, offer to switch to source/header
-    vim.defer_fn(function()
-        local choice = vim.fn.input("Switch to source/header? (y/N): ")
-        if choice:lower() == 'y' then
-            vim.cmd("ClangdSwitchSourceHeader")
-        end
-    end, 100)  -- delay slightly to wait for rename to finish
-end, { noremap = true, silent = true })
-
-
--- Capabilities for nvim-cmp
-local capabilities = require('cmp_nvim_lsp').default_capabilities()
-
--- Apply to pyright
-lspconfig.pyright.setup {
-  capabilities = capabilities,
-  on_attach = function(_, bufnr)
-    local opts = { noremap=true, silent=true, buffer=bufnr }
-    vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
-    vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
-    vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, opts)
-    vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action, opts)
-  end,
-  settings = {
-    python = {
-      analysis = {
-        typeCheckingMode = "basic",
-        autoImportCompletions = true,
-      },
-    },
-  },
-}
 
 require('lint').linters_by_ft = {
   python = { 'flake8' },  -- or 'pylint'
