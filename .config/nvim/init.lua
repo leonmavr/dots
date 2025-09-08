@@ -106,11 +106,11 @@ vim.api.nvim_set_keymap('i', 'kkk', '<Esc>', { noremap = true })
 
 -- <Leader>w = save
 vim.keymap.set('n', '<Leader>w', ':w<CR>', { noremap = true })
-vim.keymap.set('i', '<Leader>w', '<Esc>:w<CR>', { noremap = true })
+-- vim.keymap.set('i', '<Leader>w', '<Esc>:w<CR>', { noremap = true })
 
 -- <Leader>q = quit without saving
 vim.keymap.set('n', '<Leader>q', ':q!<CR>', { noremap = true })
-vim.keymap.set('i', '<Leader>q', '<Esc>:q!<CR>', { noremap = true })
+-- vim.keymap.set('i', '<Leader>q', '<Esc>:q!<CR>', { noremap = true })
 
 
 
@@ -287,13 +287,12 @@ api.nvim_create_autocmd('BufNewFile', {
 })
 
 ---- LSP clangd
--- LSP clangd
 local lspconfig = require('lspconfig')
 lspconfig.clangd.setup {
-  cmd = { "clangd", "--background-index", "--clang-tidy", "--completion-style=detailed" },
+  -- bundled + limit-results make autocompletion faster
+  cmd = { "clangd", "--background-index", "--clang-tidy", "--completion-style=bundled", "--limit-results=20"},
   on_attach = function(_, bufnr)
       local opts = { noremap=true, silent=true, buffer=bufnr }
-
       -- Existing keymaps
       vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
       vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
@@ -306,7 +305,7 @@ lspconfig.clangd.setup {
 
       -- Enable inlay hints initially
       if vim.lsp.buf.inlay_hint then
-          vim.lsp.buf.inlay_hint(bufnr, true)
+        vim.lsp.buf.inlay_hint(bufnr, true)
       end
   end,
 }
@@ -407,6 +406,8 @@ require("toggleterm").setup {
   terminal_mappings = true,
   persist_size = true,
   direction = 'horizontal',  -- or 'vertical' | 'tab'
+  auto_scroll = true,
+  scrollback = 10000,
 }
 
 
@@ -557,6 +558,12 @@ vim.api.nvim_set_hl(0, 'RightGrad3', {
   bg = 'NONE',
 })
 
+-- Inactive left block (greyed out)
+vim.api.nvim_set_hl(0, 'InactiveLeftHighlight', { fg = '#aaaaaa', bg = '#333333', bold = true })
+vim.api.nvim_set_hl(0, 'InactiveLeftGrad1',    { fg = '#666666', bg = 'NONE' })
+vim.api.nvim_set_hl(0, 'InactiveLeftGrad2',    { fg = '#555555', bg = 'NONE' })
+vim.api.nvim_set_hl(0, 'InactiveLeftGrad3',    { fg = '#444444', bg = 'NONE' })
+
 
 local function blockleft(text)
   return table.concat({
@@ -583,6 +590,20 @@ local function blockright(text)
     "%#Normal#"
   })
 end
+
+local function blockleft_inactive(text)
+  return table.concat({
+    "%#InactiveLeftGrad3#█",
+    "%#InactiveLeftGrad2#█",
+    "%#InactiveLeftGrad1#█",
+    "%#InactiveLeftHighlight# " .. text .. " ",
+    "%#InactiveLeftGrad1#█",
+    "%#InactiveLeftGrad2#█",
+    "%#InactiveLeftGrad3#█",
+    "%#Normal#"
+  })
+end
+
 
 -- Git branch for the file's directory
 local function get_git_branch_for_file()
@@ -615,34 +636,57 @@ local function get_mode()
   return modes[mode] or mode
 end
 
+function _G.custom_statusline(winid)
+  winid = winid or 0  -- fallback to current window
+  local bufnr = vim.api.nvim_win_get_buf(winid)
 
-function _G.custom_statusline()
-  local mode = get_mode()
+  -- Mode (active vs inactive)
+  local mode
+  if winid == vim.api.nvim_get_current_win() then
+    mode = blockleft(get_mode())
+  else
+    mode = blockleft_inactive("INACTIVE")
+  end
 
-  local filename = vim.fn.expand("%:t")
+  -- Filename (always shown)
+  local filename = vim.fn.fnamemodify(vim.api.nvim_buf_get_name(bufnr), ":t")
   if filename == "" then filename = "[No Name]" end
 
-  local line = vim.fn.line(".")
-  local total_lines = vim.fn.line("$")
-  local col = vim.fn.col(".")
+  -- Position
+  local cursor = vim.api.nvim_win_get_cursor(winid)
+  local line = cursor[1]
+  local col = cursor[2]
+  local total_lines = vim.api.nvim_buf_line_count(bufnr)
   local position = string.format("%d/%d, %d", line, total_lines, col)
 
-  local filetype = vim.bo.filetype
-  if filetype == "" then filetype = "no ft" end
+  -- Filetype
+  local ft = vim.bo[bufnr].filetype
+  if ft == "" then ft = "no ft" end
 
-  local branch = get_git_branch_for_file()
+  -- Git branch (from file’s directory)
+  local filepath = vim.api.nvim_buf_get_name(bufnr)
+  local branch = ""
+  if filepath ~= "" then
+    local filedir = vim.fn.fnamemodify(filepath, ":h")
+    local cmd = string.format("git -C '%s' rev-parse --abbrev-ref HEAD 2>/dev/null", filedir)
+    local handle = io.popen(cmd)
+    if handle then
+      branch = handle:read("*l") or ""
+      handle:close()
+    end
+  end
 
-  -- Left-aligned blocks
+  -- Left side blocks
   local left = table.concat({
-    blockleft(mode),
+    mode,
     "  ",
     blockleft(filename),
     "  ",
     blockleft(position),
   })
 
-  -- Right-aligned blocks
-  local right = blockright(filetype)
+  -- Right side blocks
+  local right = blockright(ft)
   if branch ~= "" then
     right = right .. "  " .. blockright(branch)
   end
@@ -651,7 +695,16 @@ function _G.custom_statusline()
 end
 
 
-vim.o.statusline = "%!v:lua.custom_statusline()"
+vim.api.nvim_create_autocmd({ "WinEnter", "BufWinEnter" }, {
+  callback = function(args)
+    local winid = args.win or vim.api.nvim_get_current_win()
+    vim.api.nvim_win_set_option(
+      winid,
+      "statusline",
+      string.format("%%!v:lua.custom_statusline(%d)", winid)
+    )
+  end,
+})
 
 -------------------------------------------------------------------------------
 -- Smooth scrolling with <C-d> / <C-u>
