@@ -1,60 +1,93 @@
-### :large_orange_diamond: About
-This repo contains all (working and tested) dotfiles for my Linux setups.
-My setup uses Xorg so note that if you're using Wayland.  
-The files in the root of this repo should correspond to your home folder.  
-For example, the `.bash` directory should correspond to `~/.bash` in your machine.
-
-### :large_orange_diamond: Programs to install 
-
-* ranger
-
-Then do:
-
-```
-ranger --copy-config=all
-```
-
-* fzf
-
-### :large_orange_diamond: Managing the dotfiles
-
-It's recommended to manage them with the `stow` package. `stow` manages and creates symlinks. By using `stow` you won't have to copy your local dotfiles to your git repository every time you want to make changes. To install `stow`:
-
-| Arch                  | Ubuntu                      |
-|-----------------------|-----------------------------|
-| `sudo pacman -S stow` | `sudo apt-get install stow` |
+<div style="text-align:center; font-size: 48px; line-height: 1; margin: 20px 0; color: orange;">
+  &#x25CF;&nbsp;&nbsp;&nbsp;&#x25CF;&nbsp;&nbsp;&nbsp;&#x25CF;
+</div>
 
 
-`stow`'s workflow is:
-1. Clone your dotfiles in some location (to a workspace)
-2. Use stow to create symlinks from your workspace (e.g. `~/Documents`) to `~`
-3. When you edit your dotfiles in the workspace, those in `~` will be symlinked to your workspace therefore automatically updated.
-4. When you're done with editing the files in the workspace and you've tested them, you're ready to commit on git!
-```
-cd ~/Documents
-git clone git@github.com:leonmavr/dotfiles.git
-cd dotfiles
-# or:
-# https://github.com/leonmavr/dotfiles.git
-```
-Suppose we want to manage the `.bash` folder. Then:
-```
-rm -rf ~/.bash
-mkdir ~/.bash
-stow --target=/home/$USER/.bash .bash
-```
-Verify that symlinks were created:
-```
-cd ~/.bash
-ls -l
-```
-Output:
-```
-bash_aliases -> ../Documents/dotfiles/.bash/bash_aliases
-...
+### :large_orange_diamond: This Setup
+
+Wecome to my dotfiles.
+In this setup, I am using and configuring:
+
+* `Xorg` as my display manager 
+* `bash` as the shell
+* `nvim` as my editor 
+* `ranger` as my file explorer
+* Other productivity utilies, such as `fzf` (fuzzy find), `sxiv` (image viewer
+within ranger), etc.
+* Various command-line scripts to make my life easier.
+
+### :large_orange_diamond: Get Started
+
+#### 1. Overwrite your local rc (e.g `.bashrc` or `.zshrc`)
+
+```bash
+echo .bashrc.append >> ~/.bashrc # or whatever rc file you have
 ```
 
-### :large_orange_diamond: Managing the branches
-* This is the master branch and its contents should be minimum. Master contains only files that can be used independtly of OS and desktop environment, e.g. bash and vim configs.
-* Other branches include standalone dotfiles for specific operating systems, mainly for Arch.
-* It's there recommended to merge the master into the other branches every once in a while.
+#### 2. Requirements 
+
+You will need to install the following:
+
+* `nvim`: Install it with your package manager  or from source and make sure the 
+version is at least `0.8`.
+* `ranger`: Install it with your package manager
+* `fzf`: I recommend a full installation but you can skip the flags:
+```bash
+git clone --depth 1 https://github.com/junegunn/fzf.git /tmp/fzf
+cd /tmp/fzf
+./install --xdg --key-bindings --completion --update-rc
+```
+
+Optionally:
+
+* `dunst` as a notification manager but you can stick with `notify-send`
+* `jq` to query json data
+* `ffmpeg`
+* `imagemagick`
+* `xclip` (clipboard)
+* `stow` to easily symlink this cloned repo to your local files
+
+#### 3. Copy Configs
+
+You can copy the configs in two ways - manually or with `stow`. `stow` is
+a utility to recusively and easily create symlinks from directoties so this way
+you don't constantly have to copy between your repo and your local files. Read 
+below if you decide to go with `stow`.
+
+Suppose you want to link the nvim config of this repo to your local files, e.g.
+at `~/.config/nvim`. If you already have a setup in `~/.config/nvim`, you need
+to **delete it** before using stow:
+
+```bash
+rm -rf ~/.config/nvim
+mkdir -p ~/.config/nvim
+cd dots/.config # in this cloned repo
+stow -t ~/.config/nvim nvim
+# to make sure everything worked:
+# ls -l nvim # and you should see something like:
+# lrwxrwxrwx 1 user user 38 Sep  9 18:40 init.lua -> ../../dev/dots/.config/nvim/init.lua
+```
+
+And that's it, you mirrored you cloned Neovim config into your local files!
+You can repeat this process for other any directories of your choice.
+
+#### 4. Post-installation
+
+**TODO**: source the `add_dir_to_path.sh` script
+
+**TODO**: packer update with nvim
+
+### :large_orange_diamond: Screenshots
+
+### :large_orange_diamond: License 
+
+All scripts and files in this repo are released under [kopimi](https://kopimi.com/).
+Feel free to copy or play around with them and no credits are needed.
+
+<center>
+<img src="https://kopimi.com/badges/kopimi_text.gif" alt="Kopimi logo" style="width:300px;"/>
+</center>
+
+<div style="text-align:center; font-size: 48px; line-height: 1; margin: 20px 0; color: orange;">
+  &#x25CF;&nbsp;&nbsp;&nbsp;&#x25CF;&nbsp;&nbsp;&nbsp;&#x25CF;
+</div>

@@ -112,8 +112,6 @@ vim.keymap.set('n', '<Leader>w', ':w<CR>', { noremap = true })
 vim.keymap.set('n', '<Leader>q', ':q!<CR>', { noremap = true })
 -- vim.keymap.set('i', '<Leader>q', '<Esc>:q!<CR>', { noremap = true })
 
-
-
 -------------------------------------------------------------------------------
 -- Plugins
 -------------------------------------------------------------------------------
@@ -137,6 +135,7 @@ require('packer').startup(function(use)
   use 'neovim/nvim-lspconfig'        -- LSP support
   use 'hrsh7th/nvim-cmp'             -- Completion framework
   use 'hrsh7th/cmp-nvim-lsp'         -- LSP completions
+  use 'lvimuser/lsp-inlayhints.nvim' -- LSP warnings
   use 'L3MON4D3/LuaSnip'             -- Snippet engine
   use 'saadparwaiz1/cmp_luasnip'     -- Snippet completions
   use { 'nvim-treesitter/nvim-treesitter', run = ':TSUpdate' }
@@ -291,6 +290,9 @@ local lspconfig = require('lspconfig')
 lspconfig.clangd.setup {
   -- bundled + limit-results make autocompletion faster
   cmd = { "clangd", "--background-index", "--clang-tidy", "--completion-style=bundled", "--limit-results=20"},
+  init_options = {
+    fallbackFlags = { "-Wall", "-Wextra", "-std=c++17" },
+  },
   on_attach = function(_, bufnr)
       local opts = { noremap=true, silent=true, buffer=bufnr }
       -- Existing keymaps
@@ -302,13 +304,52 @@ lspconfig.clangd.setup {
       -- clangd specific
       vim.keymap.set('n', '<leader>sh', ':ClangdSwitchSourceHeader<CR>', opts)  -- switch source/header
       vim.keymap.set('n', '<leader>ih', ':ClangdToggleInlayHints<CR>', opts)    -- toggle inlay hints
-
       -- Enable inlay hints initially
       if vim.lsp.buf.inlay_hint then
         vim.lsp.buf.inlay_hint(bufnr, true)
       end
   end,
 }
+
+---- diagnostics plugin
+vim.diagnostic.config({
+  virtual_text = false,  -- disable inline diagnostics by default
+  signs = true,          -- keep E/W/etc. in the number column
+  underline = true,      -- underline errors/warnings
+  update_in_insert = false,
+  severity_sort = true,
+  float = {
+    border = "rounded",
+    source = "always",
+    header = "",
+    prefix = "",
+    focusable = false,
+  },
+})
+
+-- vim.api.nvim_set_hl(0, "DiagnosticError", { fg = "#ff5555", bold = true })
+-- vim.api.nvim_set_hl(0, "DiagnosticWarn", { fg = "#ffaa00", bold = true })
+-- vim.api.nvim_set_hl(0, "DiagnosticInfo", { fg = "#00aaff" })
+-- vim.api.nvim_set_hl(0, "DiagnosticHint", { fg = "#55ff55" })
+
+-- Toggle only virtual text for diagnostics (keep signs/underline)
+local diagnostics_virtual_text = false
+
+function _G.toggle_diagnostics_virtual_text()
+  diagnostics_virtual_text = not diagnostics_virtual_text
+  vim.diagnostic.config({
+    virtual_text = diagnostics_virtual_text
+      and { spacing = 2, prefix = "●" }  -- when ON, show with bullet point
+      or false,                          -- when OFF, hide
+    signs = true,
+    underline = true,
+    update_in_insert = false,
+    severity_sort = true,
+  })
+end
+
+-- toggle inline diagnostics 
+vim.keymap.set("n", "<Leader>td", toggle_diagnostics_virtual_text, { noremap = true, silent = true })
 
 ---- Treesitter
 require('nvim-treesitter.configs').setup {
@@ -405,7 +446,7 @@ require("toggleterm").setup {
   insert_mappings = true,
   terminal_mappings = true,
   persist_size = true,
-  direction = 'horizontal',  -- or 'vertical' | 'tab'
+  direction = 'tab',  -- 'horizontal' | 'vertical' | 'tab'
   auto_scroll = true,
   scrollback = 10000,
 }
@@ -427,7 +468,7 @@ local function get_current_line_error()
     return ""
 end
 
----- Toggleable floating window for LSP diagnostics (syntax errors etc.)
+---- Toggleable floating window for full LSP diagnostics (syntax errors etc.)
 local float_win = nil
 local float_buf = nil
 
@@ -507,26 +548,22 @@ vim.keymap.set("n", "<C-h>", toggle_lsp_float, { noremap = true, silent = true }
 -------------------------------------------------------------------------
 -- Status line
 -------------------------------------------------------------------------
-
 -- Highlight: main text block
 vim.api.nvim_set_hl(0, 'LeftHighlight', {
   fg = '#000000', -- black text
   bg = '#f51187',
   bold = true,
 })
-
--- Gradient block 1 (slightly darker than magenta)
+-- Gradient block 1 (slightly darker then main)
 vim.api.nvim_set_hl(0, 'LeftGrad1', {
   fg = '#c40e6c',
   bg = 'NONE',
 })
-
 -- Gradient block 2 (even darker)
 vim.api.nvim_set_hl(0, 'LeftGrad2', {
   fg = '#930b52',
   bg = 'NONE',
 })
-
 -- Gradient block 3 (even darker)
 vim.api.nvim_set_hl(0, 'LeftGrad3', {
   fg = '#6c083b',
@@ -539,19 +576,16 @@ vim.api.nvim_set_hl(0, 'RightHighlight', {
   bg = '#4cdef5',
   bold = true,
 })
-
 -- Gradient block 1 (slightly darker than magenta)
 vim.api.nvim_set_hl(0, 'RightGrad1', {
   fg = '#3dabc4',
   bg = 'NONE',
 })
-
 -- Gradient block 2 (even darker)
 vim.api.nvim_set_hl(0, 'RightGrad2', {
   fg = '#2e8192',
   bg = 'NONE',
 })
-
 -- Gradient block 3 (even darker)
 vim.api.nvim_set_hl(0, 'RightGrad3', {
   fg = '#1e565f',
@@ -563,7 +597,6 @@ vim.api.nvim_set_hl(0, 'InactiveLeftHighlight', { fg = '#aaaaaa', bg = '#333333'
 vim.api.nvim_set_hl(0, 'InactiveLeftGrad1',    { fg = '#666666', bg = 'NONE' })
 vim.api.nvim_set_hl(0, 'InactiveLeftGrad2',    { fg = '#555555', bg = 'NONE' })
 vim.api.nvim_set_hl(0, 'InactiveLeftGrad3',    { fg = '#444444', bg = 'NONE' })
-
 
 local function blockleft(text)
   return table.concat({
@@ -721,7 +754,7 @@ local function smooth_scroll(direction)
   local total_lines = vim.api.nvim_buf_line_count(bufnr)
 
   local win_height = vim.api.nvim_win_get_height(win)
-  local step = math.floor(win_height / 2)
+  local step = math.floor(0.7 * win_height)
 
   local line = cursor[1]
   local col = cursor[2]
