@@ -1,0 +1,7 @@
+mkdir -p "$HOME/.config/git"
+export GIT_CONFIG_GLOBAL="$HOME/.config/git/gitconfig"
+touch $GIT_CONFIG_GLOBAL
+export INPUTRC="$HOME/.bash/inputrc"
+touch $INPUTRC
+
+
