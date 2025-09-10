@@ -21,7 +21,7 @@ within ranger), etc.
 #### 1. Overwrite your local rc (e.g `.bashrc` or `.zshrc`)
 
 ```bash
-echo .bashrc.append >> ~/.bashrc # or whatever rc file you have
+cat .bashrc.append >> ~/.bashrc # or whatever rc file you have
 ```
 
 #### 2. Requirements 
