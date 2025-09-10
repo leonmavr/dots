@@ -65,35 +65,35 @@ RESET="\[\e[0m\]"
 
 # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 # select your colors below. they will be printed as:
-# |COL3|COL2|COL1|BG|COL1|COL2|COL3|
-USER_COL1="#09605D"
-USER_COL2="#0D918C"
-USER_COL3="#11C2BB"
-USER_BG="#16F5EA"
-USER_FG="#000000"
+# |COL1|COL2|COL3|BG|COL3|COL2|COL1|
+__USER_COL1="#09605D"
+__USER_COL2="#0D918C"
+__USER_COL3="#11C2BB"
+__USER_BG="#16F5EA"
+__USER_FG="#000000"
 
-DIR_COL1="#6C083B"
-DIR_COL2="#930B52"
-DIR_COL3="#C40E6C"
-DIR_BG="#F51187"
-DIR_FG="#000000"
+__DIR_COL1="#6C083B"
+__DIR_COL2="#930B52"
+__DIR_COL3="#C40E6C"
+__DIR_BG="#F51187"
+__DIR_FG="#000000"
 
-GIT_COL1="#1E565F"
-GIT_COL2="#2E8192"
-GIT_COL3="#3DABC4"
-GIT_BG="#4CDEF5"
-GIT_FG="#000000"
+__GIT_COL1="#1E565F"
+__GIT_COL2="#2E8192"
+__GIT_COL3="#3DABC4"
+__GIT_BG="#4CDEF5"
+__GIT_FG="#000000"
 # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 PS1="\
-$(hex_fg "$USER_BG")╭─$RESET\
-$(hex_fg "$USER_COL1")▇$(hex_fg "$USER_COL2")█$(hex_fg "$USER_COL3")█\
-${BOLD}$(hex_bg "$USER_BG")$(hex_fg "$USER_FG") \u $RESET\
-$(hex_fg "$USER_COL3")█$(hex_fg "$USER_COL2")█$(hex_fg "$USER_COL1")▇$RESET : \
-$(hex_fg "$DIR_COL1")▇$(hex_fg "$DIR_COL2")█$(hex_fg "$DIR_COL3")█\
-${BOLD}$(hex_bg "$DIR_BG")$(hex_fg "$DIR_FG") \$(shorten_path) $RESET\
-$(hex_fg "$DIR_COL3")█$(hex_fg "$DIR_COL2")█$(hex_fg "$DIR_COL1")▇$RESET : \
-$(hex_fg "$GIT_COL1")▇$(hex_fg "$GIT_COL2")█$(hex_fg "$GIT_COL3")█\
-${BOLD}$(hex_bg "$GIT_BG")$(hex_fg "$GIT_FG") \$(parse_git_info) $RESET\
-$(hex_fg "$GIT_COL3")█$(hex_fg "$GIT_COL2")█$(hex_fg "$GIT_COL1")▇$RESET\n\
-$(hex_fg "$USER_BG")╰❱ $RESET"
+$(hex_fg "$__USER_BG")╭─$RESET\
+$(hex_fg "$__USER_COL1")▇$(hex_fg "$__USER_COL2")█$(hex_fg "$__USER_COL3")█\
+${BOLD}$(hex_bg "$__USER_BG")$(hex_fg "$__USER_FG") \u $RESET\
+$(hex_fg "$__USER_COL3")█$(hex_fg "$__USER_COL2")█$(hex_fg "$__USER_COL1")▇$RESET : \
+$(hex_fg "$__DIR_COL1")▇$(hex_fg "$__DIR_COL2")█$(hex_fg "$__DIR_COL3")█\
+${BOLD}$(hex_bg "$__DIR_BG")$(hex_fg "$__DIR_FG") \$(shorten_path) $RESET\
+$(hex_fg "$__DIR_COL3")█$(hex_fg "$__DIR_COL2")█$(hex_fg "$__DIR_COL1")▇$RESET : \
+$(hex_fg "$__GIT_COL1")▇$(hex_fg "$__GIT_COL2")█$(hex_fg "$__GIT_COL3")█\
+${BOLD}$(hex_bg "$__GIT_BG")$(hex_fg "$__GIT_FG") \$(parse_git_info) $RESET\
+$(hex_fg "$__GIT_COL3")█$(hex_fg "$__GIT_COL2")█$(hex_fg "$__GIT_COL1")▇$RESET\n\
+$(hex_fg "$__USER_BG")╰❱ $RESET"
