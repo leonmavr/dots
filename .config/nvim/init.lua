@@ -106,11 +106,12 @@ vim.api.nvim_set_keymap('i', 'kkk', '<Esc>', { noremap = true })
 
 -- <Leader>w = save
 vim.keymap.set('n', '<Leader>w', ':w<CR>', { noremap = true })
--- vim.keymap.set('i', '<Leader>w', '<Esc>:w<CR>', { noremap = true })
 
 -- <Leader>q = quit without saving
 vim.keymap.set('n', '<Leader>q', ':q!<CR>', { noremap = true })
--- vim.keymap.set('i', '<Leader>q', '<Esc>:q!<CR>', { noremap = true })
+
+vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")
+vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv")
 
 -------------------------------------------------------------------------------
 -- Plugins
@@ -181,6 +182,19 @@ require('packer').startup(function(use)
     "iamcco/markdown-preview.nvim",  -- Preview markdown docs
     run = function() vim.fn["mkdp#util#install"]() end,
   })
+
+  use 'nvim-treesitter/nvim-treesitter-context' -- Current function/method info
+
+  use {
+    "SmiteshP/nvim-navbuddy",
+    requires = {
+        "neovim/nvim-lspconfig",
+        "SmiteshP/nvim-navic",
+        "MunifTanjim/nui.nvim",
+        "numToStr/Comment.nvim",        -- Optional
+        "nvim-telescope/telescope.nvim" -- Optional
+    }
+  }
 
   if packer_bootstrap then
     require('packer').sync()
@@ -545,6 +559,9 @@ vim.api.nvim_create_autocmd({"CursorMoved", "CursorMovedI"}, {
 -- Map C^h to a popup window showing warnings/errors
 vim.keymap.set("n", "<C-h>", toggle_lsp_float, { noremap = true, silent = true })
 
+---- TS context
+vim.keymap.set("n", "<Leader>tc", ':TSContext toggle<CR>', { noremap = true, silent = true })
+
 -------------------------------------------------------------------------
 -- Status line
 -------------------------------------------------------------------------
@@ -821,3 +838,167 @@ vim.keymap.set('n', '<Leader>m', function()
         border = 'rounded',
     })
 end, { noremap = true, silent = true })
+
+---- navbuddy plugin
+local navbuddy = require("nvim-navbuddy")
+
+require("lspconfig").clangd.setup {
+    on_attach = function(client, bufnr)
+        navbuddy.attach(client, bufnr)
+    end
+}
+
+local navbuddy = require("nvim-navbuddy")
+local actions = require("nvim-navbuddy.actions")
+
+navbuddy.setup {
+    window = {
+        border = "single",  -- "rounded", "double", "solid", "none"
+                            -- or an array with eight chars building up the border in a clockwise fashion
+                            -- starting with the top-left corner. eg: { "╔", "═" ,"╗", "║", "╝", "═", "╚", "║" }.
+        size = "60%",       -- Or table format example: { height = "40%", width = "100%"}
+        position = "50%",   -- Or table format example: { row = "100%", col = "0%"}
+        scrolloff = nil,    -- scrolloff value within navbuddy window
+        sections = {
+            left = {
+                size = "20%",
+                border = nil, -- You can set border style for each section individually as well.
+            },
+            mid = {
+                size = "40%",
+                border = nil,
+            },
+            right = {
+                -- No size option for right most section. It fills to
+                -- remaining area.
+                border = nil,
+                preview = "leaf",  -- Right section can show previews too.
+                                   -- Options: "leaf", "always" or "never"
+            }
+        },
+    },
+    node_markers = {
+        enabled = true,
+        icons = {
+            leaf = "  ",
+            leaf_selected = " → ",
+            branch = " ",
+        },
+    },
+    icons = {
+        File          = "[🗎]",
+        Module        = "[M ]",
+        Namespace     = "[N ]",
+        Package       = "[P ]",
+        Class         = "[C ]",
+        Method        = "[m ]",
+        Property      = "[p ]",
+        Field         = "[f ]",
+        Constructor   = "[c ]",
+        Enum          = "[E ]",
+        Interface     = "[i ]",
+        Function      = "[f ]",
+        Variable      = "[v ]",
+        Constant      = "[c ]",
+        String        = "[s ]",
+        Number        = "[n ]",
+        Boolean       = "[b ]",
+        Array         = "[a ]",
+        Object        = "[o ]",
+        Key           = "[k ]",
+        Null          = "[n ]",
+        EnumMember    = "[e ]",
+        Struct        = "[s ]",
+        Event         = "[e ]",
+        Operator      = "[> ]",
+        TypeParameter = "[t ]",
+    },
+    use_default_mappings = true,            -- If set to false, only mappings set
+                                            -- by user are set. Else default
+                                            -- mappings are used for keys
+                                            -- that are not set by user
+    mappings = {
+        ["<esc>"] = actions.close(),        -- Close and cursor to original location
+        ["q"] = actions.close(),
+
+        ["j"] = actions.next_sibling(),     -- down
+        ["k"] = actions.previous_sibling(), -- up
+
+        ["h"] = actions.parent(),           -- Move to left panel
+        ["l"] = actions.children(),         -- Move to right panel
+        ["0"] = actions.root(),             -- Move to first panel
+
+        ["v"] = actions.visual_name(),      -- Visual selection of name
+        ["V"] = actions.visual_scope(),     -- Visual selection of scope
+
+        ["y"] = actions.yank_name(),        -- Yank the name to system clipboard "+
+        ["Y"] = actions.yank_scope(),       -- Yank the scope to system clipboard "+
+
+        ["i"] = actions.insert_name(),      -- Insert at start of name
+        ["I"] = actions.insert_scope(),     -- Insert at start of scope
+
+        ["a"] = actions.append_name(),      -- Insert at end of name
+        ["A"] = actions.append_scope(),     -- Insert at end of scope
+
+        ["r"] = actions.rename(),           -- Rename currently focused symbol
+
+        ["d"] = actions.delete(),           -- Delete scope
+
+        ["f"] = actions.fold_create(),      -- Create fold of current scope
+        ["F"] = actions.fold_delete(),      -- Delete fold of current scope
+
+        ["c"] = actions.comment(),          -- Comment out current scope
+
+        ["<enter>"] = actions.select(),     -- Goto selected symbol
+        ["o"] = actions.select(),
+
+        ["J"] = actions.move_down(),        -- Move focused node down
+        ["K"] = actions.move_up(),          -- Move focused node up
+
+        ["s"] = actions.toggle_preview(),   -- Show preview of current node
+
+        ["<C-v>"] = actions.vsplit(),       -- Open selected node in a vertical split
+        ["<C-s>"] = actions.hsplit(),       -- Open selected node in a horizontal split
+
+        ["t"] = actions.telescope({         -- Fuzzy finder at current level.
+            layout_config = {               -- All options that can be
+                height = 0.60,              -- passed to telescope.nvim's
+                width = 0.60,               -- default can be passed here.
+                prompt_position = "top",
+                preview_width = 0.50
+            },
+            layout_strategy = "horizontal"
+        }),
+
+        ["g?"] = actions.help(),            -- Open mappings help window
+    },
+    lsp = {
+        auto_attach = false,   -- If set to true, you don't need to manually use attach function
+        preference = nil,      -- list of lsp server names in order of preference
+    },
+    source_buffer = {
+        follow_node = true,    -- Keep the current node in focus on the source buffer
+        highlight = true,      -- Highlight the currently focused node
+        reorient = "smart",    -- "smart", "top", "mid" or "none"
+        scrolloff = nil        -- scrolloff value when navbuddy is open
+    },
+	custom_hl_group = nil,     -- "Visual" or any other hl group to use instead of inverted colors
+}
+
+
+require'treesitter-context'.setup{
+    enable = false, -- Enable this plugin (Can be enabled/disabled later via commands)
+    multiwindow = false, -- Enable multiwindow support.
+    max_lines = 0, -- How many lines the window should span. Values <= 0 mean no limit.
+    min_window_height = 0, -- Minimum editor window height to enable context. Values <= 0 mean no limit.
+    line_numbers = true,
+    multiline_threshold = 20, -- Maximum number of lines to show for a single context
+    trim_scope = 'outer', -- Which context lines to discard if `max_lines` is exceeded. Choices: 'inner', 'outer'
+    mode = 'cursor',  -- Line used to calculate context. Choices: 'cursor', 'topline'
+    -- Separator between context and content. Should be a single character string, like '-'.
+    -- When separator is set, the context will only show up when there are at least 2 lines above cursorline.
+    separator = nil,
+    zindex = 20, -- The Z-index of the context window
+    on_attach = nil, -- (fun(buf: integer): boolean) return false to disable attaching
+}
+
