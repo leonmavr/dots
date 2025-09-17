@@ -231,6 +231,35 @@ lspconfig.pyright.setup {
   },
 }
 
+-- Shared on_attach for Python (Pyright)
+local function pyright_on_attach(client, bufnr)
+    local opts = { noremap=true, silent=true, buffer=bufnr }
+
+    -- Default LSP keymaps
+    vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
+    vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
+    vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, opts)
+    vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action, opts)
+
+    -- Attach Navbuddy
+    require("nvim-navbuddy").attach(client, bufnr)
+end
+
+-- Pyright setup with Navbuddy
+require("lspconfig").pyright.setup {
+    capabilities = require('cmp_nvim_lsp').default_capabilities(),
+    on_attach = pyright_on_attach,
+    settings = {
+        python = {
+            analysis = {
+                typeCheckingMode = "basic",   -- or "strict"
+                autoImportCompletions = true,
+            },
+        },
+    },
+}
+
+
 
 require('lint').linters_by_ft = {
   python = { 'flake8' },  -- or 'pylint'
