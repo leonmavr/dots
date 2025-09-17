@@ -300,6 +300,9 @@ api.nvim_create_autocmd('BufNewFile', {
 })
 
 ---- LSP clangd
+
+
+
 local lspconfig = require('lspconfig')
 lspconfig.clangd.setup {
   -- bundled + limit-results make autocompletion faster
@@ -325,20 +328,56 @@ lspconfig.clangd.setup {
   end,
 }
 
+-- shared on_attach for clangd
+-- in case plugins like navbuddy need to use it
+local function clangd_on_attach(client, bufnr)
+    local opts = { noremap=true, silent=true, buffer=bufnr }
+
+    -- Default keymaps
+    vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
+    vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
+    vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, opts)        -- rename
+    vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action, opts)   -- code actions
+
+    -- Clangd specific
+    vim.keymap.set('n', '<leader>sh', ':ClangdSwitchSourceHeader<CR>', opts)
+    vim.keymap.set('n', '<leader>ih', ':ClangdToggleInlayHints<CR>', opts)
+
+    -- Enable inlay hints initially
+    if vim.lsp.buf.inlay_hint then
+        vim.lsp.buf.inlay_hint(bufnr, true)
+    end
+
+    -- Attach Navbuddy
+    require("nvim-navbuddy").attach(client, bufnr)
+end
+
+-- clangd setup with combined config
+require("lspconfig").clangd.setup {
+    cmd = { "clangd", "--background-index", "--clang-tidy", "--completion-style=bundled", "--limit-results=20"},
+    init_options = {
+        fallbackFlags = { "-Wall", "-Wextra", "-std=c++17" },
+    },
+    on_attach = clangd_on_attach,
+}
+
 ---- diagnostics plugin
 vim.diagnostic.config({
-  virtual_text = false,  -- disable inline diagnostics by default
-  signs = true,          -- keep E/W/etc. in the number column
-  underline = true,      -- underline errors/warnings
+  virtual_text = false,  -- or keep your toggle
+  signs = true,
+  underline = true,
   update_in_insert = false,
   severity_sort = true,
   float = {
     border = "rounded",
     source = "always",
     header = "",
-    prefix = "",
+    prefix = ">",
     focusable = false,
   },
+  -- 🔑 lift the limits:
+  max = nil,
+  max_per_line = nil,
 })
 
 -- vim.api.nvim_set_hl(0, "DiagnosticError", { fg = "#ff5555", bold = true })
@@ -390,7 +429,7 @@ cmp.setup({
 
 ---- ALE (linters, formatters)
 vim.g.ale_linters = { ['c'] = { 'clang' }, ['cpp'] = { 'clang' } }
-vim.g.ale_fixers = { ['c'] = {}, ['cpp'] = {} } -- Disabled clang-format
+-- vim.g.ale_fixers = { ['c'] = {}, ['cpp'] = {} } -- Disabled clang-format
 vim.g.ale_cpp_clangformat_executable = ''
 vim.g.ale_fix_on_save = 0
 
@@ -842,11 +881,11 @@ end, { noremap = true, silent = true })
 ---- navbuddy plugin
 local navbuddy = require("nvim-navbuddy")
 
-require("lspconfig").clangd.setup {
-    on_attach = function(client, bufnr)
-        navbuddy.attach(client, bufnr)
-    end
-}
+-- require("lspconfig").clangd.setup {
+--     on_attach = function(client, bufnr)
+--         navbuddy.attach(client, bufnr)
+--     end
+-- }
 
 local navbuddy = require("nvim-navbuddy")
 local actions = require("nvim-navbuddy.actions")
@@ -887,31 +926,31 @@ navbuddy.setup {
     },
     icons = {
         File          = "[🗎]",
-        Module        = "[M ]",
-        Namespace     = "[N ]",
-        Package       = "[P ]",
-        Class         = "[C ]",
-        Method        = "[m ]",
-        Property      = "[p ]",
-        Field         = "[f ]",
-        Constructor   = "[c ]",
-        Enum          = "[E ]",
-        Interface     = "[i ]",
-        Function      = "[f ]",
-        Variable      = "[v ]",
-        Constant      = "[c ]",
-        String        = "[s ]",
-        Number        = "[n ]",
-        Boolean       = "[b ]",
-        Array         = "[a ]",
-        Object        = "[o ]",
-        Key           = "[k ]",
-        Null          = "[n ]",
-        EnumMember    = "[e ]",
-        Struct        = "[s ]",
-        Event         = "[e ]",
-        Operator      = "[> ]",
-        TypeParameter = "[t ]",
+        Module        = "[M] ",
+        Namespace     = "[N] ",
+        Package       = "[P] ",
+        Class         = "[C] ",
+        Method        = "[m] ",
+        Property      = "[p] ",
+        Field         = "[f] ",
+        Constructor   = "[c] ",
+        Enum          = "[E] ",
+        Interface     = "[i] ",
+        Function      = "[f] ",
+        Variable      = "[v] ",
+        Constant      = "[c] ",
+        String        = "[s] ",
+        Number        = "[n] ",
+        Boolean       = "[b] ",
+        Array         = "[a] ",
+        Object        = "[o] ",
+        Key           = "[k] ",
+        Null          = "[n] ",
+        EnumMember    = "[e] ",
+        Struct        = "[s] ",
+        Event         = "[e] ",
+        Operator      = "[>] ",
+        TypeParameter = "[t] ",
     },
     use_default_mappings = true,            -- If set to false, only mappings set
                                             -- by user are set. Else default
