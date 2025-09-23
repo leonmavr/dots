@@ -8,9 +8,11 @@
 function _record_screen() {
     mkdir -p $HOME/Videos/recordings
     local output_file=$HOME/Videos/recordings/`date +"%Y_%m_%d-%H_%M"`.mp4
+    sleep 0.5 # wait to change window if launched from command line
     ffmpeg -f x11grab -r 30 -s \
-        `xrandr | grep '\*' | grep -oP '\d{3,5}x\d{3,5}' \
-        | tail -n1` -i :0.0 -c:v libx264 -preset ultrafast -qp 0 -y "$output_file"
+    `xrandr | grep '\*' | grep -oP '\d{3,5}x\d{3,5}' \
+            | tail -n1` -i :0.0 -c:v libx264 -preset ultrafast \
+              -crf 23 -c:a aac -strict experimental -y "$output_file"
     has dunst && dunstify -u low "Recording saved as $output_file" || \
     { has notify-send && notify-send --expire-time=3000 "Recording saved as $output_file"; }
 }
