@@ -8,6 +8,10 @@
 -- # Python tools
 -- pip install black flake8 debugpy
 
+-- # for Telescope (optional)
+-- fd-find (Ubuntu/Debian) / fd (Arch)
+-- rg
+
 -------------------------------------------------------------------------------
 -- Behavior 
 -------------------------------------------------------------------------------
@@ -66,6 +70,10 @@ vim.opt.textwidth = 80
 vim.opt.colorcolumn = "80"
 -- Auto wrap while typing in insert mode
 vim.opt.formatoptions:append { "t" }
+
+-- case-insensitive search
+vim.opt.ignorecase = true
+vim.opt.smartcase = true
 
 -------------------------------------------------------------------------------
 -- Maps 
@@ -141,9 +149,25 @@ require('packer').startup(function(use)
   use 'saadparwaiz1/cmp_luasnip'     -- Snippet completions
   use { 'nvim-treesitter/nvim-treesitter', run = ':TSUpdate' }
   use 'nvim-lua/plenary.nvim'        -- Dependency for many plugins
+
+  require('telescope').setup {
+    defaults = {
+      sorting_strategy = "ascending",
+      layout_config = { prompt_position = "top" },
+      file_ignore_patterns = {},     -- explore hidden files 
+      vimgrep_arguments = {
+        'rg',
+        '--no-heading',
+        '--with-filename',
+        '--line-number',
+        '--column',
+        '--smart-case'
+      },
+    },
+  }
   use {
-    'nvim-telescope/telescope.nvim',
-    requires = { 'nvim-lua/plenary.nvim' }
+    'nvim-telescope/telescope-fzf-native.nvim',
+    run = 'make'
   }
   use 'preservim/nerdtree'           -- File explorer
   use 'tpope/vim-fugitive'           -- Git integration
@@ -501,7 +525,14 @@ dap.listeners.before.event_exited["dapui_config"] = function() dapui.close() end
 
 
 ---- Telescope mappings
-require('telescope').setup{}
+require('telescope').setup {
+  defaults = {
+    -- optional tweaks
+    sorting_strategy = "ascending",
+    layout_config = { prompt_position = "top" },
+  },
+}
+require('telescope').load_extension('fzf')
 vim.keymap.set('n', '<leader>ff', '<cmd>Telescope find_files<cr>', { noremap = true })
 vim.keymap.set('n', '<leader>fg', '<cmd>Telescope live_grep<cr>', { noremap = true })
 
