@@ -20,3 +20,5 @@ set show-all-if-ambiguous on
 
 # disable annoying bell sound
 set bell-style none
+
+"\C-f": "fzf\n"
