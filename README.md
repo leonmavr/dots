@@ -1,4 +1,4 @@
-<div style="text-align:center; font-size: 48px; line-height: 1; margin: 20px 0; color: orange;">
+<div align="center"; style="text-align:center; font-size: 48px; line-height: 1; margin: 20px 0; color: orange;">
   &#x25CF;&nbsp;&nbsp;&nbsp;&#x25CF;&nbsp;&nbsp;&nbsp;&#x25CF;
 </div>
 
@@ -84,10 +84,10 @@ You can repeat this process for other any directories of your choice.
 All scripts and files in this repo are released under [kopimi](https://kopimi.com/).
 Feel free to copy or play around with them and no credits are needed.
 
-<center>
+<div align="center">
 <img src="https://kopimi.com/badges/kopimi_text.gif" alt="Kopimi logo" style="width:300px;"/>
-</center>
+</div>
 
-<div style="text-align:center; font-size: 48px; line-height: 1; margin: 20px 0; color: orange;">
+<div align="center"; style="text-align:center; font-size: 48px; line-height: 1; margin: 20px 0; color: orange;">
   &#x25CF;&nbsp;&nbsp;&nbsp;&#x25CF;&nbsp;&nbsp;&nbsp;&#x25CF;
 </div>
