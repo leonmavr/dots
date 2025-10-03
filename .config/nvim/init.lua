@@ -338,7 +338,7 @@ api.nvim_create_autocmd('BufNewFile', {
     local base  = vim.fn.fnamemodify(fname, ':r')
     local ext   = vim.fn.expand('%:e')
     local base_guard = base:gsub('%W', '_'):upper()
-    local guard = '_' .. base_guard .. '_' .. ext:upper()
+    local guard = base_guard .. '_' .. ext:upper() .. '_'
     local lines = {
       '#ifndef ' .. guard,
       '#define ' .. guard,
