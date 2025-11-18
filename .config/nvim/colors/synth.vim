@@ -1,7 +1,6 @@
 " Name:       synthwave-neon.vim
-" Version:    0.1.0
+" Version:    0.1.4
 " Maintainer: adapted from sunbather.vim
-" Created by: ChatGPT with some tweaks
 " License:    The MIT License (MIT)
 "
 " Synthwave-inspired colorscheme for Vim and Neovim.
@@ -28,6 +27,7 @@ let s:green        = { "gui": "#1CE69A", "cterm": "10"  }
 let s:offwhite     = { "gui": "#faaac1", "cterm": "15"  }
 let s:gray         = { "gui": "#cbb1cc", "cterm": "252" }
 let s:dark_gray    = { "gui": "#1a1a1a", "cterm": "234" }
+let s:visual       = { "gui": "#251836", "cterm": "183" }
 
 let s:bg           = s:black
 let s:bg_subtle    = s:dark_gray
@@ -81,7 +81,7 @@ call s:h("CursorLineNr",  {"fg": s:fuchsia, "bg": s:bg_subtle})
 call s:h("StatusLine",    {"bg": s:bg_subtle, "fg": s:mint})
 call s:h("StatusLineNC",  {"bg": s:bg_subtle, "fg": s:gray})
 call s:h("VertSplit",     {"fg": s:bg_subtle})
-call s:h("Visual",        {"bg": s:violet, "fg": s:offwhite})
+call s:h("Visual",        {"bg": s:visual, "fg": s:offwhite})
 call s:h("Search",        {"bg": s:green, "fg": s:black})
 call s:h("IncSearch",     {"bg": s:cyan, "fg": s:black})
 call s:h("Directory",     {"fg": s:mint})
