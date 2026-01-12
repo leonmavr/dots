@@ -89,6 +89,17 @@ imake() {
     make "$@" && dunstify "Build successful!"
 }
 
+venv_create() {
+    if [ -z "$1" ]; then
+        VENV_NAME="myenv"
+    else
+        VENV_NAME="$1"
+    fi
+    python -m venv "$VENV_NAME"
+    source myenv/bin/activate
+    echo "Virtual environment '$VENV_NAME' created."
+}
+
 ### Description:
 # ccat (coding cat) - lists file contents with syntax highlighting
 alias ccat='pygmentize -g -O style=colorful,linenos=1'
