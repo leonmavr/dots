@@ -95,9 +95,11 @@ venv_create() {
     else
         VENV_NAME="$1"
     fi
-    python -m venv "$VENV_NAME"
-    source myenv/bin/activate
-    echo "Virtual environment '$VENV_NAME' created."
+    python -m venv "$VENV_NAME" && \
+    source myenv/bin/activate && \
+    echo "=== Virtual environment '$VENV_NAME' created. ==="
+    [ -f requirements.txt ] && pip install -r requirements.txt && \
+    echo "=== Requirements from requirements.txt installed. ==="
 }
 
 ### Description:
