@@ -1174,3 +1174,104 @@ vim.g.vimtex_compiler_latexmk = {
   }
 }
 
+
+local diag_win, diag_buf = nil, nil
+
+local diag_win, diag_buf = nil, nil
+
+local function open_diag_list()
+  local bufnr = vim.api.nvim_get_current_buf()
+  local diags = vim.diagnostic.get(bufnr)
+
+  -- Build items list
+  local items = {}
+  for _, d in ipairs(diags) do
+    if d.severity == vim.diagnostic.severity.ERROR
+       or d.severity == vim.diagnostic.severity.WARN then
+
+      local icon = d.severity == vim.diagnostic.severity.ERROR
+        and "Ⓔ"
+        or "Ⓦ"
+
+      local msg = d.message:gsub("\n.*", "")
+      if #msg > 20 then
+        msg = msg:sub(1, 20)
+      end
+
+      table.insert(items, {
+        text = string.format("%s: %d: %s", icon, d.lnum + 1, msg),
+        lnum = d.lnum + 1,
+      })
+    end
+  end
+
+  if #items == 0 then
+    return
+  end
+
+  -- Create scratch buffer
+  diag_buf = vim.api.nvim_create_buf(false, true)
+  vim.api.nvim_buf_set_option(diag_buf, "buftype", "nofile")
+  vim.api.nvim_buf_set_option(diag_buf, "bufhidden", "wipe")
+  vim.api.nvim_buf_set_option(diag_buf, "swapfile", false)
+
+  -- Populate buffer (must be modifiable while writing)
+  vim.api.nvim_buf_set_option(diag_buf, "modifiable", true)
+  vim.api.nvim_buf_set_lines(
+    diag_buf,
+    0,
+    -1,
+    false,
+    vim.tbl_map(function(i) return i.text end, items)
+  )
+  vim.api.nvim_buf_set_option(diag_buf, "modifiable", false)
+
+  -- Floating window size
+  local width = math.floor(vim.o.columns * 0.5)
+  local height = math.min(#items + 2, math.floor(vim.o.lines * 0.6))
+  local row = math.floor((vim.o.lines - height) / 2)
+  local col = math.floor((vim.o.columns - width) / 2)
+
+  diag_win = vim.api.nvim_open_win(diag_buf, true, {
+    relative = "editor",
+    width = width,
+    height = height,
+    row = row,
+    col = col,
+    border = "rounded",
+    style = "minimal",
+  })
+
+  vim.api.nvim_win_set_option(diag_win, "cursorline", true)
+
+  -- Close helper
+  local function close()
+    if diag_win and vim.api.nvim_win_is_valid(diag_win) then
+      vim.api.nvim_win_close(diag_win, true)
+    end
+    diag_win, diag_buf = nil, nil
+  end
+
+  -- Keymaps inside the floating window
+  vim.keymap.set("n", "j", "j", { buffer = diag_buf })
+  vim.keymap.set("n", "k", "k", { buffer = diag_buf })
+
+  vim.keymap.set("n", "l", function()
+    local idx = vim.api.nvim_win_get_cursor(diag_win)[1]
+    close()
+    vim.api.nvim_win_set_cursor(0, { items[idx].lnum, 0 })
+  end, { buffer = diag_buf })
+
+  vim.keymap.set("n", "<CR>", function()
+    local idx = vim.api.nvim_win_get_cursor(diag_win)[1]
+    close()
+    vim.api.nvim_win_set_cursor(0, { items[idx].lnum, 0 })
+  end, { buffer = diag_buf })
+
+  vim.keymap.set("n", "<Esc>", close, { buffer = diag_buf })
+  vim.keymap.set("n", "q", close, { buffer = diag_buf })
+end
+
+vim.keymap.set("n", "<leader>we", open_diag_list, { silent = true })
+vim.keymap.set("n", "<leader>ew", open_diag_list, { silent = true })
+
