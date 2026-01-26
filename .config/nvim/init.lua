@@ -451,6 +451,15 @@ vim.diagnostic.config({
 -- vim.api.nvim_set_hl(0, "DiagnosticWarn", { fg = "#ffaa00", bold = true })
 -- vim.api.nvim_set_hl(0, "DiagnosticInfo", { fg = "#00aaff" })
 -- vim.api.nvim_set_hl(0, "DiagnosticHint", { fg = "#55ff55" })
+vim.api.nvim_set_hl(0, "StatusError", {
+  fg = "#ff5555",
+  bold = true,
+})
+vim.api.nvim_set_hl(0, "StatusWarn", {
+  fg = "#ffb86c",
+  bold = true,
+})
+
 
 -- Toggle only virtual text for diagnostics (keep signs/underline)
 local diagnostics_virtual_text = false
@@ -799,6 +808,36 @@ local function get_mode()
   return modes[mode] or mode
 end
 
+-- diagnostics for status line
+local function diagnostics_summary(bufnr)
+  bufnr = bufnr or vim.api.nvim_get_current_buf()
+  local diags = vim.diagnostic.get(bufnr)
+
+  local errors, warns = 0, 0
+  for _, d in ipairs(diags) do
+    if d.severity == vim.diagnostic.severity.ERROR then
+      errors = errors + 1
+    elseif d.severity == vim.diagnostic.severity.WARN then
+      warns = warns + 1
+    end
+  end
+
+  if errors == 0 and warns == 0 then
+    return ""
+  end
+
+  local parts = {}
+  if errors > 0 then
+    table.insert(parts, "%#StatusError#Ⓔ: " .. errors .. "%#Normal#")
+  end
+  if warns > 0 then
+    table.insert(parts, "%#StatusWarn#Ⓦ: " .. warns .. "%#Normal#")
+  end
+
+  return table.concat(parts, "  ")
+end
+
+
 function _G.custom_statusline(winid)
   winid = winid or 0  -- fallback to current window
   local bufnr = vim.api.nvim_win_get_buf(winid)
@@ -850,6 +889,15 @@ function _G.custom_statusline(winid)
 
   -- Right side blocks
   local right = blockright(ft)
+  local diag = diagnostics_summary(bufnr)
+  local right = ""
+
+  if diag ~= "" then
+    right = diag .. "  "
+  end
+
+  right = right .. blockright(ft)
+
   if branch ~= "" then
     right = right .. "  " .. blockright(branch)
   end
