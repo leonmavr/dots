@@ -12,6 +12,9 @@
 -- fd-find (Ubuntu/Debian) / fd (Arch)
 -- rg
 
+-- Optionally for LaTex:
+-- zathura
+
 -------------------------------------------------------------------------------
 -- Behavior 
 -------------------------------------------------------------------------------
@@ -217,6 +220,17 @@ require('packer').startup(function(use)
         "MunifTanjim/nui.nvim",
         "numToStr/Comment.nvim",        -- Optional
         "nvim-telescope/telescope.nvim" -- Optional
+    }
+  }
+
+  -- LaTex stuff
+  vim.g.vimtex_view_method = 'zathura'
+  vim.g.vimtex_compiler_latexmk = {
+    options = {
+      '-pdf',
+      '-interaction=nonstopmode',
+      '-synctex=1',
+      '-file-line-error',
     }
   }
 
@@ -1099,5 +1113,16 @@ require'treesitter-context'.setup{
     separator = nil,
     zindex = 20, -- The Z-index of the context window
     on_attach = nil, -- (fun(buf: integer): boolean) return false to disable attaching
+}
+
+-- LaTex stuff
+vim.g.vimtex_view_method = 'zathura'
+vim.g.vimtex_compiler_latexmk = {
+  options = {
+    '-pdf',
+    '-interaction=nonstopmode',
+    '-synctex=1',
+    '-file-line-error',
+  }
 }
 
