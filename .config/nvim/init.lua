@@ -121,8 +121,11 @@ vim.keymap.set('n', '<Leader>w', ':w<CR>', { noremap = true })
 -- <Leader>q = quit without saving
 vim.keymap.set('n', '<Leader>q', ':q!<CR>', { noremap = true })
 
-vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")
-vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv")
+-- Normal/visual: move current line down/up and reindent
+vim.keymap.set('n', '<C-J>', ':m .+1<CR>==', { noremap = true, silent = true })
+vim.keymap.set('n', '<C-K>', ':m .-2<CR>==', { noremap = true, silent = true })
+vim.keymap.set('v', '<C-J>', ":m '>+1<CR>gv=gv", { noremap = true, silent = true })
+vim.keymap.set('v', '<C-K>', ":m '<-2<CR>gv=gv", { noremap = true, silent = true })
 
 -------------------------------------------------------------------------------
 -- Plugins
