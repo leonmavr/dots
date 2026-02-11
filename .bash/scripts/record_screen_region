@@ -1,0 +1,28 @@
+#!/bin/bash
+
+### Requirements
+# ffmpeg
+# slop
+# dunst | notify-send (optional)
+
+function _record_screen() {
+    mkdir -p "$HOME/Videos/recordings"
+    local output_file="$HOME/Videos/recordings/$(date +"%Y_%m_%d-%H_%M").mp4"
+    sleep 0.5
+
+    # Select region
+    geometry=$(slop -f "%x %y %w %h") || exit 1
+    read X Y W H <<< "$geometry"
+    ffmpeg -f x11grab \
+        -video_size "${W}x${H}" \
+        -i "$DISPLAY+${X},${Y}" \
+        -r 30 \
+        -c:v libx264 -preset ultrafast -crf 23 \
+        -y "$output_file"
+
+    has dunst && dunstify -u low "Recording saved as $output_file" || \
+    { has notify-send && notify-send --expire-time=3000 "Recording saved as $output_file"; }
+}
+
+
+_record_screen
