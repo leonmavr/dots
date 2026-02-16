@@ -17,6 +17,7 @@ function _record_screen() {
         -video_size "${W}x${H}" \
         -i "$DISPLAY+${X},${Y}" \
         -r 30 \
+        -c:a aac \
         -c:v libx264 -preset ultrafast -crf 23 \
         -y "$output_file"
 
