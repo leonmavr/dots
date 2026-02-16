@@ -16,11 +16,10 @@ function _record_screen() {
     ffmpeg -f x11grab \
         -video_size "${W}x${H}" \
         -i "$DISPLAY+${X},${Y}" \
-        -r 30 \
-        -c:a aac \
-        -c:v libx264 -preset ultrafast -crf 23 \
+        -r 24 \
+        -c:v libx264 -preset veryfast -crf 26 -tune animation \
+        -c:a aac -b:a 128k \
         -y "$output_file"
-
     has dunst && dunstify -u low "Recording saved as $output_file" || \
     { has notify-send && notify-send --expire-time=3000 "Recording saved as $output_file"; }
 }
