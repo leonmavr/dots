@@ -1,12 +1,13 @@
-# Quickly compile and view LaTeX file, ignoring warnings
-_texqmake() {
+# Quickly compile and view LaTeX file, ignoring warnings.
+# Hacky but I don't care - it does the job.
+texqmake() {
     local texfile="$1"
     [[ -z "$texfile" ]] && texfile="main.tex"
     texfile="${texfile%.tex}"
     local pdffile="${texfile}.pdf"
     local output
     output=$(yes "" | pdflatex "${texfile}.tex" 2>&1)
-
+    
     if echo "$output" | grep -q "Output written on"; then
         local viewers=(zathura okular evince xdg-open)
         for v in "${viewers[@]}"; do
@@ -23,4 +24,4 @@ _texqmake() {
     fi
 }
 
-_texqmake $@
+texqmake $@
