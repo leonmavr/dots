@@ -1,0 +1,26 @@
+# Quickly compile and view LaTeX file, ignoring warnings
+_texqmake() {
+    local texfile="$1"
+    [[ -z "$texfile" ]] && texfile="main.tex"
+    texfile="${texfile%.tex}"
+    local pdffile="${texfile}.pdf"
+    local output
+    output=$(yes "" | pdflatex "${texfile}.tex" 2>&1)
+
+    if echo "$output" | grep -q "Output written on"; then
+        local viewers=(zathura okular evince xdg-open)
+        for v in "${viewers[@]}"; do
+            if command -v "$v" >/dev/null 2>&1; then
+                "$v" "$pdffile" >/dev/null 2>&1 &
+                return 0
+            fi
+        done
+        echo "ERROR: No PDF viewer found."
+        return 1
+    else
+        echo "ERROR: LaTeX compilation failed."
+        return 1
+    fi
+}
+
+_texqmake $@
