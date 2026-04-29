@@ -78,6 +78,9 @@ vim.opt.formatoptions:append { "t" }
 vim.opt.ignorecase = true
 vim.opt.smartcase = true
 
+-- navigation and basic commands in greek layout
+vim.opt.langmap = "ωv,δd,ςw,βb,υy,πp,λl,ιi,κk,ξj,ηh,¨:"
+
 -------------------------------------------------------------------------------
 -- Maps 
 -------------------------------------------------------------------------------
