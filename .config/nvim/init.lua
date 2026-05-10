@@ -81,6 +81,41 @@ vim.opt.smartcase = true
 -- navigation and basic commands in greek layout
 vim.opt.langmap = "ωv,δd,ςw,βb,υy,πp,λl,ιi,κk,ξj,ηh,¨:"
 
+-- working folds for Latex
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "tex",
+  callback = function()
+    vim.opt_local.foldmethod = "expr"
+    vim.opt_local.foldexpr = "v:lua.LaTeXFoldExpr()"
+    vim.opt_local.foldlevel = 99
+  end,
+})
+
+function _G.LaTeXFoldExpr()
+  local line = vim.fn.getline(vim.v.lnum)
+
+  if line:match("\\begin%s*{") then
+    return "a1"
+  elseif line:match("\\end%s*{") then
+    return "s1"
+  else
+    return "="
+  end
+end
+
+function _G.LaTeXFoldExpr()
+  local line = vim.fn.getline(vim.v.lnum)
+
+  if line:match("\\begin%s*{") then
+    return "a1"
+  elseif line:match("\\end%s*{") then
+    return "s1"
+  else
+    return "="
+  end
+end
+
+
 -------------------------------------------------------------------------------
 -- Maps 
 -------------------------------------------------------------------------------
