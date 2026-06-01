@@ -12,8 +12,8 @@
 -- fd-find (Ubuntu/Debian) / fd (Arch)
 -- rg
 
--- Optionally for LaTex:
--- zathura
+-- Optionally, to render and live-view LaTex:
+-- zathura, latexmk
 
 -------------------------------------------------------------------------------
 -- Behavior 
