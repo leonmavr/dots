@@ -265,15 +265,26 @@ require('packer').startup(function(use)
   }
 
   -- LaTex stuff
-  vim.g.vimtex_view_method = 'zathura'
-  vim.g.vimtex_compiler_latexmk = {
-    options = {
-      '-pdf',
-      '-interaction=nonstopmode',
-      '-synctex=1',
-      '-file-line-error',
+  use {
+  'lervag/vimtex',
+  ft = { 'tex' },
+
+  config = function()
+    vim.g.vimtex_view_method = 'zathura'
+
+    vim.g.vimtex_compiler_method = 'latexmk'
+
+    vim.g.vimtex_compiler_latexmk = {
+      options = {
+        '-pdf',
+        '-shell-escape',
+        '-interaction=nonstopmode',
+        '-synctex=1',
+        '-file-line-error',
+      },
     }
-  }
+  end
+}
 
   if packer_bootstrap then
     require('packer').sync()
@@ -283,50 +294,47 @@ end)
 -------------------------------------------------------------------------
 -- Python development
 -------------------------------------------------------------------------
--- Python LSP (Pyright)
-local lspconfig = require('lspconfig')
-
 -- Capabilities for nvim-cmp
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
 
-lspconfig.pyright.setup {
-  capabilities = capabilities,
-  on_attach = function(_, bufnr)
-    local opts = { noremap=true, silent=true, buffer=bufnr }
+local function configure_lsp(server, config)
+  if vim.lsp.config and vim.lsp.enable then
+    vim.lsp.config(server, config)
+    vim.lsp.enable(server)
+    return
+  end
 
-    -- LSP keymaps
-    vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
-    vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
-    vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, opts)
-    vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action, opts)
-  end,
-  settings = {
-    python = {
-      analysis = {
-        typeCheckingMode = "basic",   -- or "strict" for more errors
-        autoImportCompletions = true,
-      },
-    },
-  },
-}
+  require("lspconfig")[server].setup(config)
+end
+
+local function set_lsp_keymaps(bufnr)
+  local opts = { noremap = true, silent = true, buffer = bufnr }
+
+  vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
+  vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
+  vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, opts)
+  vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action, opts)
+end
+
+local function enable_inlay_hints(bufnr)
+  if vim.lsp.inlay_hint and vim.lsp.inlay_hint.enable then
+    vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
+  elseif vim.lsp.buf.inlay_hint then
+    vim.lsp.buf.inlay_hint(bufnr, true)
+  end
+end
 
 -- Shared on_attach for Python (Pyright)
 local function pyright_on_attach(client, bufnr)
-    local opts = { noremap=true, silent=true, buffer=bufnr }
-
-    -- Default LSP keymaps
-    vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
-    vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
-    vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, opts)
-    vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action, opts)
+    set_lsp_keymaps(bufnr)
 
     -- Attach Navbuddy
     require("nvim-navbuddy").attach(client, bufnr)
 end
 
 -- Pyright setup with Navbuddy
-require("lspconfig").pyright.setup {
-    capabilities = require('cmp_nvim_lsp').default_capabilities(),
+configure_lsp("pyright", {
+    capabilities = capabilities,
     on_attach = pyright_on_attach,
     settings = {
         python = {
@@ -336,7 +344,7 @@ require("lspconfig").pyright.setup {
             },
         },
     },
-}
+      })
 
 
 
@@ -409,65 +417,32 @@ api.nvim_create_autocmd('BufNewFile', {
 
 ---- LSP clangd
 
-
-
-local lspconfig = require('lspconfig')
-lspconfig.clangd.setup {
-  -- bundled + limit-results make autocompletion faster
-  cmd = { "clangd", "--background-index", "--clang-tidy", "--completion-style=bundled", "--limit-results=20"},
-  init_options = {
-    fallbackFlags = { "-Wall", "-Wextra", "-std=c++17" },
-  },
-  on_attach = function(_, bufnr)
-      local opts = { noremap=true, silent=true, buffer=bufnr }
-      -- Existing keymaps
-      vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
-      vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
-      vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, opts)        -- rename
-      vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action, opts)   -- code actions
-
-      -- clangd specific
-      vim.keymap.set('n', '<leader>sh', ':ClangdSwitchSourceHeader<CR>', opts)  -- switch source/header
-      vim.keymap.set('n', '<leader>ih', ':ClangdToggleInlayHints<CR>', opts)    -- toggle inlay hints
-      -- Enable inlay hints initially
-      if vim.lsp.buf.inlay_hint then
-        vim.lsp.buf.inlay_hint(bufnr, true)
-      end
-  end,
-}
-
 -- shared on_attach for clangd
 -- in case plugins like navbuddy need to use it
 local function clangd_on_attach(client, bufnr)
     local opts = { noremap=true, silent=true, buffer=bufnr }
 
-    -- Default keymaps
-    vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
-    vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
-    vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, opts)        -- rename
-    vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action, opts)   -- code actions
+    set_lsp_keymaps(bufnr)
 
     -- Clangd specific
     vim.keymap.set('n', '<leader>sh', ':ClangdSwitchSourceHeader<CR>', opts)
     vim.keymap.set('n', '<leader>ih', ':ClangdToggleInlayHints<CR>', opts)
 
     -- Enable inlay hints initially
-    if vim.lsp.buf.inlay_hint then
-        vim.lsp.buf.inlay_hint(bufnr, true)
-    end
+    enable_inlay_hints(bufnr)
 
     -- Attach Navbuddy
     require("nvim-navbuddy").attach(client, bufnr)
 end
 
 -- clangd setup with combined config
-require("lspconfig").clangd.setup {
+configure_lsp("clangd", {
     cmd = { "clangd", "--background-index", "--clang-tidy", "--completion-style=bundled", "--limit-results=20"},
     init_options = {
         fallbackFlags = { "-Wall", "-Wextra", "-std=c++17" },
     },
     on_attach = clangd_on_attach,
-}
+})
 
 ---- diagnostics plugin
 vim.diagnostic.config({
@@ -596,7 +571,7 @@ require('telescope').setup {
     layout_config = { prompt_position = "top" },
   },
 }
-require('telescope').load_extension('fzf')
+pcall(require('telescope').load_extension, 'fzf')
 vim.keymap.set('n', '<leader>ff', '<cmd>Telescope find_files<cr>', { noremap = true })
 vim.keymap.set('n', '<leader>fg', '<cmd>Telescope live_grep<cr>', { noremap = true })
 
@@ -1204,20 +1179,6 @@ require'treesitter-context'.setup{
     on_attach = nil, -- (fun(buf: integer): boolean) return false to disable attaching
 }
 
--- LaTex stuff
-vim.g.vimtex_view_method = 'zathura'
-vim.g.vimtex_compiler_latexmk = {
-  options = {
-    '-pdf',
-    '-interaction=nonstopmode',
-    '-synctex=1',
-    '-file-line-error',
-  }
-}
-
-
-local diag_win, diag_buf = nil, nil
-
 local diag_win, diag_buf = nil, nil
 
 local function open_diag_list()
@@ -1315,4 +1276,13 @@ end
 
 vim.keymap.set("n", "<leader>we", open_diag_list, { silent = true })
 vim.keymap.set("n", "<leader>ew", open_diag_list, { silent = true })
+
+-- Vimtex mappings
+-- VimTeX keymaps
+vim.keymap.set('n', '<leader>ll', '<cmd>VimtexCompile<CR>', { silent = true })
+vim.keymap.set('n', '<leader>lk', '<cmd>VimtexStop<CR>', { silent = true })
+vim.keymap.set('n', '<leader>lv', '<cmd>VimtexView<CR>', { silent = true })
+vim.keymap.set('n', '<leader>le', '<cmd>VimtexErrors<CR>', { silent = true })
+vim.keymap.set('n', '<leader>lc', '<cmd>VimtexClean<CR>', { silent = true })
+vim.keymap.set('n', '<leader>lt', '<cmd>VimtexTocOpen<CR>', { silent = true })
 
