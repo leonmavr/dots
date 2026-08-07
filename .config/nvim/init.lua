@@ -8,12 +8,37 @@
 -- # Python tools
 -- pip install black flake8 debugpy
 
+-- # C/C++ support
+-- clangd
+
 -- # for Telescope (optional)
 -- fd-find (Ubuntu/Debian) / fd (Arch)
 -- rg
 
 -- Optionally, to render and live-view LaTex:
 -- zathura, latexmk
+
+-------------------------------------------------------------------------------
+-- Neovim 0.11+ compatibility shims
+-------------------------------------------------------------------------------
+-- vim.tbl_islist was removed in Neovim 0.11, but the original
+-- wbthomason/packer.nvim still calls it (packer.lua:284), which crashes
+-- startup. Re-add it so Packer (and any other plugin that relies on it) works.
+if not vim.tbl_islist then
+  vim.tbl_islist = function(t)
+    if type(t) ~= "table" then
+      return false
+    end
+    local count = 0
+    for _ in pairs(t) do
+      count = count + 1
+      if t[count] == nil then
+        return false
+      end
+    end
+    return true
+  end
+end
 
 -------------------------------------------------------------------------------
 -- Behavior 
@@ -193,26 +218,31 @@ require('packer').startup(function(use)
   use 'saadparwaiz1/cmp_luasnip'     -- Snippet completions
   use { 'nvim-treesitter/nvim-treesitter', run = ':TSUpdate' }
   use 'nvim-lua/plenary.nvim'        -- Dependency for many plugins
-
-  require('telescope').setup {
-    defaults = {
-      sorting_strategy = "ascending",
-      layout_config = { prompt_position = "top" },
-      file_ignore_patterns = {},     -- explore hidden files 
-      vimgrep_arguments = {
-        'rg',
-        '--no-heading',
-        '--with-filename',
-        '--line-number',
-        '--column',
-        '--smart-case'
-      },
-    },
-  }
   use {
-    'nvim-telescope/telescope-fzf-native.nvim',
-    run = 'make'
-  }
+  'nvim-telescope/telescope.nvim',
+  branch = '0.1.8',
+  requires = { 'nvim-lua/plenary.nvim' },
+  config = function()
+    require('telescope').setup{
+      defaults = {
+        sorting_strategy = "ascending",
+        layout_config = {
+          prompt_position = "top",
+        },
+        file_ignore_patterns = {},
+        vimgrep_arguments = {
+          'rg',
+          '--no-heading',
+          '--with-filename',
+          '--line-number',
+          '--column',
+          '--smart-case',
+        },
+      },
+    }
+  end
+}
+
   use 'preservim/nerdtree'           -- File explorer
   use 'tpope/vim-fugitive'           -- Git integration
   use 'hrsh7th/cmp-buffer'           -- Buffer source for nvim-cmp
@@ -229,8 +259,32 @@ require('packer').startup(function(use)
     }
   }
  
-  use 'mfussenegger/nvim-lint'       -- Modern linting
-  use 'stevearc/conform.nvim'        -- Formatting
+  use {
+    'mfussenegger/nvim-lint',
+    config = function()
+        local lint = require("lint")
+
+        lint.linters_by_ft = {
+            python = { "flake8" },
+        }
+
+        vim.api.nvim_create_autocmd({ "BufWritePost", "InsertLeave" }, {
+            callback = function()
+                lint.try_lint()
+            end,
+        })
+    end
+  }
+  use {
+    'stevearc/conform.nvim',
+    config = function()
+      require("conform").setup({
+        formatters_by_ft = {
+          python = { "black" },
+        },
+      })
+    end
+  }
   use 'jose-elias-alvarez/null-ls.nvim' -- Extra linting/formatting (optional)
   use 'ray-x/lsp_signature.nvim'     -- Python function signatures
   use {
@@ -329,9 +383,7 @@ local function pyright_on_attach(client, bufnr)
     set_lsp_keymaps(bufnr)
 
     -- Attach Navbuddy
-    require("nvim-navbuddy").attach(client, bufnr)
-end
-
+    require("nvim-navbuddy").attach(client, bufnr) end
 -- Pyright setup with Navbuddy
 configure_lsp("pyright", {
     capabilities = capabilities,
@@ -348,20 +400,14 @@ configure_lsp("pyright", {
 
 
 
-require('lint').linters_by_ft = {
-  python = { 'flake8' },  -- or 'pylint'
-}
+-- require('lint').linters_by_ft = {
+--   python = { 'flake8' },  -- or 'pylint'
+-- }
 
 vim.api.nvim_create_autocmd({ "BufWritePost", "InsertLeave" }, {
   callback = function()
     require("lint").try_lint()
   end,
-})
-
-require("conform").setup({
-  formatters_by_ft = {
-    python = { "black" },
-  },
 })
 
 -- Auto-format Python on save
@@ -497,7 +543,9 @@ end
 vim.keymap.set("n", "<Leader>td", toggle_diagnostics_virtual_text, { noremap = true, silent = true })
 
 ---- Treesitter
-require('nvim-treesitter.configs').setup {
+-- Note: modern nvim-treesitter (main) removed `nvim-treesitter.configs`;
+-- setup is done via the `nvim-treesitter` module directly.
+require('nvim-treesitter').setup {
   ensure_installed = { "c", "cpp", "python" },
   highlight = { enable = true },
 }
