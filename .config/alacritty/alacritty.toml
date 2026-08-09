@@ -1,0 +1,47 @@
+terminal.shell = "zellij"
+
+# Font configuration
+[font]
+size = 11.0  # Enter your desired font size in points
+# Main font styles
+[font.normal]
+family = "CPMono_v07"
+style = "Regular"
+
+[font.bold]
+family = "CPMono_v07"
+style = "Bold"
+
+[font.italic]
+family = "CPMono_v07"
+style = "Italic"
+
+[font.bold_italic]
+family = "CPMono_v07"
+style = "Bold Italic"
+
+# Color palette configuration
+[colors.primary]
+background = '#14061a'
+foreground = '#cdd6f4'
+
+[colors.normal]
+black   = '#1e1e2e'
+red     = '#f38ba8'
+green   = '#a6e3a1'
+yellow  = '#f9e2af'
+blue    = '#89b4fa'
+magenta = '#cba6f7'
+cyan    = '#89dceb'
+white   = '#bac2de'
+
+[colors.bright]
+black   = '#585b70'
+red     = '#f38ba8'
+green   = '#a6e3a1'
+yellow  = '#f9e2af'
+blue    = '#89b4fa'
+magenta = '#cba6f7'
+cyan    = '#89dceb'
+white   = '#a6adc8'
+
