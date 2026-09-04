@@ -1,14 +1,15 @@
 #!/bin/bash
 
-# run_for <in n sec from now> <duration in sec> <cmd>
 _run_for() {
     local delay=$1 duration=$2
     shift 2
-
     sleep "$delay"
-    timeout "$duration" "$@"
+    setsid "$@" &
+    local pid=$!
+    sleep "$duration"
+    kill -INT -- "-$pid"
+    wait "$pid"
 }
 
-_run_for $@
-
-
+[ -f ~/.bash/scripts/add_dir_to_path.sh ] && . ~/.bash/scripts/add_dir_to_path.sh
+_run_for "$@"
