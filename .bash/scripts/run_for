@@ -1,0 +1,14 @@
+#!/bin/bash
+
+# run_for <in n sec from now> <duration in sec> <cmd>
+_run_for() {
+    local delay=$1 duration=$2
+    shift 2
+
+    sleep "$delay"
+    timeout "$duration" "$@"
+}
+
+_run_for $@
+
+
