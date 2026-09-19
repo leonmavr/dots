@@ -1,0 +1,549 @@
+;==========================================================
+;
+;
+;   ██████╗  ██████╗ ██╗  ██╗   ██╗██████╗  █████╗ ██████╗
+;   ██╔══██╗██╔═══██╗██║  ╚██╗ ██╔╝██╔══██╗██╔══██╗██╔══██╗
+;   ██████╔╝██║   ██║██║   ╚████╔╝ ██████╔╝███████║██████╔╝
+;   ██╔═══╝ ██║   ██║██║    ╚██╔╝  ██╔══██╗██╔══██║██╔══██╗
+;   ██║     ╚██████╔╝███████╗██║   ██████╔╝██║  ██║██║  ██║
+;   ╚═╝      ╚═════╝ ╚══════╝╚═╝   ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝
+;
+;
+;   To learn more about how to configure Polybar
+;   go to https://github.com/jaagr/polybar
+;
+;   The README contains alot of information
+;
+;==========================================================
+
+[colors]
+#background = #6603050a
+background = #ff03060c
+background1 = #22449966
+foreground = #78e3ca
+icons = #78cae3
+alert = #d95da5
+background-alt = #66399b91
+foreground-alt = #60819b
+primary = #05171c
+secondary = #89bcc4
+workspace_active = #f51187
+
+[bar/top]
+;monitor = ${env:MONITOR:HDMI-1}
+width = 100%
+height = 30
+offset-x = 0%
+border-size = 4
+border-bottom-size = 0
+border-color = #00000000
+;offset-y = 10
+;radius = 10.0
+fixed-center = true 
+background = ${colors.background}
+foreground = ${colors.foreground}
+
+line-size = 0
+line-color = #000
+padding-left = 2
+padding-right = 2
+module-margin-left = 2
+module-margin-right = 2
+
+#font-0 = Ubuntu Condensed:pixelsize=13;1
+font-0 = Zekton:pixelsize=10;1:weight=bold;1
+font-1 = unifont:fontformat=truetype:size=8:antialias=true;0
+font-2 = FontAwesome:pixelsize=13;1
+font-3 = FontAwesome5:pixelsize=13;0
+font-4 = Siji:pixelsize=10;1
+font-5 = "Material Icons:size=14;4"
+font-6 = "Wuncon Siji:size=12;2"
+font-7 = FontAwesome:pixelsize=10;1
+font-8 = "Weather Icons:size=12;1"
+;;; HOWTO:
+; To manually specify a font, use
+; {TX} blah ${T-}
+; X is the 1-indexed font number from above
+
+
+; copy paste:
+;  
+
+modules-left = workspaces pulseaudio backlight redshift current_song mpd 
+modules-center = popup-calendar date weather notifs
+modules-right = ram xkeyboard temperature_custom battery powerrofi 
+; skype icon etc.
+tray-position = right
+
+wm-restack = i3 
+
+cursor-click = pointer
+cursor-scroll = ns-scroll 
+
+[module/date]
+type = internal/date
+interval = 45
+date =
+date-alt = " %a, %d %b %g, "
+time = %H:%M
+time-alt = %H:%M
+format-prefix = 
+format-prefix-foreground = ${colors.foreground-alt}
+label = %date% %time%
+click-right = ~/.config/polybar/scripts/rofi_timezone.sh
+
+[module/popup-calendar]
+type = custom/script
+format-prefix =%{T6}%{T-} 
+format-prefix-foreground = ${colors.foreground-alt}
+exec = ~/.config/polybar/scripts/calendar-popup.sh
+interval = 60 
+click-left = ~/.config/polybar/scripts/calendar-popup.sh --popup
+
+[module/weather]
+type = custom/script
+exec = ~/.config/polybar/scripts/weather.sh edessa gr 
+exec-if = ping openweathermap.org -c 1
+interval = 600
+;label-font = 7
+
+[module/ram]
+type = custom/script
+format-prefix=
+format-prefix-foreground = ${colors.foreground-alt}
+exec = echo `free -m | head -2 | tail -1 | awk '{printf("%02d",100-int($NF/$2*100))}'`% 
+#click-left = ~/.config/polybar/scripts/weather.sh lindau de 
+exec-if = [ `free -m | head -2 | tail -1 | awk '{print int($NF/$2*100)}'` -lt 25 ] 
+interval = 5 
+
+[module/notifs]
+type = custom/script
+format-prefix= 
+format-prefix-foreground = ${colors.foreground-alt}
+interval = 60
+exec = "echo "(`remind ~/.config/remind/reminders.rem | sed '/^\s*$/d' | sed -n '2,9999 p' |  wc -l`)""
+click-left = ~/.config/polybar/scripts/notifs.sh
+click-right = ~/.config/polybar/scripts/notifs_edit.sh
+
+[module/redshift]
+type = custom/script
+label=%{T6}%{T-}
+label-foreground = ${colors.foreground-alt}
+interval = 500 
+exec = "echo dummy msg"
+click-left = ~/.config/polybar/scripts/screen_temp_rofi.sh
+click-right = ~/.config/polybar/scripts/screen_temp_rofi.sh 6500
+
+
+[module/xwindow]
+type = internal/xwindow
+label = %title:0:30:...%
+
+
+[module/bspwm]
+type = internal/bspwm
+
+label-focused = %index%
+label-focused-background = ${colors.background-alt}
+label-focused-underline= ${colors.primary}
+label-focused-padding = 2
+
+label-occupied = %index%
+label-occupied-padding = 2
+
+label-urgent = %index%!
+label-urgent-background = ${colors.alert}
+label-urgent-padding = 2
+
+label-empty = %index%
+label-empty-foreground = ${colors.foreground-alt}
+label-empty-padding = 2
+
+; Separator in between workspaces
+; label-separator = |
+
+[module/workspaces]
+type = internal/xworkspaces
+
+; Only show workspaces defined on the same output as the bar
+;
+; Useful if you want to show monitor specific workspaces
+; on different bars
+;
+; Default: false
+pin-workspaces = true
+
+; Create click handler used to focus desktop
+; Default: true
+enable-click = true
+
+; Create scroll handlers used to cycle desktops
+; Default: true
+enable-scroll = false 
+
+; icon-[0-9]+ = <desktop-name>;<icon>
+; NOTE: The desktop name needs to match the name configured by the WM
+; You can get a list of the defined desktops using:
+; $ xprop -root _NET_DESKTOP_NAMES
+icon-0 = 1;1
+icon-1 = 2;
+icon-2 = 3;
+icon-3 = 4;
+icon-4 = 5;
+icon-default = 
+
+
+; Available tags:
+;   <label-monitor>
+;   <label-state> - gets replaced with <label-(active|urgent|occupied|empty)>
+; Default: <label-state>
+format = <label-state>
+
+; Available tokens:
+;   %name%
+; Default: %name%
+label-monitor = %name%
+
+; Available tokens:
+;   %name%
+;   %icon%
+;   %index%
+; Default: %icon%  %name%
+label-active = %name%
+
+; Available tokens:
+;   %name%
+;   %icon%
+;   %index%
+; Default: %icon%  %name%
+label-occupied = %name%
+
+; Available tokens:
+;   %name%
+;   %icon%
+;   %index%
+; Default: %icon%  %name%
+label-urgent = 
+
+; Available tokens:
+;   %name%
+;   %icon%
+;   %index%
+; Default: %icon%  %name%
+label-empty = 
+
+label-active-padding = 1
+label-urgent-padding = 1
+label-occupied-padding = 1
+label-empty-padding = 1
+
+; label-active-foreground = ${colors.primary}
+label-active-foreground = ${colors.workspace_active} 
+label-urgent-foreground = ${colors.alert}
+label-empty-foreground = ${colors.foreground-alt}
+label-occupied-foreground = ${colors.foreground-alt}
+
+;------------------------------------------------------------
+[module/i3]
+type = internal/i3
+format = <label-state> <label-mode>
+index-sort = true
+wrapping-scroll = false 
+
+; Only show workspaces on the same output as the bar
+;pin-workspaces = true
+
+label-mode-padding = 1
+label-mode-foreground = #fff
+label-mode-background = ${colors.primary}
+
+; focused = Active workspace on focused monitor
+label-focused = %icon%
+label-focused-background = ${module/bspwm.label-focused-background}
+label-focused-underline = ${module/bspwm.label-focused-underline}
+label-focused-padding = 1 
+
+; unfocused = Inactive workspace on any monitor
+label-unfocused = %icon%
+label-unfocused-padding = 1 
+
+; visible = Active workspace on unfocused monitor
+label-visible = %icon%
+label-visible-background = ${self.label-focused-background}
+label-visible-underline = ${self.label-focused-underline}
+label-visible-padding = 1 
+
+; urgent = Workspace with urgency hint set
+label-urgent = %icon%
+label-urgent-background = ${module/bspwm.label-urgent-background}
+label-urgent-padding = 1
+
+; Separator in between workspaces
+; label-separator = |
+ws-icon-0 = 1;
+ws-icon-1 = 2;
+ws-icon-2 = 3;
+ws-icon-3 = 4;
+ws-icon-4 = 5;
+ws-icon-5 = 6;
+ws-icon-6 = 7;7
+ws-icon-7 = 8;8
+ws-icon-8 = 9;9
+ws-icon-default = W
+
+
+[module/mpd]
+type = internal/mpd
+label-song = %artist% - %title%
+format-online = <icon-repeat> <icon-random> <icon-prev> <icon-stop> <toggle> <icon-next>
+label-offline = MPD OFF 
+
+icon-prev = %{T8}%{T-}
+icon-stop = %{T6}%{T-} 
+icon-play = %{T6}%{T-} 
+icon-pause = %{T6}%{T-} 
+icon-next = %{T8}%{T-} 
+#icon-seekb = ⏪
+#icon-seekf = ⏩
+icon-random = %{T6}%{T-} 
+icon-repeat = %{T6}%{T-} 
+#icon-repeatone = 🔂
+#icon-single = 🔂
+#icon-consume = ✀
+icon-prev-foreground = ${colors.foreground-alt}
+icon-stop-foreground = ${colors.foreground-alt}
+icon-play-foreground = ${colors.foreground-alt}
+icon-next-foreground = ${colors.foreground-alt}
+icon-pause-foreground = ${colors.foreground-alt}
+icon-repeat-foreground = ${colors.foreground-alt}
+
+; Used to display the state of random/repeat/repeatone/single
+; Only applies if <icon-[random|repeat|repeatone|single]> is used
+toggle-on-foreground = #ff
+toggle-off-foreground = #55
+
+label-song-maxlen = 30
+label-song-ellipsis = true 
+
+
+; Credits for backlight to
+; ZakHack: https://tinyurl.com/y4p6gyun 
+[module/backlight]
+type = custom/script
+interval = 2.0
+exec = ~/.config/polybar/scripts/backlight.sh
+
+scroll-up = exec sudo light -A 5
+scroll-down = exec sudo light -U 5
+format-prefix = " "
+label = %output:02%%
+format-prefix-foreground = ${colors.foreground-alt}
+format-padding = 1
+
+
+[module/cpu]
+type = internal/cpu
+interval = 2
+format-prefix = " "
+format-prefix-foreground = ${colors.foreground-alt}
+label = %percentage:02%%
+
+[module/memory]
+type = internal/memory
+interval = 4
+format-prefix = ""
+format-prefix-foreground = ${colors.icons}
+label = %percentage_used:02%%
+
+[module/wlan]
+type = internal/network
+interface = wlp3s0
+interval = 7.0
+;format-connected = <ramp-signal> <label-connected>
+;format-connected =  
+;label-connected =  %essid%
+;click-left=yad --text wgetid -r` --no-buttons --undercorated --close-on-unfocus --posx 1100 --posy 27
+label-connected = %{A1:yad --text `iwgetid -r` --no-buttons --undercorated --close-on-unfocus --posx 1050 --posy 27:} %{A}
+label-connected-foreground = ${colors.icons}
+
+format-disconnected =
+;format-disconnected = <label-disconnected>
+;label-disconnected = %ifname% disconnected
+;label-disconnected-foreground = ${colors.foreground-alt}
+
+
+[module/eth]
+type = internal/network
+interface = wwp0s20u4i6
+interval = 7.0
+
+format-connected-prefix = " "
+format-connected-prefix-foreground = ${colors.foreground-alt}
+label-connected = %local_ip%
+
+format-disconnected =
+;format-disconnected = <label-disconnected>
+;format-disconnected-underline = ${self.format-connected-underline}
+;label-disconnected = %ifname% disconnected
+;label-disconnected-foreground = ${colors.foreground-alt}
+
+
+[module/pulseaudio]
+type = internal/pulseaudio
+format-volume = <ramp-volume> <label-volume>
+label-volume = %percentage%%
+;format-volume = <label-volume> <bar-volume>
+;format-volume = <label-volume>
+;label-volume = %percentage%%
+format-prefix-foreground = ${colors.foreground-alt}
+label-volume-foreground = ${root.foreground}
+
+label-muted =%{T6}   %{T-}
+label-muted-foreground = #666
+
+ramp-volume-0 =%{T6}%{T-}
+ramp-volume-1 =%{T6}%{T-}
+ramp-volume-2 =%{T6}%{T-}
+ramp-volume-3 =%{T6}%{T-}
+ramp-volume-4 =%{T6}%{T-}
+ramp-volume-5 =%{T6}%{T-}
+ramp-volume-6 =%{T6}%{T-}
+ramp-volume-foreground = ${colors.icons}
+
+
+[module/xkeyboard]
+type = internal/xkeyboard
+blacklist-0 = num lock
+
+format-prefix = ""
+format-prefix-foreground = ${colors.icons}
+
+label-layout = %layout%
+
+label-indicator-padding = 2
+label-indicator-margin = 1
+label-indicator-background = ${colors.secondary}
+
+label-indicator-on-capslock =
+label-indicator-off-capslock =
+
+[module/battery]
+type = internal/battery
+battery = BAT0
+adapter = AC
+full-at = 96
+
+format-charging = <animation-charging> <label-charging>
+
+format-discharging = <animation-discharging> <label-discharging>
+
+format-full-prefix = ""
+format-full-prefix-foreground = ${colors.icons}
+
+animation-charging-4 = 
+animation-charging-3 = 
+animation-charging-2 = 
+animation-charging-1 = 
+animation-charging-0 = 
+animation-charging-foreground = ${colors.foreground-alt}
+animation-charging-framerate = 750
+
+animation-discharging-0 = 
+animation-discharging-1 = 
+animation-discharging-2 = 
+animation-discharging-3 = 
+animation-discharging-4 = 
+animation-discharging-foreground = ${colors.foreground-alt}
+animation-discharging-framerate = 750
+
+[module/powerrofi]
+type = custom/script
+format-prefix= 
+format-prefix-foreground = ${colors.foreground-alt}
+interval = 60
+exec = echo " " 
+click-left = ~/.config/polybar/scripts/powerrofi.sh
+
+
+[module/temperature_custom]
+type = custom/script
+format-prefix= 
+format-prefix-foreground = ${colors.foreground-alt}
+interval = 5
+exec =  sensors | grep "ACPI interface" -A1 | grep temp | awk {'print $2'} | grep -Eo [0-9]+ | head -1
+#click-left = ~/.config/polybar/scripts/powerrofi.sh
+
+
+[settings]
+screenchange-reload = true
+;compositing-background = xor
+;compositing-background = screen
+;compositing-foreground = source
+;compositing-border = over
+;pseudo-transparency = false
+
+[global/wm]
+margin-top = 0
+margin-bottom = 0
+
+
+[module/temperature]
+type = internal/temperature
+; Seconds to sleep between updates
+; Default: 1
+interval = 5
+; Thermal zone to use
+; To list all the zone types, run 
+; $ for i in /sys/class/thermal/thermal_zone*; do echo "$i: $(<$i/type)"; done
+; Default: 0
+thermal-zone = 0
+
+; Full path of temperature sysfs path
+; Use `sensors` to find preferred temperature source, then run
+; $ for i in /sys/class/hwmon/hwmon*/temp*_input; do echo "$(<$(dirname $i)/name): $(cat ${i%_*}_label 2>/dev/null || echo $(basename ${i%_*})) $(readlink -f $i)"; done
+; to find path to desired file
+; Default reverts to thermal zone setting
+hwmon-path = /sys/devices/platform/coretemp.0/hwmon/hwmon4/temp1_input 
+
+; Base temperature for where to start the ramp (in degrees celsius)
+; Default: 0
+base-temperature = 20
+; Threshold temperature to display warning label (in degrees celsius)
+warn-temperature = 75
+; Whether or not to show units next to the temperature tokens (°C, °F)
+units = false
+
+; Available tags:
+;   <label> (default)
+;   <ramp>
+format = <ramp> <label>
+; Available tags:
+;   <label-warn> (default)
+;   <ramp>
+format-warn = <ramp> <label-warn>
+label = %temperature-c%
+
+; Available tokens:
+;   %temperature% (deprecated)
+;   %temperature-c%   (default, temperature in °C)
+;   %temperature-f%   (temperature in °F)
+label-warn = ﹡ %temperature%
+label-warn-foreground = #f00
+
+; Requires the <ramp> tag
+; The icon selection will range from `base-temperature` to `warn-temperature`,
+; temperatures above `warn-temperature` will use the last icon
+; and temperatures below `base-temperature` will use `ramp-0`
+ramp-0 =%{T3}%{T-} 
+ramp-1 = %{T3}%{T-} 
+ramp-2 =%{T3}%{T-}
+ramp-foreground = ${colors.icons}
+click-left = touch /tmp/test
+
+[settings]
+;screenchange-reload = true
+;compositing-background = xor
+compositing-background = screen
+;compositing-foreground = source
+;compositing-border = over
+pseudo-transparency = true
