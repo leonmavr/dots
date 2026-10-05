@@ -55,6 +55,17 @@ install -m 644 "$FZF_CONFIG_SOURCE" "$FZF_CONFIG_DEST"
 echo "Installed fzf config:"
 echo "  $FZF_CONFIG_DEST"
 
+### git config
+GIT_CFG="$SCRIPT_DIR/../../../.gitconfig"
+GIT_COMPLETION="$SCRIPT_DIR/../../../.git-completion.bash"
+if [ -f $GIT_CFG ]; then
+    cp $GIT_CFG ~
+    echo "Copied git config"
+else
+    echo "Git config not found"
+fi
+[ -f $GIT_COMPLETION ] && cp $GIT_COMPLETION ~
+
 ### bashrc configuration
 
 # Remove old versions of lines managed by this installer.
