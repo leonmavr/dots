@@ -77,3 +77,4 @@ echo "Ctrl-R: history search"
 echo "Ctrl-T: file search"
 echo "Alt-C: directory search"
 
+
