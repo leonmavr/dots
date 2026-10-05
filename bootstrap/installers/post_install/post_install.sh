@@ -68,6 +68,30 @@ fi
 
 ### bashrc configuration
 
+### Copy Bash scripts
+
+# This is where common bash utilities live
+SCRIPTS_SOURCE="$SCRIPT_DIR/../../../.bash/scripts"
+SCRIPTS_DEST="$BASH_DIR/scripts"
+
+if [[ ! -d "$SCRIPTS_SOURCE" ]]; then
+    echo "Bash scripts directory not found:"
+    echo "  $SCRIPTS_SOURCE" >&2
+    exit 1
+fi
+
+mkdir -p "$SCRIPTS_DEST"
+cp -a "$SCRIPTS_SOURCE"/. "$SCRIPTS_DEST"/
+
+echo "Installed Bash scripts:"
+echo "  $SCRIPTS_SOURCE"
+echo "  -> $SCRIPTS_DEST"
+
+if [[ -d "$HOME/.bash/scripts" && ":$PATH:" != *":$HOME/.bash/scripts:"* ]]; then
+    echo 'export PATH="$HOME/.bash/scripts:$PATH"' >> "$BASHRC"
+    echo "Added: \$HOME/.bash/scripts to PATH"
+fi
+
 # Remove old versions of lines managed by this installer.
 #
 # IMPORTANT:
