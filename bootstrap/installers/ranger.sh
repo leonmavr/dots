@@ -8,7 +8,7 @@ DEVICONS_REPO="https://github.com/alexanderjeurissen/ranger_devicons.git"
 INSTALL_DIR="$HOME/.local/share/ranger"
 BIN_DIR="$HOME/.local/bin"
 
-FONT_DIR="$HOME/.local/share/fonts/JetBrainsMono"
+FONT_DIR="$HOME/.local/share/fonts/HackNerdFont"
 DEVICONS_DIR="$HOME/.config/ranger/plugins/ranger_devicons"
 RANGER_CONFIG_DIR="$HOME/.config/ranger"
 RANGER_RC="$RANGER_CONFIG_DIR/rc.conf"
@@ -85,31 +85,38 @@ EOF
 chmod +x "$BIN_DIR/rifle"
 
 # ---------------------------------------------------------------------------
-# Install JetBrainsMono Nerd Font
+# Install Hack Nerd Font
 # ---------------------------------------------------------------------------
 
 echo
-echo "Installing JetBrainsMono Nerd Font..."
+echo "Installing Hack Nerd Font..."
 
 mkdir -p "$FONT_DIR"
 
-tmp_dir="$(mktemp -d)"
-trap 'rm -rf "$tmp_dir"' EXIT
+tmp_font_dir="$(mktemp -d)"
+trap 'rm -rf "$tmp_font_dir"' EXIT
 
-FONT_ARCHIVE="$tmp_dir/JetBrainsMono.tar.xz"
+FONT_ARCHIVE="$tmp_font_dir/Hack.tar.xz"
 
 curl -fsSL \
-    "https://github.com/ryanoasis/nerd-fonts/releases/latest/download/JetBrainsMono.tar.xz" \
+    "https://github.com/ryanoasis/nerd-fonts/releases/latest/download/Hack.tar.xz" \
     -o "$FONT_ARCHIVE"
 
 tar -xJf "$FONT_ARCHIVE" -C "$FONT_DIR"
 
-# Refresh the user font cache.
+# Refresh the user's font cache.
 if command -v fc-cache >/dev/null 2>&1; then
     echo "Refreshing font cache..."
     fc-cache -f "$HOME/.local/share/fonts"
 else
     echo "Warning: fc-cache not found; font cache was not refreshed." >&2
+fi
+
+# Verify that Fontconfig can see the Nerd Font.
+if command -v fc-match >/dev/null 2>&1; then
+    if ! fc-match "Hack Nerd Font" >/dev/null 2>&1; then
+        echo "Warning: Hack Nerd Font was installed but Fontconfig could not find it." >&2
+    fi
 fi
 
 # ---------------------------------------------------------------------------
@@ -124,8 +131,15 @@ mkdir -p "$(dirname "$DEVICONS_DIR")"
 if [[ -d "$DEVICONS_DIR/.git" ]]; then
     echo "Updating existing ranger_devicons checkout..."
 
-    git -C "$DEVICONS_DIR" fetch --depth 1 origin master
-    git -C "$DEVICONS_DIR" reset --hard origin/master
+    git -C "$DEVICONS_DIR" fetch --depth 1 origin
+
+    DEFAULT_BRANCH="$(
+        git -C "$DEVICONS_DIR" symbolic-ref \
+            --short refs/remotes/origin/HEAD |
+        sed 's#^origin/##'
+    )"
+
+    git -C "$DEVICONS_DIR" reset --hard "origin/$DEFAULT_BRANCH"
     git -C "$DEVICONS_DIR" clean -fd
 else
     rm -rf "$DEVICONS_DIR"
@@ -169,7 +183,7 @@ echo "Source:"
 echo "  $INSTALL_DIR"
 
 echo
-echo "JetBrainsMono Nerd Font:"
+echo "Hack Nerd Font:"
 echo "  $FONT_DIR"
 
 echo
@@ -182,4 +196,8 @@ echo "  $RANGER_RC"
 
 echo
 echo "No other ranger configuration was modified."
+
+echo
+echo "Set your terminal font to:"
+echo "  Hack Nerd Font"
 
