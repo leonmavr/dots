@@ -189,14 +189,12 @@ _has yt-dlp &&\
 
 
 _has fzf &&\
-    [ -f ~/.bash/.fzf.bash ] && source ~/.bash/.fzf.bash
-    [ -f ~/fzf-bash-completion.sh ] && source ~/fzf-bash-completion.sh
     # fzf can switch between folders/files and copies selection to clipboard
     # Credits for Ctr+A/D: https://github.com/junegunn/fzf/blob/master/ADVANCED.md, the rest are mine
     alias fzf="find * |\
         fzf --prompt 'All> ' --header 'CTRL-D: Directories / CTRL-F: Files' --bind 'ctrl-d:change-prompt(Directories> )+reload(find * -type d)' --bind 'ctrl-f:change-prompt(Files> )+reload(find * -type f)'|\
             sed 's/.*/\"&\"/g' |\
-            xargs realpath |\
+            xargs -r realpath |\
             tr -d \"\n\" |\
             xclip -selection c -i"
 
