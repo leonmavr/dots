@@ -3,13 +3,24 @@
 set -euo pipefail
 
 REPO="https://github.com/ranger/ranger.git"
+DEVICONS_REPO="https://github.com/alexanderjeurissen/ranger_devicons.git"
+
 INSTALL_DIR="$HOME/.local/share/ranger"
 BIN_DIR="$HOME/.local/bin"
+
+FONT_DIR="$HOME/.local/share/fonts/JetBrainsMono"
+DEVICONS_DIR="$HOME/.config/ranger/plugins/ranger_devicons"
+RANGER_CONFIG_DIR="$HOME/.config/ranger"
+RANGER_RC="$RANGER_CONFIG_DIR/rc.conf"
+
 PYTHON="${PYTHON:-python3}"
 
 echo "Installing latest ranger from GitHub..."
 
-# Check dependencies.
+# ---------------------------------------------------------------------------
+# Check dependencies
+# ---------------------------------------------------------------------------
+
 if ! command -v git >/dev/null 2>&1; then
     echo "Error: git is required." >&2
     exit 1
@@ -20,7 +31,21 @@ if ! command -v "$PYTHON" >/dev/null 2>&1; then
     exit 1
 fi
 
+if ! command -v curl >/dev/null 2>&1; then
+    echo "Error: curl is required." >&2
+    exit 1
+fi
+
+if ! command -v tar >/dev/null 2>&1; then
+    echo "Error: tar is required." >&2
+    exit 1
+fi
+
 mkdir -p "$BIN_DIR"
+
+# ---------------------------------------------------------------------------
+# Install ranger
+# ---------------------------------------------------------------------------
 
 # Remove old executable/symlink before installing.
 # This is important because an old symlink to ranger.py could cause
@@ -59,6 +84,78 @@ EOF
 
 chmod +x "$BIN_DIR/rifle"
 
+# ---------------------------------------------------------------------------
+# Install JetBrainsMono Nerd Font
+# ---------------------------------------------------------------------------
+
+echo
+echo "Installing JetBrainsMono Nerd Font..."
+
+mkdir -p "$FONT_DIR"
+
+tmp_dir="$(mktemp -d)"
+trap 'rm -rf "$tmp_dir"' EXIT
+
+FONT_ARCHIVE="$tmp_dir/JetBrainsMono.tar.xz"
+
+curl -fsSL \
+    "https://github.com/ryanoasis/nerd-fonts/releases/latest/download/JetBrainsMono.tar.xz" \
+    -o "$FONT_ARCHIVE"
+
+tar -xJf "$FONT_ARCHIVE" -C "$FONT_DIR"
+
+# Refresh the user font cache.
+if command -v fc-cache >/dev/null 2>&1; then
+    echo "Refreshing font cache..."
+    fc-cache -f "$HOME/.local/share/fonts"
+else
+    echo "Warning: fc-cache not found; font cache was not refreshed." >&2
+fi
+
+# ---------------------------------------------------------------------------
+# Install ranger_devicons
+# ---------------------------------------------------------------------------
+
+echo
+echo "Installing ranger_devicons..."
+
+mkdir -p "$(dirname "$DEVICONS_DIR")"
+
+if [[ -d "$DEVICONS_DIR/.git" ]]; then
+    echo "Updating existing ranger_devicons checkout..."
+
+    git -C "$DEVICONS_DIR" fetch --depth 1 origin master
+    git -C "$DEVICONS_DIR" reset --hard origin/master
+    git -C "$DEVICONS_DIR" clean -fd
+else
+    rm -rf "$DEVICONS_DIR"
+
+    git clone --depth 1 \
+        "$DEVICONS_REPO" \
+        "$DEVICONS_DIR"
+fi
+
+# ---------------------------------------------------------------------------
+# Enable devicons in ranger
+# ---------------------------------------------------------------------------
+
+mkdir -p "$RANGER_CONFIG_DIR"
+
+if [[ ! -f "$RANGER_RC" ]]; then
+    touch "$RANGER_RC"
+fi
+
+DEVICONS_CONFIG="default_linemode devicons"
+
+if ! grep -Fqx "$DEVICONS_CONFIG" "$RANGER_RC"; then
+    echo "$DEVICONS_CONFIG" >> "$RANGER_RC"
+    echo "Enabled devicons in $RANGER_RC"
+fi
+
+# ---------------------------------------------------------------------------
+# Done
+# ---------------------------------------------------------------------------
+
 echo
 echo "ranger installed from GitHub:"
 git -C "$INSTALL_DIR" log -1 --format='%h %ad %s' --date=short
@@ -67,8 +164,22 @@ echo
 echo "Executable:"
 echo "  $BIN_DIR/ranger"
 
+echo
 echo "Source:"
 echo "  $INSTALL_DIR"
 
 echo
-echo "No ranger configuration was created or modified."
+echo "JetBrainsMono Nerd Font:"
+echo "  $FONT_DIR"
+
+echo
+echo "ranger_devicons:"
+echo "  $DEVICONS_DIR"
+
+echo
+echo "ranger configuration:"
+echo "  $RANGER_RC"
+
+echo
+echo "No other ranger configuration was modified."
+
