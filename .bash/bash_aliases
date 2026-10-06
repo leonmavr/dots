@@ -109,6 +109,10 @@ alias ccat='pygmentize -g -O style=colorful,linenos=1'
 # make less more friendly for non-text input files, see lesspipe(1)
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 
+# prefer eza over ls (if installed)
+if command -v eza >/dev/null 2>&1; then
+    alias ls='eza'
+fi
 
 ### Aliases
 
