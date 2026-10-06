@@ -19,7 +19,9 @@
     # date of current commit if not args or if arg if passed
     date = !git show -s --date=format:'%Y/%m/%d-%H:%M' --format=%cd $1
     dc = diff --cached
+    dcnp = !git --no-pager diff --cached
     deleted = ls-files --deleted
+    dnp = !git --no-pager diff
     f = fetch
     fu = !git fetch `git upstream-remote`
     # f this - undo all changes roll back to last commit's state` 

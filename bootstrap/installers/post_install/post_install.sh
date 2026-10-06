@@ -66,6 +66,15 @@ else
 fi
 [ -f $GIT_COMPLETION ] && cp $GIT_COMPLETION ~
 
+# Prefer git-delta for diff if installed
+if [[ -x "$HOME/.local/bin/delta" ]]; then
+    git config --global core.pager delta
+    echo "Configured Git to use delta as pager"
+else
+    echo "git-delta not installed; skipping Git delta configuration"
+fi
+
+
 ### bashrc configuration
 
 ### Copy Bash scripts
