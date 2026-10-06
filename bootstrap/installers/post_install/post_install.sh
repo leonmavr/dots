@@ -116,6 +116,7 @@ sed -i \
     -e '/^[[:space:]]*\[[[:space:]]*-f[[:space:]]*~\/\.bash\/bash_history_cfg[[:space:]]*\][[:space:]]*&&[[:space:]]*source[[:space:]]*~\/\.bash\/bash_history_cfg[[:space:]]*$/d' \
     -e '/^[[:space:]]*\[[[:space:]]*-f[[:space:]]*~\/\.bash\/bash_shopt[[:space:]]*\][[:space:]]*&&[[:space:]]*source[[:space:]]*~\/\.bash\/bash_shopt[[:space:]]*$/d' \
     -e '/^[[:space:]]*export INPUTRC=.*$/d' \
+    -e '/^[[:space:]]*bind -f "\$INPUTRC"[[:space:]]*$/d' \
     -e '/^[[:space:]]*eval "\$(zoxide init bash)"[[:space:]]*$/d' \
     -e '/^[[:space:]]*touch \$INPUTRC[[:space:]]*$/d' \
     "$BASHRC"
@@ -135,6 +136,7 @@ lines=(
     '[ -f ~/.bash/bash_history_cfg ] && source ~/.bash/bash_history_cfg'
     '[ -f ~/.bash/bash_shopt ] && source ~/.bash/bash_shopt'
     'export INPUTRC="$HOME/.bash/inputrc"'
+    'bind -f "$INPUTRC"'
     'eval "$(zoxide init bash)"'
 )
 
@@ -148,7 +150,7 @@ done
 ### Inputrc
 
 if [[ ! -f "$BASH_DIR/inputrc" ]]; then
-    touch "$BASH_DIR/inputrc"
+    cp "$BASH_DIR/inputrc" ~/.bash
     echo "Created: $BASH_DIR/inputrc"
 fi
 
