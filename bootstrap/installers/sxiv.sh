@@ -35,6 +35,14 @@ fi
 echo "Installing to $BIN_DIR..."
 install -m 755 "$SXIV" "$BIN_DIR/sxiv"
 
+# Install its helper scripts
+SXIV_SCRIPT_DIR="~/.config/sxiv/exec"
+mkdir -p "$SXIV_SCRIPT_DIR"
+curl -fL https://raw.githubusercontent.com/leonmavr/coolersxiv/refs/heads/master/exec/image-info -o "$SXIV_SCRIPT_DIR"/image-info
+curl -fL https://raw.githubusercontent.com/leonmavr/coolersxiv/refs/heads/master/exec/key-handler -o "$SXIV_SCRIPT_DIR"/key-handler
+curl -fL https://raw.githubusercontent.com/leonmavr/coolersxiv/refs/heads/master/exec/url-handler -o "$SXIV_SCRIPT_DIR"/url-handler
+echo "Tried downloading its helper scripts."
+
 # Add ~/.local/bin to PATH for Bash if needed.
 if ! grep -qsF 'export PATH="$HOME/.local/bin:$PATH"' "$HOME/.bashrc"; then
     echo 'export PATH="$HOME/.local/bin:$PATH"' >> "$HOME/.bashrc"
