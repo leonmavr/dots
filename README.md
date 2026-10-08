@@ -24,6 +24,8 @@ cd dots
 
 
 The `bootstrap/` directory contains installers for little programs I commonly use.
+No `sudo` is required - it will install all pre-built versions of my tools in 
+`~/.local/bin` and the post-installer will make sure that `PATH` points to it.
 
 Run all of the tool installers and then the post-install script, which builds
 the bash environment (such as prompt and aliases):
@@ -39,9 +41,9 @@ bash post_install.sh
 
 #### Neovim
 
-The Neovim configuration lives in `.config/nvim`.
+The Neovim (`nvim`) configuration lives in `.config/nvim`.
 
-Before starting Neovim, install its external prerequisites.
+Before starting `nvim`, install its external prerequisites.
 
 **Arch-based systems:**
 
@@ -64,14 +66,14 @@ sudo npm install -g pyright
 pip install black flake8 debugpy
 ```
 
-Once the prerequisites are installed, nvim will already have its config prepared
+Once the prerequisites are installed, `nvim` will already have its config prepared
 from the bootstrap. So just launch it:
 
 ```bash
 nvim
 ```
 
-On the first launch, `Packer` is automatically cloned into Neovim's data 
+On the first launch, `Packer` is automatically cloned into `nvim`'s data 
 directory if not already installed. The configuration then syncs the plugins 
 automatically.
 
@@ -81,7 +83,7 @@ If the plugins do not install automatically, run:
 :PackerSync
 ```
 
-That's it, your neovim setup should be ready to go!
+That's it, your Neovim setup should be ready to go!
 
 ### :large_orange_diamond: My stack
 
@@ -90,11 +92,9 @@ That's it, your neovim setup should be ready to go!
 * `bash` : shell
 * `fzf` : fuzzy finding
 * `ripgrep` : fast searching
-* `ranger` : terminal file manager
-* `dunst` : notifications
-* `jq` : JSON processing
 * `ranger` : file manager with integrated helper scripts
-* `dust` : disk usage
+* `jq` : JSON processing
+* `dust` : disk usage visualizer
 
 #### Editor
 
