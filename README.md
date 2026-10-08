@@ -2,10 +2,42 @@
   &#x25CF;&nbsp;&nbsp;&nbsp;&#x25CF;&nbsp;&nbsp;&nbsp;&#x25CF;
 </div>
 
-My personal Linux setup, configuration files, scripts, and small utilities.
+### :large_orange_diamond: Introduction 
 
-Built around a keyboard-driven workflow for users who mostly live on the
-terminal. Lean and efficient, without too many tools to bloat it.
+My personal Linux environment, configuration files, scripts, and small utilities.
+
+I built over the years around a keyboard-driven workflow for users who mostly 
+live on the terminal. Focused on efficiency and tools (no ricing), with visual 
+improvements only applicable in i3.
+
+```
+Build what you need,
+not what they say you need.
+A few but good tools guide your way,
+let the rest fade away.
+
+Don't chase the perfection,
+nor worry about the trend.
+Just fix what annoys you,
+and make it your friend.
+
+Don't build for appearance,
+nor for the show,
+build something that fits you,
+and quietly grow.
+
+No menus to wander,
+no fancy UIs,
+z knows where you've been,
+it'll take you there fast,
+and won't ask why.
+
+And when someone asks,
+"Why do it this way?"
+You shrug, "Works for me!"
+Then go about your day.
+¯\_(ツ)_/¯
+```
 
 ---
 
@@ -108,7 +140,7 @@ That's it, your Neovim setup should be ready to go!
 #### Desktop
 
 * `dunst` : notification daemon
-* [`coolersxiv`](https://github.com/leonmavr/coolersxiv) : image viewer - fork of sxiv.
+* [`coolersxiv`](https://github.com/leonmavr/coolersxiv) : image viewer - my own fork of sxiv.
 
 #### Development
 
