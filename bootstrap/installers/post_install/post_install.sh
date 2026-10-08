@@ -1,10 +1,11 @@
 #!/bin/bash
 
 ### Purpose
-# Install local Bash configuration and fzf config.
+# Install local Bash configuration, fzf config, Git/GDB config,
+# and repository .config contents.
 #
 # Options:
-#   --create-config    Copy repository .config contents into ~/.config
+#   --no-config-copy    Do not copy repository .config contents into ~/.config
 
 set -euo pipefail
 
@@ -17,19 +18,19 @@ CONFIG_DIR="$HOME/.config"
 FZF_CONFIG_SOURCE="$SCRIPT_DIR/../../../.bash/.fzf.bash"
 FZF_CONFIG_DEST="$BASH_DIR/.fzf.bash"
 
-CREATE_CONFIG=false
+COPY_CONFIG=true
 
 ### Parse arguments
 
 case "${1:-}" in
     "")
         ;;
-    --create-config)
-        CREATE_CONFIG=true
+    --no-config-copy)
+        COPY_CONFIG=false
         ;;
     *)
         echo "Unknown option: $1" >&2
-        echo "Usage: $0 [--create-config]" >&2
+        echo "Usage: $0 [--no-config-copy]" >&2
         exit 1
         ;;
 esac
@@ -55,7 +56,8 @@ install -m 644 "$FZF_CONFIG_SOURCE" "$FZF_CONFIG_DEST"
 echo "Installed fzf config:"
 echo "  $FZF_CONFIG_DEST"
 
-### git/gdb config
+### Git / GDB config
+
 GIT_CFG="$SCRIPT_DIR/../../../.gitconfig"
 GIT_COMPLETION="$SCRIPT_DIR/../../../.git-completion.bash"
 GDBINIT="$SCRIPT_DIR/../../../.gdbinit"
@@ -95,8 +97,7 @@ else
     echo "git-delta not installed; skipping Git delta configuration"
 fi
 
-
-### bashrc configuration
+### Bash configuration
 
 ### Copy Bash scripts
 
@@ -136,6 +137,7 @@ sed -i \
     -e '/^[[:space:]]*\[[[:space:]]*-f[[:space:]]*~\/\.bash\/bash_prompt[[:space:]]*\][[:space:]]*&&[[:space:]]*source[[:space:]]*~\/\.bash\/bash_prompt[[:space:]]*$/d' \
     -e '/^[[:space:]]*\[[[:space:]]*-f[[:space:]]*~\/\.bash\/bash_history_cfg[[:space:]]*\][[:space:]]*&&[[:space:]]*source[[:space:]]*~\/\.bash\/bash_history_cfg[[:space:]]*$/d' \
     -e '/^[[:space:]]*\[[[:space:]]*-f[[:space:]]*~\/\.bash\/bash_shopt[[:space:]]*\][[:space:]]*&&[[:space:]]*source[[:space:]]*~\/\.bash\/bash_shopt[[:space:]]*$/d' \
+    -e '/^[[:space:]]*\[[[:space:]]*-f[[:space:]]*~\/\.git-completion\.bash[[:space:]]*\][[:space:]]*&&[[:space:]]*source[[:space:]]*~\/\.git-completion\.bash[[:space:]]*$/d' \
     -e '/^[[:space:]]*export INPUTRC=.*$/d' \
     -e '/^[[:space:]]*bind -f "\$INPUTRC"[[:space:]]*$/d' \
     -e '/^[[:space:]]*eval "\$(zoxide init bash)"[[:space:]]*$/d' \
@@ -172,13 +174,13 @@ done
 ### Inputrc
 
 if [[ ! -f "$BASH_DIR/inputrc" ]]; then
-    cp "$BASH_DIR/inputrc" ~/.bash
+    cp "$BASH_DIR/inputrc" "$BASH_DIR/inputrc"
     echo "Created: $BASH_DIR/inputrc"
 fi
 
-### Optional .config installation
+### .config installation
 
-if [[ "$CREATE_CONFIG" == true ]]; then
+if [[ "$COPY_CONFIG" == true ]]; then
     CONFIG_SOURCE="$SCRIPT_DIR/../../../.config"
 
     if [[ ! -d "$CONFIG_SOURCE" ]]; then
@@ -196,6 +198,9 @@ if [[ "$CREATE_CONFIG" == true ]]; then
     echo "Installed config files:"
     echo "  $CONFIG_SOURCE"
     echo "  -> $CONFIG_DIR"
+else
+    echo
+    echo "Skipping .config installation (--no-config-copy)"
 fi
 
 ### Validate bashrc before finishing
@@ -220,4 +225,3 @@ echo "  OK"
 echo
 echo "Run this to activate the changes:"
 echo "  source ~/.bashrc"
-
