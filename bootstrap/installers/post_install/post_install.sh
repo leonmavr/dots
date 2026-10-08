@@ -55,16 +55,37 @@ install -m 644 "$FZF_CONFIG_SOURCE" "$FZF_CONFIG_DEST"
 echo "Installed fzf config:"
 echo "  $FZF_CONFIG_DEST"
 
-### git config
+### git/gdb config
 GIT_CFG="$SCRIPT_DIR/../../../.gitconfig"
 GIT_COMPLETION="$SCRIPT_DIR/../../../.git-completion.bash"
-if [ -f $GIT_CFG ]; then
-    cp $GIT_CFG ~
-    echo "Copied git config"
+GDBINIT="$SCRIPT_DIR/../../../.gdbinit"
+
+if [[ -f "$GIT_CFG" ]]; then
+    install -m 644 "$GIT_CFG" "$HOME/.gitconfig"
+    echo "Copied git config:"
+    echo "  $HOME/.gitconfig"
 else
-    echo "Git config not found"
+    echo "Git config not found:"
+    echo "  $GIT_CFG"
 fi
-[ -f $GIT_COMPLETION ] && cp $GIT_COMPLETION ~
+
+if [[ -f "$GIT_COMPLETION" ]]; then
+    install -m 644 "$GIT_COMPLETION" "$HOME/.git-completion.bash"
+    echo "Copied git completion:"
+    echo "  $HOME/.git-completion.bash"
+else
+    echo "Git completion not found:"
+    echo "  $GIT_COMPLETION"
+fi
+
+if [[ -f "$GDBINIT" ]]; then
+    install -m 644 "$GDBINIT" "$HOME/.gdbinit"
+    echo "Copied GDB config:"
+    echo "  $HOME/.gdbinit"
+else
+    echo "GDB config not found:"
+    echo "  $GDBINIT"
+fi
 
 # Prefer git-delta for diff if installed
 if [[ -x "$HOME/.local/bin/delta" ]]; then
@@ -135,6 +156,7 @@ lines=(
     '[ -f ~/.bash/bash_prompt ] && source ~/.bash/bash_prompt'
     '[ -f ~/.bash/bash_history_cfg ] && source ~/.bash/bash_history_cfg'
     '[ -f ~/.bash/bash_shopt ] && source ~/.bash/bash_shopt'
+    '[ -f ~/.git-completion.bash ] && source ~/.git-completion.bash'
     'export INPUTRC="$HOME/.bash/inputrc"'
     'bind -f "$INPUTRC"'
     'eval "$(zoxide init bash)"'
