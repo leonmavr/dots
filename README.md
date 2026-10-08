@@ -2,8 +2,6 @@
   &#x25CF;&nbsp;&nbsp;&nbsp;&#x25CF;&nbsp;&nbsp;&nbsp;&#x25CF;
 </div>
 
-# My Linux Environment
-
 My personal Linux setup, configuration files, scripts, and small utilities.
 
 Built around a keyboard-driven workflow for users who mostly live on the
