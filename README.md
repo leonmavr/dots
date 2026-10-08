@@ -94,6 +94,7 @@ That's it, your neovim setup should be ready to go!
 * `dunst` : notifications
 * `jq` : JSON processing
 * `ranger` : file manager with integrated helper scripts
+* `dust` : disk usage
 
 #### Editor
 
