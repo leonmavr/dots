@@ -38,10 +38,18 @@ install -m 755 "$SXIV" "$BIN_DIR/sxiv"
 # Install its helper scripts
 SXIV_SCRIPT_DIR="~/.config/sxiv/exec"
 mkdir -p "$SXIV_SCRIPT_DIR"
-curl -fL https://raw.githubusercontent.com/leonmavr/coolersxiv/refs/heads/master/exec/image-info -o "$SXIV_SCRIPT_DIR"/image-info
-curl -fL https://raw.githubusercontent.com/leonmavr/coolersxiv/refs/heads/master/exec/key-handler -o "$SXIV_SCRIPT_DIR"/key-handler
-curl -fL https://raw.githubusercontent.com/leonmavr/coolersxiv/refs/heads/master/exec/url-handler -o "$SXIV_SCRIPT_DIR"/url-handler
-echo "Tried downloading its helper scripts."
+if \
+    curl -fL https://raw.githubusercontent.com/leonmavr/coolersxiv/refs/heads/master/exec/image-info -o "$SXIV_SCRIPT_DIR/image-info" &&
+    curl -fL https://raw.githubusercontent.com/leonmavr/coolersxiv/refs/heads/master/exec/key-handler -o "$SXIV_SCRIPT_DIR/key-handler" &&
+    curl -fL https://raw.githubusercontent.com/leonmavr/coolersxiv/refs/heads/master/exec/url-handler -o "$SXIV_SCRIPT_DIR/url-handler" &&
+    [ -f "$SXIV_SCRIPT_DIR/image-info" ] &&
+    [ -f "$SXIV_SCRIPT_DIR/key-handler" ] &&
+    [ -f "$SXIV_SCRIPT_DIR/url-handler" ]
+then
+    echo "sxiv helper scripts were installed."
+else
+    echo "sxiv helper scripts failed to be installed."
+fi
 
 # Add ~/.local/bin to PATH for Bash if needed.
 if ! grep -qsF 'export PATH="$HOME/.local/bin:$PATH"' "$HOME/.bashrc"; then
