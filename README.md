@@ -2,92 +2,131 @@
   &#x25CF;&nbsp;&nbsp;&nbsp;&#x25CF;&nbsp;&nbsp;&nbsp;&#x25CF;
 </div>
 
+# My Linux Environment
 
-### :large_orange_diamond: This Setup
+My personal Linux setup, configuration files, scripts, and small utilities.
 
-Wecome to my dotfiles.
-In this setup, I am using and configuring:
+Built around a keyboard-driven workflow for users who mostly live on the
+terminal. Lean and efficient, without too many tools to bloat it.
 
-* `Xorg` as my display manager 
-* `bash` as the shell
-* `nvim` as my editor 
-* `ranger` as my file explorer
-* Other productivity utilies, such as `fzf` (fuzzy find), `sxiv` (image viewer
-within ranger), etc.
-* Various command-line scripts to make my life easier.
+---
 
-### :large_orange_diamond: Get Started
+### :large_orange_diamond: How to install
 
-#### 1. Overwrite your local rc (e.g `.bashrc` or `.zshrc`)
+Clone the repository:
 
 ```bash
-cat .bashrc.append >> ~/.bashrc # or whatever rc file you have
+git clone https://github.com/leonmavr/dots.git
+cd dots
 ```
 
-#### 2. Requirements 
+#### Bootstrap
 
-You will need to install the following:
+###### ⚠ THESE SCRIPTS WILL OVERWRITE YOUR LOCAL `~/.config`! RUN THEM RESPONSIBLY. ⚠
 
-* `nvim`: Install it with your package manager  or from source and make sure the 
-version is at least `0.8`.
-* `ranger`: Install it with your package manager
-* `fzf`: I recommend a full installation but you can skip the flags:
-```bash
-git clone --depth 1 https://github.com/junegunn/fzf.git /tmp/fzf
-cd /tmp/fzf
-./install --xdg --key-bindings --completion --update-rc
-```
 
-Optionally:
+The `bootstrap/` directory contains installers for little programs I commonly use.
 
-* `dunst` as a notification manager but you can stick with `notify-send`
-* `jq` to query json data
-* `ffmpeg`
-* `imagemagick`
-* `xclip` (clipboard)
-* `stow` to easily symlink this cloned repo to your local files
-
-#### 3. Copy Configs
-
-You can copy the configs in two ways - manually or with `stow`. `stow` is
-a utility to recusively and easily create symlinks from directoties so this way
-you don't constantly have to copy between your repo and your local files. Read 
-below if you decide to go with `stow`.
-
-Suppose you want to link the nvim config of this repo to your local files, e.g.
-at `~/.config/nvim`. If you already have a setup in `~/.config/nvim`, you need
-to **delete it** before using stow:
+Run all of the tool installers and then the post-install script, which builds
+the bash environment (such as prompt and aliases):
 
 ```bash
-rm -rf ~/.config/nvim
-mkdir -p ~/.config/nvim
-cd dots/.config # in this cloned repo
-stow -t ~/.config/nvim nvim
-# to make sure everything worked:
-# ls -l nvim # and you should see something like:
-# lrwxrwxrwx 1 user user 38 Sep  9 18:40 init.lua -> ../../dev/dots/.config/nvim/init.lua
+cd bootstrap
+for f in *.sh; do
+    [ -f "$f" ] && bash "$f"
+done
+cd post_install
+bash post_install.sh
 ```
 
-And that's it, you mirrored you cloned Neovim config into your local files!
-You can repeat this process for other any directories of your choice.
+#### Neovim
 
-#### 4. Post-installation
+The Neovim configuration lives in `.config/nvim`.
 
-**TODO**: source the `add_dir_to_path.sh` script
+Before starting Neovim, install its external prerequisites.
 
-**TODO**: packer update with nvim
+**Arch-based systems:**
 
-### :large_orange_diamond: Screenshots
+```bash
+sudo pacman -S neovim git ripgrep fd clang python python-pip \
+    nodejs npm make zathura latexmk
+```
 
-### :large_orange_diamond: License 
+**Debian/Ubuntu-based systems:**
 
-All scripts and files in this repo are released under [kopimi](https://kopimi.com/).
-Feel free to copy or play around with them and no credits are needed.
+```bash
+sudo apt install neovim git ripgrep fd-find clang python3 python3-pip \
+    nodejs npm make zathura latexmk
+```
+
+The configuration also uses `pyright`, `black`, `flake8`, and `debugpy` for Python development:
+
+```bash
+sudo npm install -g pyright
+pip install black flake8 debugpy
+```
+
+Once the prerequisites are installed, nvim will already have its config prepared
+from the bootstrap. So just launch it:
+
+```bash
+nvim
+```
+
+On the first launch, `Packer` is automatically cloned into Neovim's data 
+directory if not already installed. The configuration then syncs the plugins 
+automatically.
+
+If the plugins do not install automatically, run:
+
+```vim
+:PackerSync
+```
+
+That's it, your neovim setup should be ready to go!
+
+### :large_orange_diamond: My stack
+
+#### Terminal & Shell
+
+* `bash` : shell
+* `fzf` : fuzzy finding
+* `ripgrep` : fast searching
+* `ranger` : terminal file manager
+* `dunst` : notifications
+* `jq` : JSON processing
+* `ranger` : file manager with integrated helper scripts
+
+#### Editor
+
+* `neovim` : editor
+* `clangd` : C/C++ language server
+* `pyright` : Python language server
+* `nvim-dap` : debugging
+* `telescope`/`fzf` : navigation and search
+* `vimtex` : LaTeX workflow
+
+#### Desktop
+
+* `dunst` : notification daemon
+* [`coolersxiv`](https://github.com/leonmavr/coolersxiv) : image viewer - fork of sxiv.
+
+#### Development
+
+The environment is mainly geared towards C/C++, Python and typesetting notes with
+LaTeX.
+
+---
+
+### :large_orange_diamond: Demos
+
+---
 
 <div align="center">
-<img src="https://kopimi.com/badges/kopimi_text.gif" alt="Kopimi logo" style="width:300px;"/>
+  <img src="https://kopimi.com/badges/kopimi_text.gif" alt="Kopimi logo" style="width:300px;"/>
 </div>
 
 <div align="center"; style="text-align:center; font-size: 48px; line-height: 1; margin: 20px 0; color: orange;">
   &#x25CF;&nbsp;&nbsp;&nbsp;&#x25CF;&nbsp;&nbsp;&nbsp;&#x25CF;
 </div>
+
