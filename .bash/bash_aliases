@@ -1,13 +1,4 @@
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 ### Functions
-
-# Brief: check whether a program is installed
-#        explanation of which this is the recommended way to check:
-#        https://stackoverflow.com/a/677212 
-# $1:    The name command to check
-function _has() {
-    command -v $1 &> /dev/null
-}
 
 find() {
     command find "$@" 2>&1 | grep -v "Permission denied"
@@ -20,7 +11,7 @@ findhere(){
 
 # ripgrep (rg) is better
 grephere(){
-	grep -rnw . -e "$1"
+    grep -rnw . -e "$1"
 }
 
 mdcd() {
@@ -42,22 +33,23 @@ fawk() {
 repeat()
 {
     local i max
-    max=$1; shift;
+    max=$1
+    shift
     for ((i=1; i <= max ; i++)); do # --> C-like syntax
-        eval "$@";
+        eval "$@"
     done
 }
 
 # cd always followed by ls
 # credits @pyratebeard
-# https://www.reddit.com/r/linux/comments/7oc5mt/what_are_some_useful_things_you_put_on_your/ds8q7yg?utm_source=share&utm_medium=web2x
+# https://www.reddit.com/r/linux/comments/7oc5mt/what-are-some-useful-things-you-put-on-your/ds8q7yg?utm_source=share&utm_medium=web2x
 cd() {
     builtin cd "$@" && ls -lAh
 }
 
 # number of lines
 nn() {
-	cat "$1" | wc -l
+    cat "$1" | wc -l
 }
 
 # quick kill
@@ -67,12 +59,12 @@ k() {
 
 # calculate
 c() {
-    echo "scale=6; $1" | bc -l 
+    echo "scale=6; $1" | bc -l
 }
 
 #####################################
 # Description:
-#   List a range of lines of a file  
+#   List a range of lines of a file
 # Usage:
 #   catl <file> <line_from> <line_to>
 #####################################
@@ -95,9 +87,11 @@ venv_create() {
     else
         VENV_NAME="$1"
     fi
+
     python -m venv "$VENV_NAME" && \
     source myenv/bin/activate && \
     echo "=== Virtual environment '$VENV_NAME' created. ==="
+
     [ -f requirements.txt ] && pip install -r requirements.txt && \
     echo "=== Requirements from requirements.txt installed. ==="
 }
@@ -140,9 +134,11 @@ alias lll='ls -lhtr'
 alias llla='ls -lhtrA'
 alias cll='clear; ll'
 alias clll='clear; lll'
-alias cllla='clear; llla' 
+alias cllla='clear; llla'
+
 # credits: piffey on reddit
 alias lsmod="ls -lah --color | awk '{k=0;for(i=0;i<=8;i++)k+=((substr(\$1,i+2,1)~/[rwx]/)*2^(8-i));if(k)printf(\" %0o \",k);print}'"
+
 # count files in directory (not hidden)
 alias n='ls -l | grep ^- | wc -l'
 
@@ -150,14 +146,15 @@ alias mx='chmod u+x'
 alias mwr='chmod u+w'
 alias py='python3'
 
-if _has nvim; then
+if command -v nvim >/dev/null 2>&1; then
     alias edit='nvim'
-    alias vimrc='nvim ~/.config/nvim/init.vim'
+    alias vimrc='edit ~/.config/nvim/init.vim'
     alias svim='sudo nvim'
     alias v='nvim'
     alias vim='nvim'
     EDITOR=nvim
-elif _has vim; then
+elif command -v vim >/dev/null 2>&1; then
+    echo wtf
     alias edit='vim'
     alias vimrc='vim ~/.vimrc'
     alias svim='sudo vim'
@@ -169,7 +166,11 @@ else
     alias v=vi
 fi
 
-bashrc() { edit ~/.bashrc; source ~/.bashrc; }
+bashrc() {
+    edit ~/.bashrc
+    source ~/.bashrc
+}
+
 alias .b='. ~/.bashrc'
 
 alias g=git
@@ -181,6 +182,7 @@ alias ...='cd ../../'
 alias ....='cd ../../../'
 alias .....='cd ../../../..'
 alias cd-='cd -'
+
 # expand user aliases
 alias sudo='sudo '
 
@@ -188,11 +190,12 @@ alias sudo='sudo '
 ### Videos
 
 ### Dependant on installed software
-_has yt-dlp &&\
+
+if command -v yt-dlp >/dev/null 2>&1; then
     alias yt='yt-dlp --user-agent "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)"'
+fi
 
-
-_has fzf &&\
+if command -v fzf >/dev/null 2>&1; then
     # fzf can switch between folders/files and copies selection to clipboard
     # Credits for Ctr+A/D: https://github.com/junegunn/fzf/blob/master/ADVANCED.md, the rest are mine
     alias fzf="find * |\
@@ -201,34 +204,45 @@ _has fzf &&\
             xargs -r realpath |\
             tr -d \"\n\" |\
             xclip -selection c -i"
+fi
 
 
 # credits: laggardkernel @https://github.com/ranger/ranger/issues/1554#issuecomment-491650123
-if _has ranger; then
+if command -v ranger >/dev/null 2>&1; then
     function ranger {
-            local IFS=$'\t\n'
-            local tempfile="$(mktemp -t tmp.XXXXXX)"
-            local ranger_cmd=(
-                    command
-                    ranger
-                    --cmd="map Q chain shell echo %d > "$tempfile"; quitall"
-            )
-            
-            ${ranger_cmd[@]} "$@"
-            if [[ -f "$tempfile" ]] && [[ "$(cat -- "$tempfile")" != "$(echo -n `pwd`)" ]]; then
-                    cd -- "$(cat "$tempfile")" || return
-            fi
-            command rm -f -- "$tempfile" 2>/dev/null
+        local IFS=$'\t\n'
+        local tempfile="$(mktemp -t tmp.XXXXXX)"
+        local ranger_cmd=(
+            command
+            ranger
+            --cmd="map Q chain shell echo %d > "$tempfile"; quitall"
+        )
+
+        ${ranger_cmd[@]} "$@"
+
+        if [[ -f "$tempfile" ]] && [[ "$(cat -- "$tempfile")" != "$(echo -n `pwd`)" ]]; then
+            cd -- "$(cat "$tempfile")" || return
+        fi
+
+        command rm -f -- "$tempfile" 2>/dev/null
     }
 fi
 
-_has ranger &&\
-	alias r='ranger'
+if command -v ranger >/dev/null 2>&1; then
+    alias r='ranger'
+fi
 
-_has zathura &&\
-	alias z='zathura'
+if command -v zathura >/dev/null 2>&1; then
+    alias z='zt'
+fi
 
+if command -v file2clip >/dev/null 2>&1; then
+    alias Y='file2clip'
+fi
+
+alias D='rm -rf'
 
 ### Key bindings
 # Key bindings that couldn't go into .input rc
 bind '"\C-F":"fzf\n"'
+
