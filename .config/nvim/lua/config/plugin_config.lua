@@ -228,7 +228,7 @@ navbuddy.setup {
         ["g?"] = actions.help(),            -- Open mappings help window
     },
     lsp = {
-        auto_attach = false,   -- If set to true, you don't need to manually use attach function
+        auto_attach = true,
         preference = nil,      -- list of lsp server names in order of preference
     },
     source_buffer = {
@@ -239,6 +239,10 @@ navbuddy.setup {
     },
 	custom_hl_group = nil,     -- "Visual" or any other hl group to use instead of inverted colors
 }
+
+vim.keymap.set("n", "<leader>nb", function()
+    navbuddy.open()
+end, { desc = "Open Navbuddy" })
 
 
 require'treesitter-context'.setup{
