@@ -32,9 +32,11 @@ vim.g.ale_fix_on_save = 0
 ---- Debugging (dap)
 local dap = require('dap')
 dap.adapters.cppdbg = {
+  -- NOTE: requires gdb >= 14.1
   type = 'executable',
-  command = '/path/to/OpenDebugAD7', -- Change to your debugger path
-  name = "cppdbg"
+  command = '/usr/bin/gdb',
+  name = "cppdbg",
+  args = { '-i', 'dap' },
 }
 dap.configurations.cpp = {
   {
