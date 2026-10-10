@@ -26,7 +26,11 @@ vim.keymap.set('n', '<Leader>3', function() require'dap'.step_out() end)
 
 -- quickly switch between source/header
 vim.keymap.set('n', '<Leader>o', ':ClangdSwitchSourceHeader<CR>', { noremap=true, silent=true })
-
+-- LSP: list clangd [f]ixes
+vim.keymap.set("n", "<C-f>", vim.lsp.buf.code_action, {
+    desc = "LSP Code Actions",
+    silent = true,
+})
 -- nagivate across long wrapped lines
 vim.keymap.set('n', 'j', 'gj', { noremap = true })
 vim.keymap.set('n', 'k', 'gk', { noremap = true })
