@@ -4,9 +4,9 @@
 
 set -e
 
-VERSION="v27"
+VERSION="v28"
 BIN_DIR="$HOME/.local/bin"
-URL="https://github.com/leonmavr/coolersxiv/releases/download/${VERSION}/coolersxiv-v27-linux-x86_64.tar.gz"
+URL="https://github.com/leonmavr/coolersxiv/releases/download/${VERSION}/coolersxiv-v28-linux-x86_64.tar.gz"
 
 TMP_DIR="$(mktemp -d)"
 ARCHIVE="$TMP_DIR/coolersxiv.tar.gz"
