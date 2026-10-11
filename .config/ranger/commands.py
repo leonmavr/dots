@@ -14,8 +14,9 @@ import os
 
 # You always need to import ranger.api.commands here to get the Command class:
 from ranger.api.commands import Command
-
 from ranger.core.loader import CommandLoader
+
+import subprocess
 
 
 # Any class that is a subclass of "Command" will be integrated into ranger as a
@@ -129,3 +130,29 @@ class compress(Command):
 
         extension = ['.zip', '.tar.gz', '.rar', '.7z']
         return ['compress ' + os.path.basename(self.fm.thisdir.path) + ext for ext in extension]
+
+# Requires zoxide
+class z(Command):
+    """:z <query> - Jump to a directory using zoxide."""
+
+    def execute(self):
+        query = self.rest(1)
+
+        try:
+            result = subprocess.run(
+                ["zoxide", "query", query],
+                capture_output=True,
+                text=True,
+                check=True
+            )
+
+            directory = result.stdout.strip()
+
+            if directory:
+                self.fm.cd(directory)
+
+        except subprocess.CalledProcessError:
+            self.fm.notify(
+                f"No directory found for: {query}",
+                bad=True
+            )
