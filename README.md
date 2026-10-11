@@ -6,7 +6,7 @@
 
 My personal Linux environment, configuration files, scripts, and small utilities.
 
-I built over the years around a keyboard-driven workflow for users who mostly 
+I built them over the years around a keyboard-driven workflow for users who mostly 
 live on the terminal. Focused on efficiency and tools (no ricing), with visual 
 improvements only applicable in i3.
 
@@ -124,9 +124,11 @@ That's it, your Neovim setup should be ready to go!
 * `bash` : shell
 * `fzf` : fuzzy finding
 * `ripgrep` : fast searching
+* `fd` : fast finding
 * `ranger` : file manager with integrated helper scripts
 * `jq` : JSON processing
 * `dust` : disk usage visualizer
+* `shellcheck` : inspect shell script pitfalls
 
 #### Editor
 
@@ -140,9 +142,13 @@ That's it, your Neovim setup should be ready to go!
 #### Desktop
 
 * `dunst` : notification daemon
+* `yt-dlp` : video downloader
 * [`coolersxiv`](https://github.com/leonmavr/coolersxiv) : image viewer - my own fork of sxiv.
 
 #### Development
+
+* `just` : alias commands/command chains
+* `watchexec` : automically run commands on changes
 
 The environment is mainly geared towards C/C++, Python and typesetting notes with
 LaTeX.
