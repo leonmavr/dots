@@ -6,6 +6,7 @@
 ########## Requirements #########
 # dunst, scrot, imagemagick, mpd, xclip, pactl, light (AUR)
 # i3lock-color (AUR), spotify (AUR), rofi, compton, polybar
+# autotiling (optional)
 
 # If using Ctrl/ Fn, Ctrl and Fn and swapped in my laptop
 set $mod Mod4 
@@ -37,8 +38,8 @@ exec_always --no-startup-id compton -b --config ~/.config/compton/config_blur
 exec --no-startup-id mpd
 # TODO: dunst doesn't start with systemctl enable :(
 exec_always --no-startup-id dunst
-exec_always --no-startup-id setxkbmap -layout gb,gr
-exec_always --no-startup-id setxkbmap -option 'grp:alt_shift_toggle'
+# exec_always --no-startup-id setxkbmap -layout "gb,gr" -option "grp:alt_shift_toggle"
+exec_always --no-startup-id setxkbmap -model pc105 -layout "gb,gr" -option "grp:win_space_toggle"
 #exec --no-startup-id killall polybar > /dev/null 2>&1 
 #exec --no-startup-id nohup polybar top > /dev/null 2>&1 
 # temporary - fix it
@@ -53,6 +54,8 @@ exec_always --no-startup-id nm-applet
 exec --no-startup-id systemctl --user import-environment DISPLAY XDG_CURRENT_DESKTOP
 # Force restart the portal services under the newly imported environment
 exec --no-startup-id systemctl --user restart xdg-desktop-portal xdg-desktop-portal-gtk
+# Uncomment for smart tiling if you have `autotiling` installed:
+exec_always --no-startup-id autotiling
 
 
 # change focus
