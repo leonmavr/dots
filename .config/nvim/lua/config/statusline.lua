@@ -45,9 +45,9 @@ vim.api.nvim_set_hl(0, 'RightGrad3', {
 
 -- Inactive left block (greyed out)
 vim.api.nvim_set_hl(0, 'InactiveLeftHighlight', { fg = '#aaaaaa', bg = '#333333', bold = true })
-vim.api.nvim_set_hl(0, 'InactiveLeftGrad1',    { fg = '#666666', bg = 'NONE' })
+vim.api.nvim_set_hl(0, 'InactiveLeftGrad1',    { fg = '#444444', bg = 'NONE' })
 vim.api.nvim_set_hl(0, 'InactiveLeftGrad2',    { fg = '#555555', bg = 'NONE' })
-vim.api.nvim_set_hl(0, 'InactiveLeftGrad3',    { fg = '#444444', bg = 'NONE' })
+vim.api.nvim_set_hl(0, 'InactiveLeftGrad3',    { fg = '#666666', bg = 'NONE' })
 
 local function blockleft(text)
   return table.concat({
