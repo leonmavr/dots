@@ -18,6 +18,9 @@ CONFIG_DIR="$HOME/.config"
 FZF_CONFIG_SOURCE="$SCRIPT_DIR/../../../.bash/.fzf.bash"
 FZF_CONFIG_DEST="$BASH_DIR/.fzf.bash"
 
+INPUTRC_SOURCE="$SCRIPT_DIR/../../../.bash/inputrc"
+INPUTRC_DEST="$BASH_DIR/inputrc"
+
 COPY_CONFIG=true
 
 ### Parse arguments
@@ -173,9 +176,15 @@ done
 
 ### Inputrc
 
-if [[ ! -f "$BASH_DIR/inputrc" ]]; then
-    cp "$BASH_DIR/inputrc" "$BASH_DIR/inputrc"
-    echo "Created: $BASH_DIR/inputrc"
+if [[ ! -f "$INPUTRC_SOURCE" ]]; then
+    echo "inputrc not found:"
+    echo "  $INPUTRC_SOURCE" >&2
+    exit 1
+fi
+
+if [[ ! -f "$INPUTRC_DEST" ]]; then
+    install -m 644 "$INPUTRC_SOURCE" "$INPUTRC_DEST"
+    echo "Created: $INPUTRC_DEST"
 fi
 
 ### .config installation
