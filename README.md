@@ -59,16 +59,29 @@ The `bootstrap/` directory contains installers for little programs I commonly us
 No `sudo` is required - it will install all pre-built versions of my tools in 
 `~/.local/bin` and the post-installer will make sure that `PATH` points to it.
 
-Run all of the tool installers and then the post-install script, which builds
-the bash environment (such as prompt and aliases):
+The interactive installer lets you choose what to install:
 
 ```bash
-cd bootstrap
+bash bootstrap/installers/install.sh
+bash bootstrap/installers/install.sh --dry-run   # show the plan only
+```
+
+It greys out tools that are already provided by the system, leaves tools
+already present in `~/.local/bin` unchecked by default, and only preselects
+`~/.config` directories that do not exist yet.
+
+Move with the arrow keys, toggle with `Enter`, and press `y` to apply.
+`q` or `Esc` leaves without applying anything, and `a` selects or deselects
+everything that can be installed.
+
+To run everything non-interactively instead:
+
+```bash
+cd bootstrap/installers
 for f in *.sh; do
-    [ -f "$f" ] && bash "$f"
+    [ -f "$f" ] && [ "$f" != install.sh ] && bash "$f"
 done
-cd post_install
-bash post_install.sh
+bash post_install/post_install.sh
 ```
 
 #### Neovim
