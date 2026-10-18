@@ -52,7 +52,6 @@ cd dots
 
 #### Bootstrap
 
-###### ⚠ THESE SCRIPTS WILL OVERWRITE YOUR LOCAL `~/.config`! RUN THEM RESPONSIBLY. ⚠
 
 
 The `bootstrap/` directory contains installers for little programs I commonly use.
@@ -66,15 +65,9 @@ bash bootstrap/installers/install.sh
 bash bootstrap/installers/install.sh --dry-run   # show the plan only
 ```
 
-It greys out tools that are already provided by the system, leaves tools
-already present in `~/.local/bin` unchecked by default, and only preselects
-`~/.config` directories that do not exist yet.
+###### ⚠ THE NON-INTERACTIVE INSTALL WILL OVERWRITE YOUR LOCAL `~/.config`! RUN IT RESPONSIBLY. ⚠
 
-Move with the arrow keys, toggle with `Enter`, and press `y` to apply.
-`q` or `Esc` leaves without applying anything, and `a` selects or deselects
-everything that can be installed.
-
-To run everything non-interactively instead:
+If you want to run everything non-interactively instead:
 
 ```bash
 cd bootstrap/installers
