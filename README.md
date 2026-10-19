@@ -135,6 +135,7 @@ That's it, your Neovim setup should be ready to go!
 * `jq` : JSON processing
 * `dust` : disk usage visualizer
 * `shellcheck` : inspect shell script pitfalls
+* `calcure` : calendar
 
 #### Editor
 
