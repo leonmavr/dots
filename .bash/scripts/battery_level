@@ -18,4 +18,4 @@ _btc_price() {
     fi
 }
 
-_btc_price $@
+_btc_price "$@"

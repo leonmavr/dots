@@ -19,4 +19,4 @@ function _record_screen() {
 }
 
 [ -f ~/.bash/scripts/add_dir_to_path.sh ] && . ~/.bash/scripts/add_dir_to_path.sh 
-_record_screen $@
+_record_screen "$@"

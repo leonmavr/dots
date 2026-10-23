@@ -20,4 +20,4 @@ _mp42img() {
     echo "===== $input converted to $format images at folder $out_folder ====="	
 }
 
-_mp42img $@
+_mp42img "$@"

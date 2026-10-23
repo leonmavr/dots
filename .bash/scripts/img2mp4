@@ -11,4 +11,4 @@ _img2mp4() {
     echo "===== Converted frames to file $out_file ====="
 }
 
-_img2mp4 $@
+_img2mp4 "$@"

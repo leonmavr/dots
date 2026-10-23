@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # Quickly compile and view LaTeX file, ignoring warnings.
 # Hacky but I don't care - it does the job.
 texqmake() {
@@ -24,4 +26,4 @@ texqmake() {
     fi
 }
 
-texqmake $@
+texqmake "$@"

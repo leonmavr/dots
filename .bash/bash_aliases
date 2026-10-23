@@ -82,18 +82,25 @@ imake() {
 }
 
 venv_create() {
-    if [ -z "$1" ]; then
-        VENV_NAME="myenv"
-    else
-        VENV_NAME="$1"
+    local venv_name="${1:-myenv}"
+
+    if ! python3 -m venv "$venv_name"; then
+        echo "Failed to create virtual environment '$venv_name'." >&2
+        return 1
     fi
 
-    python -m venv "$VENV_NAME" && \
-    source myenv/bin/activate && \
-    echo "=== Virtual environment '$VENV_NAME' created. ==="
+    # shellcheck disable=SC1090
+    if ! source "$venv_name/bin/activate"; then
+        echo "Failed to activate '$venv_name'." >&2
+        return 1
+    fi
 
-    [ -f requirements.txt ] && pip install -r requirements.txt && \
-    echo "=== Requirements from requirements.txt installed. ==="
+    echo "=== Virtual environment '$venv_name' created. ==="
+
+    if [[ -f requirements.txt ]]; then
+        pip install -r requirements.txt && \
+        echo "=== Requirements from requirements.txt installed. ==="
+    fi
 }
 
 ### Description:

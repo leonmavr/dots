@@ -23,4 +23,4 @@ _extract () {
     fi
 }
 
-_extract $@
+_extract "$@"

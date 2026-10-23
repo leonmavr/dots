@@ -56,4 +56,4 @@ X      Cancel" | rofi -dmenu -i -p "Screenshot" -location 3 -width 20 -lines 7 -
 
 . ~/.bash/scripts/add_dir_to_path.sh
 echo $PATH > /tmp/path.txt
-_rofi_menu $@
+_rofi_menu "$@"

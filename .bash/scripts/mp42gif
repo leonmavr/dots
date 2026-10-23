@@ -5,7 +5,10 @@
 
 _mp42gif() {
     # dependencies
-    [ -z `which ffmpeg` ] && exit -1
+    command -v ffmpeg >/dev/null 2>&1 || {
+        echo "ERROR: ffmpeg is required" >&2
+        exit 1
+    }
     #read cmd arguments
     while [[ $# -gt 0 ]]; do
         local key="$1"
@@ -51,4 +54,4 @@ _mp42gif() {
 }
 
 
-_mp42gif $@
+_mp42gif "$@"

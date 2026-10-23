@@ -12,6 +12,6 @@ _rrp() {
     echo "=== $count occurrences took place. ==="
 }
 
-_rrp $@
+_rrp "$@"
 
 

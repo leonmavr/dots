@@ -133,4 +133,4 @@ function _sshot() {
 
 
 [ -f ~/.bash/scripts/add_dir_to_path.sh ] && . ~/.bash/scripts/add_dir_to_path.sh 
-_sshot $@ &
+_sshot "$@" &

@@ -16,7 +16,10 @@
 #####################################################################
 _collage() {
     # dependencies: imagemagick (e.g. convert)
-    [ ! -z `which convert` ] && exit -1
+    command -v convert >/dev/null 2>&1 || {
+        echo "ERROR: imagemagick is required" >&2
+        exit 1
+    }
     #read cmd arguments
     while [[ $# -gt 0 ]]; do
         local key="$1"
@@ -103,4 +106,4 @@ _collage() {
 }
 
 
-_collage $@
+_collage "$@"
