@@ -3,18 +3,15 @@
 ### Purpose
 # Locally (at ~/.local/bin) install fzf
 
-set -euo pipefail
+SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+# shellcheck source=lib.sh
+source "$SCRIPT_DIR/lib.sh"
 
-VERSION="0.74.4"
-BIN_DIR="$HOME/.local/bin"
-BASHRC="$HOME/.bashrc"
+VERSION="$(pinned FZF_VERSION)"
 
-case "$(uname -m)" in
-    x86_64)
+case "$(detect_arch)" in
+    amd64)
         ASSET="linux_amd64"
-        ;;
-    aarch64)
-        ASSET="linux_arm64"
         ;;
     arm64)
         ASSET="linux_arm64"
@@ -28,50 +25,25 @@ esac
 echo "Installing fzf v${VERSION}..."
 
 mkdir -p "$BIN_DIR"
+make_tmp_dir
 
-tmp_dir="$(mktemp -d)"
-trap 'rm -rf "$tmp_dir"' EXIT
+archive="$TMP_DIR/fzf.tar.gz"
 
-archive="$tmp_dir/fzf.tar.gz"
-
-curl -fsSL \
+fetch \
     "https://github.com/junegunn/fzf/releases/download/v${VERSION}/fzf-${VERSION}-${ASSET}.tar.gz" \
-    -o "$archive"
+    "$archive"
 
-tar -xzf "$archive" -C "$tmp_dir"
+tar -xzf "$archive" -C "$TMP_DIR"
 
-install -m 755 "$tmp_dir/fzf" "$BIN_DIR/fzf"
-
-# Add fzf to PATH and enable Bash integration.
-PATH_LINE='export PATH="$HOME/.local/bin:$PATH"'
-BASH_LINE='eval "$(fzf --bash)"'
-
-if [[ ! -f "$BASHRC" ]]; then
-    touch "$BASHRC"
-fi
-
-if ! grep -Fqx "$PATH_LINE" "$BASHRC"; then
-    {
-        echo
-        echo "# fzf"
-        echo "$PATH_LINE"
-    } >> "$BASHRC"
-
-    echo "Added fzf to PATH in $BASHRC"
-fi
-
-if ! grep -Fqx "$BASH_LINE" "$BASHRC"; then
-    echo "$BASH_LINE" >> "$BASHRC"
-    echo "Added fzf Bash integration to $BASHRC"
-fi
+install_bin "$TMP_DIR/fzf" fzf
 
 echo
 echo "fzf installed:"
 "$BIN_DIR/fzf" --version
 
 echo
-echo "Run this to activate it in the current shell:"
-echo "  source ~/.bashrc"
+echo "PATH and Bash integration are managed by post_install.sh."
+echo "Run the post-install step once to enable them."
 echo
 echo "Ctrl-R: history search"
 echo "Ctrl-T: file search"

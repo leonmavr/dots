@@ -3,17 +3,15 @@
 ### Purpose
 # Locally (at ~/.local/bin) install jq
 
-set -euo pipefail
+SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+# shellcheck source=lib.sh
+source "$SCRIPT_DIR/lib.sh"
 
-VERSION="1.8.1"
-BIN_DIR="$HOME/.local/bin"
+VERSION="$(pinned JQ_VERSION)"
 
-case "$(uname -m)" in
-    x86_64)
+case "$(detect_arch)" in
+    amd64)
         ASSET="jq-linux-amd64"
-        ;;
-    aarch64)
-        ASSET="jq-linux-arm64"
         ;;
     arm64)
         ASSET="jq-linux-arm64"
@@ -27,17 +25,15 @@ esac
 echo "Installing jq v${VERSION}..."
 
 mkdir -p "$BIN_DIR"
+make_tmp_dir
 
-tmp_dir="$(mktemp -d)"
-trap 'rm -rf "$tmp_dir"' EXIT
+binary="$TMP_DIR/jq"
 
-binary="$tmp_dir/jq"
-
-curl -fsSL \
+fetch \
     "https://github.com/jqlang/jq/releases/download/jq-${VERSION}/${ASSET}" \
-    -o "$binary"
+    "$binary"
 
-install -m 755 "$binary" "$BIN_DIR/jq"
+install_bin "$binary" jq
 
 echo
 echo "jq installed:"

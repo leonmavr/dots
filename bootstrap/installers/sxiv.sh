@@ -2,22 +2,19 @@
 
 # Install a forked build of sxiv - a minimal image viewer
 
-set -e
+SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+# shellcheck source=lib.sh
+source "$SCRIPT_DIR/lib.sh"
 
-VERSION="v28"
-BIN_DIR="$HOME/.local/bin"
-URL="https://github.com/leonmavr/coolersxiv/releases/download/${VERSION}/coolersxiv-v28-linux-x86_64.tar.gz"
+VERSION="$(pinned SXIV_VERSION)"
+require_arch amd64
+URL="https://github.com/leonmavr/coolersxiv/releases/download/${VERSION}/coolersxiv-${VERSION}-linux-x86_64.tar.gz"
 
-TMP_DIR="$(mktemp -d)"
+make_tmp_dir
 ARCHIVE="$TMP_DIR/coolersxiv.tar.gz"
 
-cleanup() {
-    rm -rf "$TMP_DIR"
-}
-trap cleanup EXIT
-
 echo "Downloading sxiv ${VERSION}..."
-curl -fL "$URL" -o "$ARCHIVE"
+fetch "$URL" "$ARCHIVE"
 
 echo "Extracting..."
 tar -xzf "$ARCHIVE" -C "$TMP_DIR"
@@ -33,33 +30,30 @@ if [ -z "$SXIV" ]; then
 fi
 
 echo "Installing to $BIN_DIR..."
-install -m 755 "$SXIV" "$BIN_DIR/sxiv"
+install_bin "$SXIV" sxiv
 
 # Install its helper scripts
-SXIV_SCRIPT_DIR="~/.config/sxiv/exec"
+SXIV_SCRIPT_DIR="$HOME/.config/sxiv/exec"
 mkdir -p "$SXIV_SCRIPT_DIR"
 if \
-    curl -fL https://raw.githubusercontent.com/leonmavr/coolersxiv/refs/heads/master/exec/image-info -o "$SXIV_SCRIPT_DIR/image-info" &&
-    curl -fL https://raw.githubusercontent.com/leonmavr/coolersxiv/refs/heads/master/exec/key-handler -o "$SXIV_SCRIPT_DIR/key-handler" &&
-    curl -fL https://raw.githubusercontent.com/leonmavr/coolersxiv/refs/heads/master/exec/url-handler -o "$SXIV_SCRIPT_DIR/url-handler" &&
-    [ -f "$SXIV_SCRIPT_DIR/image-info" ] &&
-    [ -f "$SXIV_SCRIPT_DIR/key-handler" ] &&
-    [ -f "$SXIV_SCRIPT_DIR/url-handler" ]
+    fetch https://raw.githubusercontent.com/leonmavr/coolersxiv/refs/heads/master/exec/image-info "$SXIV_SCRIPT_DIR/image-info" &&
+    fetch https://raw.githubusercontent.com/leonmavr/coolersxiv/refs/heads/master/exec/key-handler "$SXIV_SCRIPT_DIR/key-handler" &&
+    fetch https://raw.githubusercontent.com/leonmavr/coolersxiv/refs/heads/master/exec/url-handler "$SXIV_SCRIPT_DIR/url-handler"
 then
+    chmod +x \
+        "$SXIV_SCRIPT_DIR/image-info" \
+        "$SXIV_SCRIPT_DIR/key-handler" \
+        "$SXIV_SCRIPT_DIR/url-handler"
     echo "sxiv helper scripts were installed."
 else
-    echo "sxiv helper scripts failed to be installed."
+    echo "sxiv helper scripts failed to be installed." >&2
 fi
-
-# Add ~/.local/bin to PATH for Bash if needed.
-if ! grep -qsF 'export PATH="$HOME/.local/bin:$PATH"' "$HOME/.bashrc"; then
-    echo 'export PATH="$HOME/.local/bin:$PATH"' >> "$HOME/.bashrc"
-fi
-
-export PATH="$BIN_DIR:$PATH"
 
 echo
 echo "sxiv installed successfully:"
-echo "  $(command -v sxiv)"
+echo "  $BIN_DIR/sxiv"
 echo
-sxiv --version 2>/dev/null || true
+"$BIN_DIR/sxiv" --version 2>/dev/null || true
+
+echo
+echo "PATH is managed by post_install.sh."

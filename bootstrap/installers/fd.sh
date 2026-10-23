@@ -1,16 +1,14 @@
 #!/usr/bin/env bash
 
-set -euo pipefail
+SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+# shellcheck source=lib.sh
+source "$SCRIPT_DIR/lib.sh"
 
-VERSION="10.5.0"
-BIN_DIR="$HOME/.local/bin"
+VERSION="$(pinned FD_VERSION)"
 
-case "$(uname -m)" in
-    x86_64)
+case "$(detect_arch)" in
+    amd64)
         ARCH="x86_64"
-        ;;
-    aarch64)
-        ARCH="aarch64"
         ;;
     arm64)
         ARCH="aarch64"
@@ -27,20 +25,16 @@ URL="https://github.com/sharkdp/fd/releases/download/v${VERSION}/${TARGET}.tar.g
 echo "Installing fd v${VERSION}..."
 
 mkdir -p "$BIN_DIR"
-
-tmp_dir="$(mktemp -d)"
-trap 'rm -rf "$tmp_dir"' EXIT
-
-archive="$tmp_dir/fd.tar.gz"
+make_tmp_dir
 
 echo "Downloading:"
 echo "  $URL"
 
-curl -fsSL "$URL" -o "$archive"
+fetch "$URL" "$TMP_DIR/fd.tar.gz"
 
-tar -xzf "$archive" -C "$tmp_dir"
+tar -xzf "$TMP_DIR/fd.tar.gz" -C "$TMP_DIR"
 
-install -m 755 "$tmp_dir/$TARGET/fd" "$BIN_DIR/fd"
+install_bin "$TMP_DIR/$TARGET/fd" fd
 
 echo
 echo "fd installed:"

@@ -4,45 +4,40 @@
 # Locally (at ~/.local/bin) install dunst, dunstctl and dunstify
 # Ubuntu 26 / Wayland / amd64
 
-set -euo pipefail
+SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+# shellcheck source=lib.sh
+source "$SCRIPT_DIR/lib.sh"
 
-VERSION="1.13.2"
-BIN_DIR="$HOME/.local/bin"
+VERSION="$(pinned DUNST_VERSION)"
 REPO="leonmavr/dots"
 RELEASE="dunst-v${VERSION}"
 ASSET="dunst-${VERSION}-linux-amd64.tar.gz"
 
 echo "Installing dunst v${VERSION}..."
 
-case "$(uname -m)" in
-    x86_64)
-        ;;
-    *)
-        echo "Unsupported architecture: $(uname -m)" >&2
-        echo "This dunst release currently provides an amd64 build." >&2
-        exit 1
-        ;;
-esac
+if [[ $(detect_arch || true) != amd64 ]]; then
+    echo "Unsupported architecture: $(uname -m)" >&2
+    echo "This dunst release currently provides an amd64 build." >&2
+    exit 1
+fi
 
 mkdir -p "$BIN_DIR"
+make_tmp_dir
 
-tmp_dir="$(mktemp -d)"
-trap 'rm -rf "$tmp_dir"' EXIT
-
-archive="$tmp_dir/$ASSET"
+archive="$TMP_DIR/$ASSET"
 
 echo "Downloading ${ASSET}..."
 
-curl -fsSL \
+fetch \
     "https://github.com/${REPO}/releases/download/${RELEASE}/${ASSET}" \
-    -o "$archive"
+    "$archive"
 
 echo "Extracting..."
 
-tar -xzf "$archive" -C "$tmp_dir"
+tar -xzf "$archive" -C "$TMP_DIR"
 
 # Find the extracted directory.
-dunst_dir="$tmp_dir/dunst-${VERSION}-linux-amd64"
+dunst_dir="$TMP_DIR/dunst-${VERSION}-linux-amd64"
 
 if [[ ! -f "$dunst_dir/dunst" ||
       ! -f "$dunst_dir/dunstctl" ||
@@ -51,27 +46,9 @@ if [[ ! -f "$dunst_dir/dunst" ||
     exit 1
 fi
 
-install -m 755 "$dunst_dir/dunst"    "$BIN_DIR/dunst"
-install -m 755 "$dunst_dir/dunstctl" "$BIN_DIR/dunstctl"
-install -m 755 "$dunst_dir/dunstify" "$BIN_DIR/dunstify"
-
-# Add ~/.local/bin to PATH.
-PATH_LINE='export PATH="$HOME/.local/bin:$PATH"'
-BASHRC="$HOME/.bashrc"
-
-if [[ ! -f "$BASHRC" ]]; then
-    touch "$BASHRC"
-fi
-
-if ! grep -Fqx "$PATH_LINE" "$BASHRC"; then
-    {
-        echo
-        echo "# dunst"
-        echo "$PATH_LINE"
-    } >> "$BASHRC"
-
-    echo "Added dunst to PATH in $BASHRC"
-fi
+install_bin "$dunst_dir/dunst" dunst
+install_bin "$dunst_dir/dunstctl" dunstctl
+install_bin "$dunst_dir/dunstify" dunstify
 
 echo
 echo "Dunst installed:"
@@ -84,5 +61,4 @@ echo "  $BIN_DIR/dunstctl"
 echo "  $BIN_DIR/dunstify"
 
 echo
-echo "Run this to activate it in the current shell:"
-echo "  source ~/.bashrc"
+echo "PATH is managed by post_install.sh."

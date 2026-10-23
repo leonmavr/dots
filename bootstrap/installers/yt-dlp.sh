@@ -4,10 +4,11 @@
 # Locally (at ~/.local/bin) install yt-dlp
 # Ensure Deno is installed and up to date (minimum version: > 2.6.0)
 
-set -euo pipefail
+SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+# shellcheck source=lib.sh
+source "$SCRIPT_DIR/lib.sh"
 
-VERSION="2026.08.19"
-BIN_DIR="$HOME/.local/bin"
+VERSION="$(pinned YTDLP_VERSION)"
 BINARY="$BIN_DIR/yt-dlp"
 DENO_BIN="$HOME/.deno/bin/deno"
 
@@ -23,7 +24,9 @@ version_le() {
 
 install_deno() {
     echo "Installing/updating Deno..."
-    curl -fsSL https://deno.land/install.sh | sh
+    make_tmp_dir
+    fetch https://deno.land/install.sh "$TMP_DIR/deno-install.sh"
+    sh "$TMP_DIR/deno-install.sh"
     # Ensure the installed executable is available.
     export PATH="$HOME/.deno/bin:$PATH"
     if [[ ! -x "$DENO_BIN" ]]; then
@@ -58,32 +61,19 @@ echo "Deno installed:"
 deno --version
 
 ### Install yt-dlp
-case "$(uname -m)" in
-    x86_64)
-        ASSET="yt-dlp"
-        ;;
-    aarch64|arm64)
-        ASSET="yt-dlp"
-        ;;
-    *)
-        echo "Unsupported architecture: $(uname -m)" >&2
-        exit 1
-        ;;
-esac
+ASSET="yt-dlp"
 
 echo
 echo "Installing yt-dlp v${VERSION}..."
 
 mkdir -p "$BIN_DIR"
+make_tmp_dir
 
-tmp_dir="$(mktemp -d)"
-trap 'rm -rf "$tmp_dir"' EXIT
+tmp_binary="$TMP_DIR/yt-dlp"
 
-tmp_binary="$tmp_dir/yt-dlp"
-
-curl -fsSL \
+fetch \
     "https://github.com/yt-dlp/yt-dlp/releases/download/${VERSION}/${ASSET}" \
-    -o "$tmp_binary"
+    "$tmp_binary"
 
 # Make sure we actually received an executable
 chmod 755 "$tmp_binary"

@@ -3,18 +3,16 @@
 ### Purpose
 # Locally (at ~/.local) install Neovim
 
-set -euo pipefail
+SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+# shellcheck source=lib.sh
+source "$SCRIPT_DIR/lib.sh"
 
-VERSION="0.12.5"
+VERSION="$(pinned NVIM_VERSION)"
 INSTALL_DIR="$HOME/.local"
-BIN_DIR="$INSTALL_DIR/bin"
 
-case "$(uname -m)" in
-    x86_64)
+case "$(detect_arch)" in
+    amd64)
         ASSET="nvim-linux-x86_64"
-        ;;
-    aarch64)
-        ASSET="nvim-linux-arm64"
         ;;
     arm64)
         ASSET="nvim-linux-arm64"
@@ -28,23 +26,21 @@ esac
 echo "Installing Neovim v${VERSION}..."
 
 mkdir -p "$BIN_DIR"
+make_tmp_dir
 
-tmp_dir="$(mktemp -d)"
-trap 'rm -rf "$tmp_dir"' EXIT
+archive="$TMP_DIR/nvim.tar.gz"
 
-archive="$tmp_dir/nvim.tar.gz"
-
-curl -fsSL \
+fetch \
     "https://github.com/neovim/neovim/releases/download/v${VERSION}/${ASSET}.tar.gz" \
-    -o "$archive"
+    "$archive"
 
-tar -xzf "$archive" -C "$tmp_dir"
+tar -xzf "$archive" -C "$TMP_DIR"
 
 # Remove an existing installation.
 rm -rf "$INSTALL_DIR/nvim"
 
 # Install Neovim.
-mv "$tmp_dir/$ASSET" "$INSTALL_DIR/nvim"
+mv "$TMP_DIR/$ASSET" "$INSTALL_DIR/nvim"
 
 # Make nvim available through ~/.local/bin.
 ln -sfn "$INSTALL_DIR/nvim/bin/nvim" "$BIN_DIR/nvim"

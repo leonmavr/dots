@@ -52,11 +52,9 @@ cd dots
 
 #### Bootstrap
 
-
-
 The `bootstrap/` directory contains installers for little programs I commonly use.
-No `sudo` is required - it will install all pre-built versions of my tools in 
-`~/.local/bin` and the post-installer will make sure that `PATH` points to it.
+No `sudo` is required - pre-built versions go to `~/.local/bin` and the
+post-installer owns `PATH` plus the fzf/zoxide shell hooks.
 
 The interactive installer lets you choose what to install:
 
@@ -65,17 +63,27 @@ bash bootstrap/installers/install.sh
 bash bootstrap/installers/install.sh --dry-run   # show the plan only
 ```
 
-###### ⚠ THE NON-INTERACTIVE INSTALL WILL OVERWRITE YOUR LOCAL `~/.config`! RUN IT RESPONSIBLY. ⚠
+###### ⚠ `--all` (OR ANY OVERWRITE OF AN EXISTING `~/.config`) WILL REPLACE YOUR LOCAL CONFIG! RUN IT RESPONSIBLY. ⚠
 
-If you want to run everything non-interactively instead:
+Non-interactively:
 
 ```bash
-cd bootstrap/installers
-for f in *.sh; do
-    [ -f "$f" ] && [ "$f" != install.sh ] && bash "$f"
-done
-bash post_install/post_install.sh
+bash bootstrap/installers/install.sh --all --yes
+bash bootstrap/installers/install.sh --only ranger,fzf,post_install --yes
 ```
+
+Include `post_install` in `--only` when you want `PATH` and the shell hooks
+wired up.
+
+Or bootstrap a fresh machine with one command (clones into `~/.local/share/dots`):
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/leonmavr/dots/master/bootstrap/bootstrap.sh | bash
+# unattended:
+curl -fsSL https://raw.githubusercontent.com/leonmavr/dots/master/bootstrap/bootstrap.sh | bash -s -- --all --yes
+```
+
+Pinned versions live in `bootstrap/installers/versions.conf`; bump them there.
 
 #### Neovim
 

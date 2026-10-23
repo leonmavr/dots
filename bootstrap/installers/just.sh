@@ -8,52 +8,26 @@
 # in a file named justfile.
 ###
 
-set -euo pipefail
+SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+# shellcheck source=lib.sh
+source "$SCRIPT_DIR/lib.sh"
 
-VERSION="1.58.0"
-BIN_DIR="$HOME/.local/bin"
-BASHRC="$HOME/.bashrc"
+VERSION="$(pinned JUST_VERSION)"
 
-case "$(uname -m)" in
-    x86_64|aarch64|arm64)
-        ;;
-    *)
-        echo "Unsupported architecture: $(uname -m)" >&2
-        exit 1
-        ;;
-esac
+require_arch amd64 arm64
 
 echo "Installing just v${VERSION}..."
 
 mkdir -p "$BIN_DIR"
+make_tmp_dir
 
-tmp_dir="$(mktemp -d)"
-trap 'rm -rf "$tmp_dir"' EXIT
+installer="$TMP_DIR/install.sh"
 
-installer="$tmp_dir/install.sh"
-
-curl -fsSL \
+fetch \
     "https://just.systems/install.sh" \
-    -o "$installer"
+    "$installer"
 
 bash "$installer" --tag "$VERSION" --to "$BIN_DIR"
-
-# Add ~/.local/bin to PATH.
-PATH_LINE='export PATH="$HOME/.local/bin:$PATH"'
-
-if [[ ! -f "$BASHRC" ]]; then
-    touch "$BASHRC"
-fi
-
-if ! grep -Fqx "$PATH_LINE" "$BASHRC"; then
-    {
-        echo
-        echo "# Local binaries"
-        echo "$PATH_LINE"
-    } >> "$BASHRC"
-
-    echo "Added ~/.local/bin to PATH in $BASHRC"
-fi
 
 echo
 echo "just installed:"
@@ -61,5 +35,4 @@ echo "just installed:"
 
 echo
 echo "Installation complete."
-echo "Activate PATH in your current shell with:"
-echo "  source ~/.bashrc"
+echo "PATH is managed by post_install.sh."

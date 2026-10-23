@@ -3,18 +3,15 @@
 # Purpose:
 # Locally (at ~/.local/bin) install ShellCheck
 
-set -euo pipefail
+SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+# shellcheck source=lib.sh
+source "$SCRIPT_DIR/lib.sh"
 
-VERSION="0.11.0"
-BIN_DIR="$HOME/.local/bin"
+VERSION="$(pinned SHELLCHECK_VERSION)"
 
-case "$(uname -m)" in
-    x86_64)
+case "$(detect_arch)" in
+    amd64)
         ASSET="shellcheck-v${VERSION}.linux.x86_64.tar.xz"
-        ARCH_DIR="shellcheck-v${VERSION}"
-        ;;
-    aarch64)
-        ASSET="shellcheck-v${VERSION}.linux.aarch64.tar.xz"
         ARCH_DIR="shellcheck-v${VERSION}"
         ;;
     arm64)
@@ -30,21 +27,17 @@ esac
 echo "Installing ShellCheck v${VERSION}..."
 
 mkdir -p "$BIN_DIR"
+make_tmp_dir
 
-tmp_dir="$(mktemp -d)"
-trap 'rm -rf "$tmp_dir"' EXIT
+archive="$TMP_DIR/$ASSET"
 
-archive="$tmp_dir/$ASSET"
-
-curl -fsSL \
+fetch \
     "https://github.com/koalaman/shellcheck/releases/download/v${VERSION}/${ASSET}" \
-    -o "$archive"
+    "$archive"
 
-tar -xJf "$archive" -C "$tmp_dir"
+tar -xJf "$archive" -C "$TMP_DIR"
 
-install -m 755 \
-    "$tmp_dir/$ARCH_DIR/shellcheck" \
-    "$BIN_DIR/shellcheck"
+install_bin "$TMP_DIR/$ARCH_DIR/shellcheck" shellcheck
 
 echo
 echo "ShellCheck installed:"

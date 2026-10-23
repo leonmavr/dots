@@ -15,6 +15,13 @@
 #
 # Usage:
 #   ./install.sh [--dry-run]
+#   ./install.sh [--all | --only LIST] [--yes | --dry-run]
+#
+# Selection:
+#   --all         Select every selectable row.
+#   --only LIST   Select only the comma-separated names (ranger,fzf,...).
+#   --yes         Apply the selection without opening the UI.
+#   --dry-run     Show the plan and exit without changing anything.
 #
 # Keys:
 #   Up/Down, k/j   Move
@@ -39,6 +46,9 @@ LOCAL_BIN="$HOME/.local/bin"
 POST_INSTALL="$SCRIPT_DIR/post_install/post_install.sh"
 
 DRY_RUN=0
+SELECT_ALL=0
+ASSUME_YES=0
+ONLY_LIST=''
 
 ### Glyphs and styles
 
@@ -146,7 +156,7 @@ discover_tools() {
 
     mapfile -t scripts < <(
         find "$SCRIPT_DIR" -maxdepth 1 -type f -name '*.sh' \
-            ! -name '.*' ! -name 'install.sh' -print | sort
+            ! -name '.*' ! -name 'install.sh' ! -name 'lib.sh' -print | sort
     )
 
     for script in "${scripts[@]}"; do
@@ -252,6 +262,70 @@ discover_post_install() {
             add_row config ".config/$name" '' "$status" "$src" "$dest" '' \
                 "$checked" 1 "$note"
         done
+    fi
+}
+
+### Selection flags
+
+list_row_names() {
+    local i key
+
+    for i in "${!R_KIND[@]}"; do
+        key=${R_PATH[i]##*/}
+        key=${key%.sh}
+        printf '  %s\n' "$key"
+    done | sort -u
+}
+
+apply_selection_flags() {
+    local i key name want found=0
+    local -a wanted=()
+
+    if ((SELECT_ALL)); then
+        for i in "${!R_ENABLED[@]}"; do
+            ((R_ENABLED[i])) && R_CHECKED[i]=1
+        done
+        return 0
+    fi
+
+    [[ -n $ONLY_LIST ]] || return 0
+
+    IFS=',' read -r -a wanted <<<"$ONLY_LIST"
+
+    # Start from a clean selection: only explicitly named rows are checked.
+    for i in "${!R_CHECKED[@]}"; do
+        R_CHECKED[i]=0
+    done
+
+    for i in "${!R_KIND[@]}"; do
+        key=${R_PATH[i]##*/}
+        key=${key%.sh}
+        name=${R_NAME[i]#.config/}
+
+        for want in "${wanted[@]}"; do
+            want=${want//[[:space:]]/}
+            [[ -n $want ]] || continue
+
+            # Match the installer name, its file name, its binaries, or the
+            # short "post" alias for the post-install row.
+            if [[ $want == "$name" || $want == "$key" ||
+                $want == post && $key == post_install ||
+                " ${R_BINS[i]} " == *" $want "* ]]; then
+                found=1
+                if ((R_ENABLED[i])); then
+                    R_CHECKED[i]=1
+                else
+                    printf 'Skipping %s: %s\n' "$name" "${R_NOTE[i]}" >&2
+                fi
+                break
+            fi
+        done
+    done
+
+    if ((found == 0)); then
+        printf 'Error: --only matched nothing.\nAvailable names:\n' >&2
+        list_row_names >&2
+        exit 1
     fi
 }
 
@@ -680,12 +754,18 @@ run_plan() {
 
 usage() {
     cat <<EOF
-Usage: ${0##*/} [--dry-run]
+Usage: ${0##*/} [options]
 
 Interactive installer for the dotfiles bootstrap.
 
-  --dry-run   Show what would be installed and exit without changing anything.
-  -h, --help  Show this help.
+  --all         Select every selectable row before starting.
+  --only LIST   Select only the comma-separated names (e.g. ranger,fzf).
+  --yes         Apply the selection without opening the UI.
+  --dry-run     Show what would be installed and exit without changing anything.
+  -h, --help    Show this help.
+
+Names accepted by --only are the installer file names (ranger, post_install,
+nvim, ...), the displayed names, or the provided binaries.
 
 Keys: Up/Down move, Enter/Space toggle, a select all,
       y apply, q or Esc leave without applying.
@@ -696,6 +776,24 @@ while (($# > 0)); do
     case $1 in
         --dry-run)
             DRY_RUN=1
+            ;;
+        --all)
+            SELECT_ALL=1
+            ;;
+        --only)
+            if (($# < 2)); then
+                printf 'Error: --only requires a value.\n\n' >&2
+                usage >&2
+                exit 1
+            fi
+            ONLY_LIST=$2
+            shift
+            ;;
+        --only=*)
+            ONLY_LIST=${1#*=}
+            ;;
+        --yes)
+            ASSUME_YES=1
             ;;
         -h | --help)
             usage
@@ -710,19 +808,26 @@ while (($# > 0)); do
     shift
 done
 
+if ((SELECT_ALL)) && [[ -n $ONLY_LIST ]]; then
+    printf 'Error: --all and --only are mutually exclusive.\n' >&2
+    exit 1
+fi
+
 ### Main
 
 discover_tools
 discover_post_install
+apply_selection_flags
 
 interactive=0
 if [[ -t 0 && -t 1 ]]; then
     interactive=1
 fi
 
-if ((!interactive && !DRY_RUN)); then
+if ((!interactive && !DRY_RUN && !ASSUME_YES)); then
     printf 'Error: this installer needs an interactive terminal.\n' >&2
-    printf 'Use --dry-run to print the default plan instead.\n' >&2
+    printf 'Use --yes to apply the current selection unattended,\n' >&2
+    printf 'or --dry-run to print the plan without changing anything.\n' >&2
     exit 1
 fi
 
@@ -734,7 +839,7 @@ if ((${#R_KIND[@]} == 0)); then
     exit 1
 fi
 
-if ((interactive)); then
+if ((interactive && !ASSUME_YES)); then
     run_ui
 fi
 

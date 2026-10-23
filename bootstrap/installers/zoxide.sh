@@ -1,17 +1,14 @@
 #!/usr/bin/env bash
 
-set -euo pipefail
+SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+# shellcheck source=lib.sh
+source "$SCRIPT_DIR/lib.sh"
 
-VERSION="0.10.0"
-BIN_DIR="$HOME/.local/bin"
-BASHRC="$HOME/.bashrc"
+VERSION="$(pinned ZOXIDE_VERSION)"
 
-case "$(uname -m)" in
-    x86_64)
+case "$(detect_arch)" in
+    amd64)
         TARGET="x86_64-unknown-linux-musl"
-        ;;
-    aarch64)
-        TARGET="aarch64-unknown-linux-musl"
         ;;
     arm64)
         TARGET="aarch64-unknown-linux-musl"
@@ -28,39 +25,16 @@ URL="https://github.com/ajeetdsouza/zoxide/releases/download/v${VERSION}/${ARCHI
 echo "Installing zoxide v${VERSION}..."
 
 mkdir -p "$BIN_DIR"
-
-tmp_dir="$(mktemp -d)"
-trap 'rm -rf "$tmp_dir"' EXIT
+make_tmp_dir
 
 echo "Downloading:"
 echo "  $URL"
 
-curl -fsSL "$URL" -o "$tmp_dir/$ARCHIVE"
+fetch "$URL" "$TMP_DIR/$ARCHIVE"
 
-tar -xzf "$tmp_dir/$ARCHIVE" -C "$tmp_dir"
+tar -xzf "$TMP_DIR/$ARCHIVE" -C "$TMP_DIR"
 
-install -m 755 \
-    "$tmp_dir/zoxide" \
-    "$BIN_DIR/zoxide"
-
-# Add Bash integration if it isn't already present.
-BASH_LINE='eval "$(zoxide init bash)"'
-
-if [[ ! -f "$BASHRC" ]]; then
-    touch "$BASHRC"
-fi
-
-if grep -Fqx "$BASH_LINE" "$BASHRC"; then
-    echo "zoxide Bash integration already present in $BASHRC"
-else
-    {
-        echo
-        echo "# zoxide"
-        echo "$BASH_LINE"
-    } >> "$BASHRC"
-
-    echo "Added zoxide Bash integration to $BASHRC"
-fi
+install_bin "$TMP_DIR/zoxide" zoxide
 
 echo
 echo "zoxide installed:"
@@ -71,10 +45,6 @@ echo "Binary:"
 echo "  $BIN_DIR/zoxide"
 
 echo
-echo "Bash integration:"
-echo "  $BASH_LINE"
-
-echo
-echo "Run this to activate it in the current shell:"
-echo "  source ~/.bashrc"
+echo "Bash integration is managed by post_install.sh:"
+echo '  eval "$(zoxide init bash)"'
 

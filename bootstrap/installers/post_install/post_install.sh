@@ -23,6 +23,13 @@ INPUTRC_DEST="$BASH_DIR/inputrc"
 
 COPY_CONFIG=true
 
+# True when a command is available now or was just installed into ~/.local/bin.
+has_command() {
+    local name=$1
+
+    command -v "$name" >/dev/null 2>&1 || [[ -x "$HOME/.local/bin/$name" ]]
+}
+
 ### Parse arguments
 
 case "${1:-}" in
@@ -121,26 +128,29 @@ echo "Installed Bash scripts:"
 echo "  $SCRIPTS_SOURCE"
 echo "  -> $SCRIPTS_DEST"
 
-if [[ -d "$HOME/.bash/scripts" && ":$PATH:" != *":$HOME/.bash/scripts:"* ]]; then
-    echo 'export PATH="$HOME/.bash/scripts:$PATH"' >> "$BASHRC"
-    echo "Added: \$HOME/.bash/scripts to PATH"
-fi
-
 # Remove old versions of lines managed by this installer.
 #
 # IMPORTANT:
 # Only remove complete configuration lines. Do not touch surrounding
 # if/then/fi blocks from the system .bashrc.
+#
+# Both the historical "." form and the "source" form are removed.
 
 sed -i \
     -e '/^[[:space:]]*eval "\$(fzf --bash)"[[:space:]]*$/d' \
     -e '/^[[:space:]]*eval "\$(command fzf --bash)"[[:space:]]*$/d' \
     -e '/^[[:space:]]*\[[[:space:]]*-f[[:space:]]*~\/\.bash\/\.fzf\.bash[[:space:]]*\][[:space:]]*&&[[:space:]]*source[[:space:]]*~\/\.bash\/\.fzf\.bash[[:space:]]*$/d' \
+    -e '/^[[:space:]]*\[[[:space:]]*-f[[:space:]]*~\/\.bash\/\.fzf\.bash[[:space:]]*\][[:space:]]*&&[[:space:]]*\.[[:space:]]*~\/\.bash\/\.fzf\.bash[[:space:]]*$/d' \
     -e '/^[[:space:]]*\[[[:space:]]*-f[[:space:]]*~\/\.bash\/bash_aliases[[:space:]]*\][[:space:]]*&&[[:space:]]*source[[:space:]]*~\/\.bash\/bash_aliases[[:space:]]*$/d' \
+    -e '/^[[:space:]]*\[[[:space:]]*-f[[:space:]]*~\/\.bash\/bash_aliases[[:space:]]*\][[:space:]]*&&[[:space:]]*\.[[:space:]]*~\/\.bash\/bash_aliases[[:space:]]*$/d' \
     -e '/^[[:space:]]*\[[[:space:]]*-f[[:space:]]*~\/\.bash\/bash_prompt[[:space:]]*\][[:space:]]*&&[[:space:]]*source[[:space:]]*~\/\.bash\/bash_prompt[[:space:]]*$/d' \
+    -e '/^[[:space:]]*\[[[:space:]]*-f[[:space:]]*~\/\.bash\/bash_prompt[[:space:]]*\][[:space:]]*&&[[:space:]]*\.[[:space:]]*~\/\.bash\/bash_prompt[[:space:]]*$/d' \
     -e '/^[[:space:]]*\[[[:space:]]*-f[[:space:]]*~\/\.bash\/bash_history_cfg[[:space:]]*\][[:space:]]*&&[[:space:]]*source[[:space:]]*~\/\.bash\/bash_history_cfg[[:space:]]*$/d' \
+    -e '/^[[:space:]]*\[[[:space:]]*-f[[:space:]]*~\/\.bash\/bash_history_cfg[[:space:]]*\][[:space:]]*&&[[:space:]]*\.[[:space:]]*~\/\.bash\/bash_history_cfg[[:space:]]*$/d' \
     -e '/^[[:space:]]*\[[[:space:]]*-f[[:space:]]*~\/\.bash\/bash_shopt[[:space:]]*\][[:space:]]*&&[[:space:]]*source[[:space:]]*~\/\.bash\/bash_shopt[[:space:]]*$/d' \
+    -e '/^[[:space:]]*\[[[:space:]]*-f[[:space:]]*~\/\.bash\/bash_shopt[[:space:]]*\][[:space:]]*&&[[:space:]]*\.[[:space:]]*~\/\.bash\/bash_shopt[[:space:]]*$/d' \
     -e '/^[[:space:]]*\[[[:space:]]*-f[[:space:]]*~\/\.git-completion\.bash[[:space:]]*\][[:space:]]*&&[[:space:]]*source[[:space:]]*~\/\.git-completion\.bash[[:space:]]*$/d' \
+    -e '/^[[:space:]]*\[[[:space:]]*-f[[:space:]]*~\/\.git-completion\.bash[[:space:]]*\][[:space:]]*&&[[:space:]]*\.[[:space:]]*~\/\.git-completion\.bash[[:space:]]*$/d' \
     -e '/^[[:space:]]*export INPUTRC=.*$/d' \
     -e '/^[[:space:]]*bind -f "\$INPUTRC"[[:space:]]*$/d' \
     -e '/^[[:space:]]*eval "\$(zoxide init bash)"[[:space:]]*$/d' \
@@ -152,10 +162,13 @@ sed -i \
 # We deliberately do NOT modify the system's existing ~/.local/bin
 # if/then/fi block. If ~/.local/bin is already in PATH, this line
 # is simply unnecessary.
+#
+# fzf and zoxide hooks are only added when those tools are installed,
+# so a minimal machine does not get a broken ~/.bashrc.
 
 lines=(
     'export PATH="$HOME/.local/bin:$PATH"'
-    'eval "$(command fzf --bash)"'
+    'export PATH="$HOME/.bash/scripts:$PATH"'
     '[ -f ~/.bash/.fzf.bash ] && source ~/.bash/.fzf.bash'
     '[ -f ~/.bash/bash_aliases ] && source ~/.bash/bash_aliases'
     '[ -f ~/.bash/bash_prompt ] && source ~/.bash/bash_prompt'
@@ -164,8 +177,15 @@ lines=(
     '[ -f ~/.git-completion.bash ] && source ~/.git-completion.bash'
     'export INPUTRC="$HOME/.bash/inputrc"'
     'bind -f "$INPUTRC"'
-    'eval "$(zoxide init bash)"'
 )
+
+if has_command fzf; then
+    lines+=('eval "$(command fzf --bash)"')
+fi
+
+if has_command zoxide; then
+    lines+=('eval "$(zoxide init bash)"')
+fi
 
 for line in "${lines[@]}"; do
     if ! grep -Fqx "$line" "$BASHRC"; then

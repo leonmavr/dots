@@ -3,31 +3,31 @@
 ### Purpose
 # Locally (at ~/.local/bin) install calcure
 
-set -euo pipefail
+SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+# shellcheck source=lib.sh
+source "$SCRIPT_DIR/lib.sh"
 
-VERSION="c529fe2"
-BIN_DIR="$HOME/.local/bin"
+VERSION="$(pinned CALCURE_VERSION)"
+require_arch amd64
 DOWNLOAD_URL="https://github.com/leonmavr/calcure/releases/download/${VERSION}/calcure-linux-x86_64.tar.gz"
 
 echo "Installing calcure (${VERSION})..."
 
 mkdir -p "$BIN_DIR"
+make_tmp_dir
 
-tmp_dir="$(mktemp -d)"
-trap 'rm -rf "$tmp_dir"' EXIT
+archive="$TMP_DIR/calcure.tar.gz"
 
-archive="$tmp_dir/calcure.tar.gz"
+fetch "$DOWNLOAD_URL" "$archive"
 
-curl -fsSL "$DOWNLOAD_URL" -o "$archive"
+tar -xzf "$archive" -C "$TMP_DIR"
 
-tar -xzf "$archive" -C "$tmp_dir"
-
-if [[ ! -f "$tmp_dir/calcure/calcure" ]]; then
+if [[ ! -f "$TMP_DIR/calcure/calcure" ]]; then
     echo "ERROR: calcure binary not found in the archive" >&2
     exit 1
 fi
 
-install -m 755 "$tmp_dir/calcure/calcure" "$BIN_DIR/calcure"
+install_bin "$TMP_DIR/calcure/calcure" calcure
 
 echo
 echo "calcure installed:"

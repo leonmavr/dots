@@ -1,16 +1,14 @@
 #!/usr/bin/env bash
 
-set -euo pipefail
+SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+# shellcheck source=lib.sh
+source "$SCRIPT_DIR/lib.sh"
 
-VERSION="15.2.0"
-BIN_DIR="$HOME/.local/bin"
+VERSION="$(pinned RG_VERSION)"
 
-case "$(uname -m)" in
-    x86_64)
+case "$(detect_arch)" in
+    amd64)
         TARGET="x86_64-unknown-linux-musl"
-        ;;
-    aarch64)
-        TARGET="aarch64-unknown-linux-gnu"
         ;;
     arm64)
         TARGET="aarch64-unknown-linux-gnu"
@@ -27,20 +25,18 @@ URL="https://github.com/BurntSushi/ripgrep/releases/download/${VERSION}/${ARCHIV
 echo "Installing ripgrep v${VERSION}..."
 
 mkdir -p "$BIN_DIR"
-
-tmp_dir="$(mktemp -d)"
-trap 'rm -rf "$tmp_dir"' EXIT
+make_tmp_dir
 
 echo "Downloading:"
 echo "  $URL"
 
-curl -fsSL "$URL" -o "$tmp_dir/$ARCHIVE"
+fetch "$URL" "$TMP_DIR/$ARCHIVE"
 
-tar -xzf "$tmp_dir/$ARCHIVE" -C "$tmp_dir"
+tar -xzf "$TMP_DIR/$ARCHIVE" -C "$TMP_DIR"
 
-install -m 755 \
-    "$tmp_dir/ripgrep-${VERSION}-${TARGET}/rg" \
-    "$BIN_DIR/rg"
+install_bin \
+    "$TMP_DIR/ripgrep-${VERSION}-${TARGET}/rg" \
+    rg
 
 echo
 echo "ripgrep installed:"
