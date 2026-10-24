@@ -139,19 +139,8 @@ handle_image() {
         #           && exit 6 || exit 1;;
 
         ## Image
-        image/*)
-            local orientation
-            orientation="$( identify -format '%[EXIF:Orientation]\n' -- "${FILE_PATH}" )"
-            ## If orientation data is present and the image actually
-            ## needs rotating ("1" means no rotation)...
-            if [[ -n "$orientation" && "$orientation" != 1 ]]; then
-                ## ...auto-rotate the image according to the EXIF data.
-                convert -- "${FILE_PATH}" -auto-orient "${IMAGE_CACHE_PATH}" && exit 6
-            fi
-
-            ## `w3mimgdisplay` will be called for all images (unless overriden
-            ## as above), but might fail for unsupported types.
-            exit 7;;
+        ## Text-art previews are generated in handle_mime(), so they also work
+        ## when preview_images is off (which is the case when using symbols).
 
         ## Video
         # video/*)
@@ -320,8 +309,31 @@ handle_mime() {
 
         ## Image
         image/*)
-            ## Preview as text conversion
-            # img2txt --gamma=0.6 --width="${PV_WIDTH}" -- "${FILE_PATH}" && exit 4
+            ## Preview as text art.
+            ## Ranger renders previews through curses and allocates a colour
+            ## pair for every distinct (fg, bg) combination, never releasing
+            ## them. Only pair numbers 1-255 are honoured, so 240-colour art
+            ## (~450 new pairs per preview) breaks the colour table after a
+            ## few images. 16/8 keeps the total bounded at ~80 pairs.
+            WIDTH=$((PV_WIDTH - 3))
+            HEIGHT=$((PV_HEIGHT - 4))
+
+            # Keep dimensions valid.
+            (( WIDTH < 1 )) && WIDTH=1
+            (( HEIGHT < 1 )) && HEIGHT=1
+
+            chafa \
+                --format symbols \
+                --symbols block \
+                --colors 16/8 \
+                --relative off \
+                --optimize 0 \
+                --polite on \
+                --probe off \
+                --exact-size off \
+                --size "${WIDTH}x${HEIGHT}" \
+                --animate off \
+                -- "${FILE_PATH}" && exit 0
             exiftool "${FILE_PATH}" && exit 5
             exit 1;;
 
