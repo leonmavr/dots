@@ -48,6 +48,22 @@ ICON_DIR="${ICON_MAKEFILE%/Makefile}"
 echo "Installing sxiv icons..."
 make -C "$ICON_DIR" install PREFIX="$HOME/.local"
 
+# Register the window with GNOME's dock so it uses the installed icon.
+APPLICATIONS_DIR="$HOME/.local/share/applications"
+mkdir -p "$APPLICATIONS_DIR"
+cat > "$APPLICATIONS_DIR/sxiv.desktop" <<EOF
+[Desktop Entry]
+Name=sxiv
+GenericName=Image Viewer
+Exec="$BIN_DIR/sxiv" %F
+Icon=sxiv
+Terminal=false
+Type=Application
+Categories=Graphics;Viewer;
+StartupWMClass=Sxiv
+EOF
+chmod 644 "$APPLICATIONS_DIR/sxiv.desktop"
+
 # Install its helper scripts
 SXIV_SCRIPT_DIR="$HOME/.config/sxiv/exec"
 mkdir -p "$SXIV_SCRIPT_DIR"
@@ -69,6 +85,7 @@ echo
 echo "sxiv installed successfully:"
 echo "  $BIN_DIR/sxiv"
 echo "  $HOME/.local/share/icons/hicolor/*/apps/sxiv.png"
+echo "  $APPLICATIONS_DIR/sxiv.desktop"
 echo
 "$BIN_DIR/sxiv" --version 2>/dev/null || true
 
