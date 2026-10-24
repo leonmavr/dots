@@ -9,15 +9,20 @@ source "$SCRIPT_DIR/lib.sh"
 VERSION="$(pinned SXIV_VERSION)"
 require_arch amd64
 URL="https://github.com/leonmavr/coolersxiv/releases/download/${VERSION}/coolersxiv-${VERSION}-linux-x86_64.tar.gz"
+SOURCE_URL="https://github.com/leonmavr/coolersxiv/archive/refs/tags/${VERSION}.tar.gz"
 
+require_cmd make
 make_tmp_dir
 ARCHIVE="$TMP_DIR/coolersxiv.tar.gz"
+SOURCE_ARCHIVE="$TMP_DIR/mysxiv-source.tar.gz"
 
 echo "Downloading sxiv ${VERSION}..."
 fetch "$URL" "$ARCHIVE"
+fetch "$SOURCE_URL" "$SOURCE_ARCHIVE"
 
 echo "Extracting..."
 tar -xzf "$ARCHIVE" -C "$TMP_DIR"
+tar -xzf "$SOURCE_ARCHIVE" -C "$TMP_DIR"
 
 mkdir -p "$BIN_DIR"
 
@@ -31,6 +36,17 @@ fi
 
 echo "Installing to $BIN_DIR..."
 install_bin "$SXIV" sxiv
+
+# Install the icon theme assets from the matching source tag.
+ICON_MAKEFILE="$(find "$TMP_DIR" -type f -path '*/icon/Makefile' -print -quit)"
+if [[ -z $ICON_MAKEFILE ]]; then
+    echo "Error: could not find the sxiv icon Makefile in the source archive." >&2
+    exit 1
+fi
+
+ICON_DIR="${ICON_MAKEFILE%/Makefile}"
+echo "Installing sxiv icons..."
+make -C "$ICON_DIR" install PREFIX="$HOME/.local"
 
 # Install its helper scripts
 SXIV_SCRIPT_DIR="$HOME/.config/sxiv/exec"
@@ -52,6 +68,7 @@ fi
 echo
 echo "sxiv installed successfully:"
 echo "  $BIN_DIR/sxiv"
+echo "  $HOME/.local/share/icons/hicolor/*/apps/sxiv.png"
 echo
 "$BIN_DIR/sxiv" --version 2>/dev/null || true
 
