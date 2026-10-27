@@ -1,0 +1,64 @@
+#!/bin/bash
+
+### Requirements
+# xclip
+# file (optional, for MIME type detection)
+# dunstify or notify-send (optional, for notifications)
+
+### Description
+# Saves clipboard contents to a file.
+# Text defaults to pasted_text.txt.
+# Images default to pasted_image.<format>.
+
+_clip2file() {
+    local output_file="${1:-}"
+    local mime_type
+    local extension
+
+    # Detect clipboard content type
+    mime_type=$(xclip -selection clipboard -o -target TARGETS 2>/dev/null |
+        tr -d '\r' |
+        grep -E '^image/(png|jpeg|gif|bmp|webp|tiff)$' |
+        head -n 1)
+
+    if [[ -n "$mime_type" ]]; then
+        # Clipboard contains an image
+        case "$mime_type" in
+            image/png)  extension="png" ;;
+            image/jpeg) extension="jpg" ;;
+            image/gif)  extension="gif" ;;
+            image/bmp)  extension="bmp" ;;
+            image/webp) extension="webp" ;;
+            image/tiff) extension="tiff" ;;
+        esac
+
+        output_file="${output_file:-pasted_image.$extension}"
+
+        # Save image data in its native format
+        if ! xclip -selection clipboard -o -target "$mime_type" > "$output_file"; then
+            echo "ERROR: Failed to save clipboard image." >&2
+            rm -f -- "$output_file"
+            return 1
+        fi
+    else
+        # Clipboard contains text or another non-image format
+        output_file="${output_file:-pasted_text.txt}"
+
+        if ! xclip -selection clipboard -o > "$output_file"; then
+            echo "ERROR: Failed to save clipboard contents." >&2
+            rm -f -- "$output_file"
+            return 1
+        fi
+    fi
+
+    local msg="Clipboard saved to $output_file"
+    echo "$msg"
+
+    if command -v dunstify >/dev/null 2>&1; then
+        dunstify -u low "$msg"
+    elif command -v notify-send >/dev/null 2>&1; then
+        notify-send --expire-time=3000 "$msg"
+    fi
+}
+
+_clip2file "$@"

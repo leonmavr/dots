@@ -243,8 +243,12 @@ if command -v zathura >/dev/null 2>&1; then
     alias z='zt'
 fi
 
+# copy/paste clipboard
 if command -v file2clip >/dev/null 2>&1; then
     alias Y='file2clip'
+fi
+if command -v clip2file >/dev/null 2>&1; then
+    alias P='clip2file'
 fi
 
 alias D='rm -rf'
