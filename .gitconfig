@@ -5,7 +5,7 @@
     default = current
 [core]
     editor = vim
-	pager = delta
+    pager = delta
 [alias]
     a = add -A
     al = add --all
@@ -27,7 +27,7 @@
     fu = !git fetch `git upstream-remote`
     # f this - undo all changes roll back to last commit's state` 
     fthis = reset --hard HEAD
-	http2ssh = "!for r in $(git remote); do u=$(git remote get-url \"$r\"); case \"$u\" in https://github.com/*) n=$(printf \"%s\" \"$u\" | sed -E \"s#^https://github\\.com/#git@github.com:#\" | sed -E \"s#\\.git\\$##; s#\\$#.git#\"); git remote set-url \"$r\" \"$n\"; echo \"$r: $u -> $n\";; esac; done"
+    http2ssh = "!for r in $(git remote); do u=$(git remote get-url \"$r\"); case \"$u\" in https://github.com/*) n=$(printf \"%s\" \"$u\" | sed -E \"s#^https://github\\.com/#git@github.com:#\" | sed -E \"s#\\.git\\$##; s#\\$#.git#\"); git remote set-url \"$r\" \"$n\"; echo \"$r: $u -> $n\";; esac; done"
     l = log --pretty=custom
     lg = log --graph --pretty=custom
     modified = ls-files --modified
@@ -61,9 +61,9 @@
     tool = vimdiff
     conflictstyle = diff3
 [filter "lfs"]
-        smudge = git-lfs smudge -- %f
-        process = git-lfs filter-process
-        required = true
-        clean = git-lfs clean -- %f
+    smudge = git-lfs smudge -- %f
+    process = git-lfs filter-process
+    required = true
+    clean = git-lfs clean -- %f
 [init]
-	defaultBranch = master
+    defaultBranch = master
