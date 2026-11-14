@@ -11,3 +11,16 @@ end
 define wa
   whereami
 end
+
+# NOTE: needs rr (rr-debugger) installed
+define rs
+    reverse-step
+end
+
+define rn
+    reverse-next
+end
+
+define rc
+    reverse-continue
+end

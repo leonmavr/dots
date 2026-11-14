@@ -1,5 +1,7 @@
 # Purpose
 
+### Instructions
+
 This directory contains scripts or tools to port the dotfiles in a new machine.
 
 ```bash
@@ -22,3 +24,12 @@ Pinned tool versions live in `installers/versions.conf`; shared helpers
 Installers only place binaries in `~/.local/bin`. Shell startup lines
 (`PATH`, fzf/zoxide hooks) are owned solely by `post_install.sh`, so the
 individual installers never touch `~/.bashrc`.
+
+### Other tools
+
+Some tools have no binary publicly availabe. You will need to install them
+system-wide with your package manager:
+
+* [`rr`](https://github.com/rr-debugger/rr) - replay/reverse when debugging
+* [`bear`](https://github.com/rizsotto/bear) - list translation units, help
+  files find includes w/o absolute path
