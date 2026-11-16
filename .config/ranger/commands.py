@@ -19,6 +19,37 @@ from ranger.core.loader import CommandLoader
 import subprocess
 
 
+class fzf_select(Command):
+    """:fzf_select
+
+    Select a file with fzf, then move Ranger to its directory and focus it.
+    """
+
+    def execute(self):
+        directory = self.fm.thisdir.path
+        self.fm.ui.suspend()
+        try:
+            result = subprocess.run(
+                ["fzf", "--print0", "--preview", "cat {}"],
+                cwd=directory,
+                stdout=subprocess.PIPE,
+                check=False,
+            )
+        except OSError as error:
+            self.fm.notify("Unable to run fzf: " + str(error), bad=True)
+            return
+        finally:
+            self.fm.ui.initialize()
+
+        if result.returncode != 0 or not result.stdout:
+            return
+
+        selected = os.fsdecode(result.stdout.rstrip(b"\0"))
+        selected = os.path.abspath(os.path.join(directory, selected))
+        if self.fm.enter_dir(os.path.dirname(selected)):
+            self.fm.thisdir.move_to_obj(selected)
+
+
 # Any class that is a subclass of "Command" will be integrated into ranger as a
 # command.  Try typing ":my_edit<ENTER>" in ranger!
 class my_edit(Command):
